@@ -1,0 +1,6 @@
+<section class="phx-hero">
+  <h1><%= gettext "Welcome to %{name}!", name: "Twitter" %></h1>
+  <span><%= link "アカウント作成", to: Routes.user_path(@conn, :new) %></span>
+  <br>
+  <span><%= link "タイムライン表示", to: Routes.post_path(@conn, :index) %></span>
+</section>

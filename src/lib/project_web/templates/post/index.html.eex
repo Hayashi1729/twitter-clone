@@ -1,0 +1,30 @@
+<h1>ツイート一覧</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Tweet</th>
+      <th>投稿者名</th>
+      <th>投稿日時</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for post <- Enum.reverse(@posts) do %>
+    <tr>
+      <td><%= post.tweet %></td>
+      <td><%= post.user.username%></td>
+      <td><%= post.inserted_at%></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.post_path(@conn, :show, post) %></span>
+        <span><%= link "Edit", to: Routes.post_path(@conn, :edit, post) %></span>
+        <span><%= link "Delete", to: Routes.post_path(@conn, :delete, post), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "新しい投稿", to: Routes.post_path(@conn, :new) %></span>
