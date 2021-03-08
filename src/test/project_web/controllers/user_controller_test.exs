@@ -52,6 +52,4 @@ defmodule ProjectWeb.UserControllerTest do
     user = user_fixture()
     %{user: user}
   end
-
-
 end

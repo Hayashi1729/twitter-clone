@@ -48,6 +48,4 @@ defmodule ProjectWeb.PostControllerTest do
     post = post_fixture()
     %{post: post}
   end
-
-
 end

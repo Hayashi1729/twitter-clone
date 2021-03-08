@@ -43,5 +43,4 @@ defmodule ProjectWeb.UserViewTest do
 
     assert String.contains?(content, "Show User")
   end
-
 end
