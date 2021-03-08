@@ -15,7 +15,7 @@ defmodule ProjectWeb.Auth do
       conn.assigns[:current_user] ->
         conn
 
-      user = user_id && Project.Twitter.get_user(user_id) ->
+      user = user_id && Project.Accounts.get_user(user_id) ->
         assign(conn, :current_user, user)
 
       true ->

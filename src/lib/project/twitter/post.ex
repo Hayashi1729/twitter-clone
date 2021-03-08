@@ -15,7 +15,7 @@ defmodule Project.Twitter.Post do
   schema "posts" do
     field :tweet, :string
 
-    belongs_to :user, Project.Twitter.User
+    belongs_to :user, Project.Accounts.User
 
     timestamps()
   end

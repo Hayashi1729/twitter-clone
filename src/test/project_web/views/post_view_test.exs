@@ -4,8 +4,8 @@ defmodule ProjectWeb.PostViewTest do
 
   test "renders index.html", %{conn: conn} do 
     posts = [
-      %Project.Twitter.Post{id: 1, tweet: "first_post", user_id: 1, user: %Project.Twitter.User{id: 1, username: "User1"}}, 
-      %Project.Twitter.Post{id: 1, tweet: "second_post", user_id: 2, user: %Project.Twitter.User{id: 1, username: "User2"}}
+      %Project.Twitter.Post{id: 1, tweet: "first_post", user_id: 1, user: %Project.Accounts.User{id: 1, username: "User1"}}, 
+      %Project.Twitter.Post{id: 1, tweet: "second_post", user_id: 2, user: %Project.Accounts.User{id: 1, username: "User2"}}
     ]
 
     content = render_to_string(
@@ -34,7 +34,7 @@ defmodule ProjectWeb.PostViewTest do
   end
 
   test "renders show.html", %{conn: conn} do
-    post = %Project.Twitter.Post{id: 1, tweet: "first_post", user_id: 1, user: %Project.Twitter.User{id: 1, username: "User1"}}
+    post = %Project.Twitter.Post{id: 1, tweet: "first_post", user_id: 1, user: %Project.Accounts.User{id: 1, username: "User1"}}
     
     content = render_to_string(ProjectWeb.PostView, "show.html",
         conn: conn,

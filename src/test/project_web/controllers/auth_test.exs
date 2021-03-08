@@ -14,7 +14,7 @@ defmodule ProjectWeb.AuthTest do
   test "login puts the user in the session", %{conn: conn} do
     login_conn =
       conn
-      |> Auth.login(%Project.Twitter.User{id: 123})
+      |> Auth.login(%Project.Accounts.User{id: 123})
       |> send_resp(:ok, "")
 
     next_conn = get(login_conn, "/")

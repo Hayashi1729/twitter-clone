@@ -17,7 +17,7 @@ defmodule ProjectWeb.SessionController do
     conn,
     %{"session" => %{"username" => username, "password" => pass}}
   ) do
-    case Project.Twitter.authenticate_by_username_and_pass(username, pass) do
+    case Project.Accounts.authenticate_by_username_and_pass(username, pass) do
       {:ok, user} ->
         conn
         |> ProjectWeb.Auth.login(user)

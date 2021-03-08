@@ -4,8 +4,8 @@ defmodule ProjectWeb.UserViewTest do
 
   test "renders index.html", %{conn: conn} do 
     users = [
-      %Project.Twitter.User{id: 1, username: "User1"}, 
-      %Project.Twitter.User{id: 2, username: "User2"}
+      %Project.Accounts.User{id: 1, username: "User1"}, 
+      %Project.Accounts.User{id: 2, username: "User2"}
     ]
 
     content = render_to_string(
@@ -22,7 +22,7 @@ defmodule ProjectWeb.UserViewTest do
   end
 
   test "renders new.html", %{conn: conn} do 
-    changeset = Project.Twitter.User.registration_changeset(%Project.Twitter.User{}, %{})
+    changeset = Project.Accounts.User.registration_changeset(%Project.Accounts.User{}, %{})
 
     content =
       render_to_string(ProjectWeb.UserView, "new.html",
@@ -34,7 +34,7 @@ defmodule ProjectWeb.UserViewTest do
   end
 
   test "renders show.html", %{conn: conn} do
-    user= %Project.Twitter.User{id: 1, username: "User1"}
+    user= %Project.Accounts.User{id: 1, username: "User1"}
     
     content = render_to_string(ProjectWeb.UserView, "show.html",
         conn: conn,

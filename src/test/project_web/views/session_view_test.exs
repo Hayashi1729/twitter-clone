@@ -3,7 +3,7 @@ defmodule ProjectWeb.SessonViewTest do
   import Phoenix.View
 
   test "renders new.html", %{conn: conn} do 
-    changeset = Project.Twitter.User.registration_changeset(%Project.Twitter.User{}, %{})
+    changeset = Project.Accounts.User.registration_changeset(%Project.Accounts.User{}, %{})
 
     content =
       render_to_string(ProjectWeb.SessionView, "new.html",

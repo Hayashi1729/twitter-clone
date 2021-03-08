@@ -1,4 +1,4 @@
-defmodule Project.Twitter.User do
+defmodule Project.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 

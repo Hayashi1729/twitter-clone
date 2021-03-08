@@ -1,8 +1,8 @@
 defmodule ProjectWeb.UserController do
   use ProjectWeb, :controller
 
-  alias Project.Twitter
-  alias Project.Twitter.User
+  alias Project.Accounts
+  alias Project.Accounts.User
 
   plug :authenticate when action in [:index, :show]
 
@@ -11,7 +11,7 @@ defmodule ProjectWeb.UserController do
   """
   @spec index(Plug.Conn.t(), any) :: Plug.Conn.t()
   def index(conn, _params) do
-    users = Twitter.list_users()
+    users = Accounts.list_users()
     render(conn, "index.html", users: users)
   end
 
@@ -29,7 +29,7 @@ defmodule ProjectWeb.UserController do
   """
   @spec create(Plug.Conn.t(), map) :: Plug.Conn.t()
   def create(conn, %{"user" => user_params}) do
-    case Twitter.register_user(user_params) do
+    case Accounts.register_user(user_params) do
       {:ok, user} ->
         conn
         |> ProjectWeb.Auth.login(user)
@@ -46,7 +46,7 @@ defmodule ProjectWeb.UserController do
   """
   @spec show(Plug.Conn.t(), map) :: Plug.Conn.t()
   def show(conn, %{"id" => id}) do
-    user = Twitter.get_user(id)
+    user = Accounts.get_user(id)
     render(conn, "show.html", user: user)
   end
 
@@ -55,7 +55,7 @@ defmodule ProjectWeb.UserController do
   """
   @spec edit(Plug.Conn.t(), map) :: Plug.Conn.t()
   def edit(conn, %{"id" => id}) do
-    user = Twitter.get_user(id)
+    user = Accounts.get_user(id)
     changeset = User.registration_changeset(user, %{})
     render(conn, "edit.html", user: user, changeset: changeset)
   end
@@ -65,9 +65,9 @@ defmodule ProjectWeb.UserController do
   """
   @spec update(Plug.Conn.t(), map) :: Plug.Conn.t()
   def update(conn, %{"id" => id, "user" => user_params}) do
-    user = Twitter.get_user(id)
+    user = Accounts.get_user(id)
 
-    case Twitter.update_user(user, user_params) do
+    case Accounts.update_user(user, user_params) do
       {:ok, user} ->
         conn
         |> put_flash(:info, "User updated successfully.")
@@ -83,8 +83,8 @@ defmodule ProjectWeb.UserController do
   """
   @spec delete(Plug.Conn.t(), map) :: Plug.Conn.t()
   def delete(conn, %{"id" => id}) do
-    user = Twitter.get_user(id)
-    {:ok, _user} = Twitter.delete_user(user)
+    user = Accounts.get_user(id)
+    {:ok, _user} = Accounts.delete_user(user)
 
     conn
     |> put_flash(:info, "User deleted successfully.")
