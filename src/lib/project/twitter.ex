@@ -18,7 +18,7 @@ defmodule Project.Twitter do
       [%Post{}, ...]
 
   """
-  @spec list_posts :: [%Post{}]
+  @spec list_posts :: list(Post.t())
   def list_posts do
     Post
     |> preload(:user)
@@ -39,7 +39,7 @@ defmodule Project.Twitter do
       ** (Ecto.NoResultsError)
 
   """
-  @spec get_post!(integer) :: %Post{}
+  @spec get_post!(integer) :: Post.t()
   def get_post!(id) do
     Post
     |> preload(:user)
@@ -58,7 +58,7 @@ defmodule Project.Twitter do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec create_post(Ecto.Changeset.t(), map) :: {:ok, %Post{}} | {:error, %Ecto.Changeset{}}
+  @spec create_post(Ecto.Changeset.t(), map) :: {:ok, Post.t()} | {:error, %Ecto.Changeset{}}
   def create_post(changeset, attrs) do
     changeset
     |> Post.changeset(attrs)
@@ -77,7 +77,7 @@ defmodule Project.Twitter do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec update_post(%Post{}, map) :: {:ok, %Post{}} | {:error, %Ecto.Changeset{}}
+  @spec update_post(Post.t(), map) :: {:ok, Post.t()} | {:error, %Ecto.Changeset{}}
   def update_post(%Post{} = post, attrs) do
     post
     |> Post.changeset(attrs)
@@ -96,7 +96,7 @@ defmodule Project.Twitter do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec delete_post(%Post{}) :: {:ok, %Post{}} | {:error, %Ecto.Changeset{}}
+  @spec delete_post(Post.t()) :: {:ok, Post.t()} | {:error, %Ecto.Changeset{}}
   def delete_post(%Post{} = post) do
     Repo.delete(post)
   end
@@ -110,7 +110,7 @@ defmodule Project.Twitter do
       [%User{}, ...]
 
   """
-  @spec list_users :: [%User{}]
+  @spec list_users :: list(User.t())
   def list_users do
     Repo.all(User)
   end
@@ -129,7 +129,7 @@ defmodule Project.Twitter do
       nil
 
   """
-  @spec get_user(integer) :: %User{} | nil
+  @spec get_user(integer) :: User.t() | nil
   def get_user(id), do: Repo.get(User, id)
 
   @doc """
@@ -144,7 +144,7 @@ defmodule Project.Twitter do
       nil
 
   """
-  @spec get_user_by(Keyword.t()) :: %User{} | nil
+  @spec get_user_by(Keyword.t()) :: User.t() | nil
   def get_user_by(params), do: Repo.get_by(User, params)
 
   @doc """
@@ -159,7 +159,7 @@ defmodule Project.Twitter do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec create_user(map) :: {:ok, %User{}} | {:error, %Ecto.Changeset{}}
+  @spec create_user(map) :: {:ok, User.t()} | {:error, %Ecto.Changeset{}}
   def create_user(attrs \\ %{}) do
     %User{}
     |> User.changeset(attrs)
@@ -178,7 +178,7 @@ defmodule Project.Twitter do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec update_user(%User{}, map) :: {:ok, %User{}} | {:error, %Ecto.Changeset{}}
+  @spec update_user(User.t(), map) :: {:ok, User.t()} | {:error, %Ecto.Changeset{}}
   def update_user(%User{} = user, attrs) do
     user
     |> User.registration_changeset(attrs)
@@ -197,7 +197,7 @@ defmodule Project.Twitter do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec delete_user(%User{}) :: {:ok, %User{}} | {:error, %Ecto.Changeset{}}
+  @spec delete_user(User.t()) :: {:ok, User.t()} | {:error, %Ecto.Changeset{}}
   def delete_user(%User{} = user) do
     Repo.delete(user)
   end
@@ -213,7 +213,7 @@ defmodule Project.Twitter do
       iex> register_user(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
   """
-  @spec register_user(map()) ::  {:ok, %User{}} | {:error, Ecto.Changeset.t()}
+  @spec register_user(map()) ::  {:ok, User.t()} | {:error, Ecto.Changeset.t()}
   def register_user(attrs \\ %{}) do
     %User{}
     |> User.registration_changeset(attrs)
@@ -234,7 +234,7 @@ defmodule Project.Twitter do
       iex> authenticate_by_username_and_pass("non_existing_user", "password")
       {:error, :not_found}
   """
-  @spec authenticate_by_username_and_pass(String.t(), Ecto.Schema.t() | nil) :: {:ok, %User{}} | {:error, :unauthorized} | {:error, :not_found}
+  @spec authenticate_by_username_and_pass(String.t(), Ecto.Schema.t() | nil) :: {:ok, User.t()} | {:error, :unauthorized} | {:error, :not_found}
   def authenticate_by_username_and_pass(username, given_pass) do
     user = get_user_by(username: username)
 
