@@ -7,7 +7,7 @@ defmodule ProjectWeb.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug ProjectWeb.Auth
+    plug ProjectWeb.AuthorizationPlug
   end
 
   pipeline :api do

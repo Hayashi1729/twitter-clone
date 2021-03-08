@@ -20,7 +20,7 @@ defmodule ProjectWeb.SessionController do
     case Project.Accounts.authenticate_by_username_and_pass(username, pass) do
       {:ok, user} ->
         conn
-        |> ProjectWeb.Auth.login(user)
+        |> ProjectWeb.AuthorizationPlug.login(user)
         |> put_flash(:info, "Welcome back!")
         |> redirect(to: Routes.page_path(conn, :index))
 
@@ -37,7 +37,7 @@ defmodule ProjectWeb.SessionController do
   @spec delete(Plug.Conn.t(), map) :: Plug.Conn.t()
   def delete(conn, _) do
     conn
-    |> ProjectWeb.Auth.logout()
+    |> ProjectWeb.AuthorizationPlug.logout()
     |> redirect(to: Routes.page_path(conn, :index))
   end
 end

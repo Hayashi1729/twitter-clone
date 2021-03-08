@@ -1,6 +1,6 @@
-defmodule ProjectWeb.AuthTest do
+defmodule ProjectWeb.AuthorizationPlugTest do
   use ProjectWeb.ConnCase
-  alias ProjectWeb.Auth
+  alias ProjectWeb.AuthorizationPlug
 
   setup %{conn: conn} do
     conn =
@@ -14,7 +14,7 @@ defmodule ProjectWeb.AuthTest do
   test "login puts the user in the session", %{conn: conn} do
     login_conn =
       conn
-      |> Auth.login(%Project.Accounts.User{id: 123})
+      |> AuthorizationPlug.login(%Project.Accounts.User{id: 123})
       |> send_resp(:ok, "")
 
     next_conn = get(login_conn, "/")
@@ -25,7 +25,7 @@ defmodule ProjectWeb.AuthTest do
     logout_conn =
       conn
       |> put_session(:user_id, 123)
-      |> Auth.logout()
+      |> AuthorizationPlug.logout()
       |> send_resp(:ok, "")
 
     next_conn = get(logout_conn, "/")
@@ -37,13 +37,13 @@ defmodule ProjectWeb.AuthTest do
     conn =
       conn
       |> put_session(:user_id, user.id)  
-      |> Auth.call(Auth.init([]))  
+      |> AuthorizationPlug.call(AuthorizationPlug.init([]))  
 
     assert conn.assigns.current_user.id == user.id
   end
 
   test "call with no session sets current_user assign to nil", %{conn: conn} do
-    conn = Auth.call(conn, Auth.init([]))
+    conn = AuthorizationPlug.call(conn, AuthorizationPlug.init([]))
     assert conn.assigns.current_user == nil
   end
 end

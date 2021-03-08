@@ -32,7 +32,7 @@ defmodule ProjectWeb.UserController do
     case Accounts.register_user(user_params) do
       {:ok, user} ->
         conn
-        |> ProjectWeb.Auth.login(user)
+        |> ProjectWeb.AuthorizationPlug.login(user)
         |> put_flash(:info, "User created successfully.")
         |> redirect(to: Routes.user_path(conn, :show, user))
 
