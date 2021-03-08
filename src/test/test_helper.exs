@@ -17,7 +17,7 @@ defmodule Project.TestHelpers do
   end
 
   def post_fixture(attrs \\ %{}) do
-    changeset = Twitter.change_post(%Twitter.Post{tweet: "some_text", user_id: 10, user: %Twitter.User{username: "Alice", id: 10}})
+    changeset = Twitter.Post.changeset(%Twitter.Post{tweet: "some_text", user_id: 10, user: %Twitter.User{username: "Alice", id: 10}})
     {:ok, post} = Twitter.create_post(changeset, attrs)
 
     post

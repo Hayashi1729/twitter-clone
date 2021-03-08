@@ -36,6 +36,7 @@ defmodule ProjectWeb.PostControllerTest do
   describe "delete post" do
     setup [:create_post]
 
+    @tag login_as: "max"
     test "deletes chosen post", %{conn: conn, post: post} do
       conn = delete(conn, Routes.post_path(conn, :delete, post))
       assert redirected_to(conn) == Routes.post_path(conn, :index)

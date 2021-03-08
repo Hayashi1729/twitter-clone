@@ -22,7 +22,7 @@ defmodule ProjectWeb.PostViewTest do
   end
 
   test "renders new.html", %{conn: conn} do 
-    changeset = Project.Twitter.change_post(%Project.Twitter.Post{})
+    changeset = Project.Twitter.Post.changeset(%Project.Twitter.Post{})
 
     content =
       render_to_string(ProjectWeb.PostView, "new.html",

@@ -102,20 +102,6 @@ defmodule Project.Twitter do
   end
 
   @doc """
-  Returns an `%Ecto.Changeset{}` for tracking post changes.
-
-  ## Examples
-
-      iex> change_post(post)
-      %Ecto.Changeset{data: %Post{}}
-
-  """
-  @spec change_post(%Post{}, map) :: %Ecto.Changeset{data: %Post{}}
-  def change_post(%Post{} = post, attrs \\ %{}) do
-    Post.changeset(post, attrs)
-  end
-
-  @doc """
   Returns the list of users.
 
   ## Examples
@@ -214,19 +200,6 @@ defmodule Project.Twitter do
   @spec delete_user(%User{}) :: {:ok, %User{}} | {:error, %Ecto.Changeset{}}
   def delete_user(%User{} = user) do
     Repo.delete(user)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking user changes.
-
-   ## Examples
-
-      iex> change_registration(user)
-      %Ecto.Changeset{data: %User{}}
-  """
-  @spec change_registration(%User{}, %{}) :: %Ecto.Changeset{data: %User{}}
-  def change_registration(%User{} = user, params) do
-    User.registration_changeset(user, params)
   end
 
   @doc """

@@ -20,7 +20,7 @@ defmodule ProjectWeb.UserController do
   """
   @spec new(Plug.Conn.t(), any) :: Plug.Conn.t()
   def new(conn, _params) do
-    changeset = Twitter.change_registration(%User{}, %{})
+    changeset = User.registration_changeset(%User{}, %{})
     render(conn, "new.html", changeset: changeset)
   end
 
@@ -56,7 +56,7 @@ defmodule ProjectWeb.UserController do
   @spec edit(Plug.Conn.t(), map) :: Plug.Conn.t()
   def edit(conn, %{"id" => id}) do
     user = Twitter.get_user(id)
-    changeset = Twitter.change_registration(user, %{})
+    changeset = User.registration_changeset(user, %{})
     render(conn, "edit.html", user: user, changeset: changeset)
   end
 
@@ -91,7 +91,6 @@ defmodule ProjectWeb.UserController do
     |> redirect(to: Routes.user_path(conn, :index))
   end
 
-  @spec authenticate(Plug.Conn.t(), any) :: Plug.Conn.t()
   defp authenticate(conn, _opts) do
     if conn.assigns.current_user do
       conn

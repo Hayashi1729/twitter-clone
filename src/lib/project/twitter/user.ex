@@ -2,6 +2,17 @@ defmodule Project.Twitter.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @type t :: %__MODULE__{
+    id: integer,
+    password: String.t(),
+    password_hash: String.t(),
+    username: String.t(),
+
+    posts: [ Post.t() ], 
+
+    inserted_at: NaiveDateTime.t(),
+    updated_at: NaiveDateTime.t()
+  }
   schema "users" do
     field :password, :string, virtual: true
     field :password_hash, :string
@@ -23,7 +34,6 @@ defmodule Project.Twitter.User do
     |> put_pass_hash()
   end
 
-  @spec put_pass_hash(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   defp put_pass_hash(changeset) do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{password: pass}} ->

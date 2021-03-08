@@ -73,7 +73,7 @@ defmodule Project.TwitterTest do
 
   test "change_user/1 returns a post changese" do
     post = post_fixture()
-    assert %Ecto.Changeset{} = Twitter.change_post(post) 
+    assert %Ecto.Changeset{} = Post.changeset(post) 
   end
 
   test "list_users" do

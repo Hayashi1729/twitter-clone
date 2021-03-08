@@ -22,7 +22,7 @@ defmodule ProjectWeb.UserViewTest do
   end
 
   test "renders new.html", %{conn: conn} do 
-    changeset = Project.Twitter.change_registration(%Project.Twitter.User{}, %{})
+    changeset = Project.Twitter.User.registration_changeset(%Project.Twitter.User{}, %{})
 
     content =
       render_to_string(ProjectWeb.UserView, "new.html",

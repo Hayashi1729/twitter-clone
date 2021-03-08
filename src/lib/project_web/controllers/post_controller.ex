@@ -20,7 +20,7 @@ defmodule ProjectWeb.PostController do
   """
   @spec new(Plug.Conn.t(), any) :: Plug.Conn.t()
   def new(conn, _params) do
-    changeset = Twitter.change_post(%Post{})
+    changeset = Post.changeset(%Post{})
     render(conn, "new.html", changeset: changeset)
   end
 
@@ -57,7 +57,7 @@ defmodule ProjectWeb.PostController do
   @spec edit(Plug.Conn.t(), map) :: Plug.Conn.t()
   def edit(conn, %{"id" => id}) do
     post = Twitter.get_post!(id)
-    changeset = Twitter.change_post(post)
+    changeset = Post.changeset(post)
     render(conn, "edit.html", post: post, changeset: changeset)
   end
 
@@ -92,7 +92,6 @@ defmodule ProjectWeb.PostController do
     |> redirect(to: Routes.post_path(conn, :index))
   end
   
-  @spec authenticate(Plug.Conn.t(), any) :: Plug.Conn.t()
   defp authenticate(conn, _opts) do
     if conn.assigns.current_user do
       conn
