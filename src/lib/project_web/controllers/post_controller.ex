@@ -4,7 +4,7 @@ defmodule ProjectWeb.PostController do
   alias Project.Twitter
   alias Project.Twitter.Post
 
-  plug :authenticate when action in [:index, :show]
+  plug :authenticate when action in [:index, :show, :new]
 
   @doc """
   ツイートの一覧を取得して表示。
