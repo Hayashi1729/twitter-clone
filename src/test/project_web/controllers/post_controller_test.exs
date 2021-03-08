@@ -4,43 +4,50 @@ defmodule ProjectWeb.PostControllerTest do
   @create_attrs %{tweet: "some tweet"}
   @invalid_attrs %{tweet: nil}
 
-  setup %{conn: conn, login_as: username} do
-      user = user_fixture(username: username)
-      conn = assign(conn, :current_user, user)
+  describe "Logged-In User" do
+    setup %{conn: conn, login_as: username} do
+        user = user_fixture(username: username)
+        conn = assign(conn, :current_user, user)
 
-      {:ok, conn: conn, user: user}
-  end
+        {:ok, conn: conn, user: user}
+    end
 
-  describe "index" do
     @tag login_as: "max"
     test "lists all posts", %{conn: conn} do
       conn = get(conn, Routes.post_path(conn, :index))
       assert html_response(conn, 200) =~ "ツイート一覧"
     end
-  end
 
-  describe "create post" do
     @tag login_as: "max"
-    test "redirects to index when data is valid", %{conn: conn} do
+    test "redirects to index when data is valid when create post", %{conn: conn} do
       conn = post(conn, Routes.post_path(conn, :create), post: @create_attrs)
       assert html_response(conn, 302) =~ "redirected"
     end
 
     @tag login_as: "max"
-    test "renders errors when data is invalid", %{conn: conn} do
+    test "renders errors when data is invalid when create post", %{conn: conn} do
       conn = post(conn, Routes.post_path(conn, :create), post: @invalid_attrs)
       assert html_response(conn, 200) =~ "New Post"
     end
-  end
 
-  describe "delete post" do
     setup [:create_post]
-
     @tag login_as: "max"
     test "deletes chosen post", %{conn: conn, post: post} do
       conn = delete(conn, Routes.post_path(conn, :delete, post))
       assert redirected_to(conn) == Routes.post_path(conn, :index)
       assert html_response(conn, 302) =~ "redirected"
+    end
+  end
+
+  describe "Non Logged-In User" do
+    test "accesses index page", %{conn: conn} do
+      conn = get(conn, Routes.post_path(conn, :index))
+      assert redirected_to(conn, 302) =~ "/"
+    end
+
+    test "accesses New Post page", %{conn: conn} do
+      conn = get(conn, Routes.post_path(conn, :index))
+      assert redirected_to(conn, 302) =~ "/"
     end
   end
 
