@@ -1,18 +1,18 @@
 defmodule ProjectWeb.SessionController do
   use ProjectWeb, :controller
 
-  @spec new(Plug.Conn.t(), any) :: Plug.Conn.t()
   @doc """
   ログイン画面表示
   """
+  @spec new(Plug.Conn.t(), any) :: Plug.Conn.t()
   def new(conn, _) do
     render(conn, "new.html")
   end
 
-  @spec create(Plug.Conn.t(), map) :: Plug.Conn.t()
   @doc """
   ログイン処理
   """
+  @spec create(Plug.Conn.t(), map) :: Plug.Conn.t()
   def create(
     conn,
     %{"session" => %{"username" => username, "password" => pass}}
@@ -31,10 +31,10 @@ defmodule ProjectWeb.SessionController do
     end
   end
 
-  @spec delete(Plug.Conn.t(), map) :: Plug.Conn.t()
   @doc """
   ログアウト処理
   """
+  @spec delete(Plug.Conn.t(), map) :: Plug.Conn.t()
   def delete(conn, _) do
     conn
     |> ProjectWeb.Auth.logout()

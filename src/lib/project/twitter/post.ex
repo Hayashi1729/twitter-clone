@@ -10,8 +10,8 @@ defmodule Project.Twitter.Post do
     timestamps()
   end
 
-  @spec changeset(struct(), map()) :: Ecto.Changeset.t()
   @doc false
+  @spec changeset(struct(), map()) :: Ecto.Changeset.t()
   def changeset(post, attrs) do
     post
     |> cast(attrs, [:tweet])

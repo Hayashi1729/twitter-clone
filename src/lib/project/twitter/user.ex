@@ -12,8 +12,8 @@ defmodule Project.Twitter.User do
     timestamps()
   end
 
-  @spec registration_changeset(struct(), %{}) :: Ecto.Changeset.t()
   @doc false
+  @spec registration_changeset(struct(), %{}) :: Ecto.Changeset.t()
   def registration_changeset(user, params) do
     user
     |> changeset(params)
@@ -34,8 +34,8 @@ defmodule Project.Twitter.User do
     end
   end
 
-  @spec changeset(struct(), map()) :: Ecto.Changeset.t()
   @doc false
+  @spec changeset(struct(), map()) :: Ecto.Changeset.t()
   def changeset(user, attrs) do
     user
     |> cast(attrs, [:username])

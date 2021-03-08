@@ -4,10 +4,10 @@ defmodule ProjectWeb.Auth do
   @spec init(Plug.opts) :: Plug.opts
   def init(opts), do: opts
 
-  @spec call(Plug.Conn.t, Plug.opts) :: Plug.Conn.t
   @doc """
   ユーザー認証処理
   """
+  @spec call(Plug.Conn.t, Plug.opts) :: Plug.Conn.t
   def call(conn, _opts) do
     user_id = get_session(conn, :user_id)
 
@@ -23,10 +23,10 @@ defmodule ProjectWeb.Auth do
     end
   end
 
-  @spec login(Plug.Conn.t(), struct()) :: Plug.Conn.t()
   @doc """
   ログイン処理を行う。
   """
+  @spec login(Plug.Conn.t(), struct()) :: Plug.Conn.t()
   def login(conn, user) do
     conn
     |> assign(:current_user, user)
@@ -34,10 +34,10 @@ defmodule ProjectWeb.Auth do
     |> configure_session(renew: true)
   end
 
-  @spec logout(Plug.Conn.t()) :: Plug.Conn.t()
   @doc """
   ログアウト処理を行う。
   """
+  @spec logout(Plug.Conn.t()) :: Plug.Conn.t()
   def logout(conn) do
     configure_session(conn, drop: true)
   end

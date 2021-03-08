@@ -6,28 +6,28 @@ defmodule ProjectWeb.PostController do
 
   plug :authenticate when action in [:index, :show]
 
-  @spec index(Plug.Conn.t(), any) :: Plug.Conn.t()
   @doc """
   ツイートの一覧を取得して表示。
   """
+  @spec index(Plug.Conn.t(), any) :: Plug.Conn.t()
   def index(conn, _params) do
     posts = Twitter.list_posts()
     render(conn, "index.html", posts: posts)
   end
   
-  @spec new(Plug.Conn.t(), any) :: Plug.Conn.t()
   @doc """
   新しいツイートの投稿画面を表示。
   """
+  @spec new(Plug.Conn.t(), any) :: Plug.Conn.t()
   def new(conn, _params) do
     changeset = Twitter.change_post(%Post{})
     render(conn, "new.html", changeset: changeset)
   end
 
-  @spec create(Plug.Conn.t(), map) :: Plug.Conn.t()
   @doc """
   ツイート作成処理を行う。
   """
+  @spec create(Plug.Conn.t(), map) :: Plug.Conn.t()  
   def create(conn, %{"post" => post_params}) do
     current_user = conn.assigns.current_user
     changeset = Ecto.build_assoc(current_user, :posts, post_params)
@@ -42,29 +42,29 @@ defmodule ProjectWeb.PostController do
     end
   end
 
-  @spec show(Plug.Conn.t(), map) :: Plug.Conn.t()
   @doc """ 
   ツイート詳細表示画面を表示。
   """
+  @spec show(Plug.Conn.t(), map) :: Plug.Conn.t()
   def show(conn, %{"id" => id}) do
     post = Twitter.get_post!(id)
     render(conn, "show.html", post: post)
   end
 
-  @spec edit(Plug.Conn.t(), map) :: Plug.Conn.t()
   @doc """
   ツイート編集画面表示。
   """
+  @spec edit(Plug.Conn.t(), map) :: Plug.Conn.t()
   def edit(conn, %{"id" => id}) do
     post = Twitter.get_post!(id)
     changeset = Twitter.change_post(post)
     render(conn, "edit.html", post: post, changeset: changeset)
   end
 
-  @spec update(Plug.Conn.t(), map) :: Plug.Conn.t()
   @doc """
   ツイートの更新処理を行う。
   """
+  @spec update(Plug.Conn.t(), map) :: Plug.Conn.t()
   def update(conn, %{"id" => id, "post" => post_params}) do
     post = Twitter.get_post!(id)
 
@@ -79,10 +79,10 @@ defmodule ProjectWeb.PostController do
     end
   end
 
-  @spec delete(Plug.Conn.t(), map) :: Plug.Conn.t()
   @doc """
   ツイート削除処理を行う。
   """
+  @spec delete(Plug.Conn.t(), map) :: Plug.Conn.t()
   def delete(conn, %{"id" => id}) do
     post = Twitter.get_post!(id)
     {:ok, _post} = Twitter.delete_post(post)
