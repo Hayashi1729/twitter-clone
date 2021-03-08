@@ -9,12 +9,12 @@ defmodule Project.TwitterTest do
   @invalid_attrs %{tweet: nil, user_id: nil, user: %Project.Twitter.User{username: nil, id: nil}}
 
   test "list_posts/0" do
-      post1 = %Twitter.Post{id: 1, tweet: "some_text", user_id: 10, user: %Twitter.User{username: "Alice", id: 10}}
-      Repo.insert(post1)
-      assert [post1] = Twitter.list_posts()
-      post2 = %Twitter.Post{id: 2, tweet: "another_text", user_id: 11, user: %Twitter.User{username: "Bob", id: 11}}
-      Repo.insert(post2)
-      assert [post1, post2] = Twitter.list_posts()
+    post1 = %Twitter.Post{id: 1, tweet: "some_text", user_id: 10, user: %Twitter.User{username: "Alice", id: 10}}
+    Repo.insert(post1)
+    assert [post1] = Twitter.list_posts()
+    post2 = %Twitter.Post{id: 2, tweet: "another_text", user_id: 11, user: %Twitter.User{username: "Bob", id: 11}}
+    Repo.insert(post2)
+    assert [post1, post2] = Twitter.list_posts()
   end
 
   describe "get_post!/1" do
