@@ -2,6 +2,8 @@ defmodule ProjectWeb.AuthorizationPlugTest do
   use ProjectWeb.ConnCase
   alias ProjectWeb.AuthorizationPlug
 
+  import Project.Factory
+
   setup %{conn: conn} do
     conn =
       conn
@@ -33,7 +35,7 @@ defmodule ProjectWeb.AuthorizationPlugTest do
   end
 
   test "call places user from session into assigns", %{conn: conn} do
-    user = user_fixture()  
+    user = insert(:user)  
     conn =
       conn
       |> put_session(:user_id, user.id)  

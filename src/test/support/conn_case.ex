@@ -23,7 +23,6 @@ defmodule ProjectWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import ProjectWeb.ConnCase
-      import Project.TestHelpers
 
       alias ProjectWeb.Router.Helpers, as: Routes
 

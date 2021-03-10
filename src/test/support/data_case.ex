@@ -24,7 +24,6 @@ defmodule Project.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import Project.DataCase
-      import Project.TestHelpers
     end
   end
 

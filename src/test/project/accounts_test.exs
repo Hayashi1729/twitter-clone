@@ -1,77 +1,66 @@
 defmodule Project.AccountsTest do
   use Project.DataCase, async: true
 
+  import Project.Factory
+
   alias Project.Accounts
   alias Project.Accounts.User
 
-  @valid_attrs %{tweet: "tweet", user_id: 10, user: %Project.Accounts.User{username: "Alice", id: 10}}
-  @invalid_attrs %{tweet: nil, user_id: nil, user: %Project.Accounts.User{username: nil, id: nil}}
-
-  test "change_user/1 returns a user changese" do
-    user = user_fixture()
-    assert %Ecto.Changeset{} = User.registration_changeset(user, %{}) 
-  end
-
   test "list_users" do
-    %User{id: id1} = user_fixture()
-    assert [%User{id: ^id1}] = Accounts.list_users()
-    %User{id: id2} = user_fixture()
-    assert [%User{id: ^id1}, %User{id: ^id2}] = Accounts.list_users()
+    user1 = insert(:user)
+    assert [user1] == Accounts.list_users()
+    user2 = insert(:user)
+    assert [user1, user2] == Accounts.list_users()
   end
 
   test "get_user/1" do
-    %User{id: id} = user_fixture()
-    assert %User{id: ^id} = Accounts.get_user(id)
+    user = insert(:user)
+    %{id: id} = user
+    assert user == Accounts.get_user(id)
   end
 
-  @user %{username: "Alice", password: "asecret"}
   test "get_user_by/1" do
-    user_fixture(@user)
-    assert %User{} = Accounts.get_user_by(username: "Alice")
+    user = insert(:user)
+    %{username: name} = user
+    assert user == Accounts.get_user_by(username: name)
   end
 
   test "update_user/2" do
-    user = user_fixture()
+    assert {:ok, user} = Accounts.register_user(params_for(:register_user))
     assert {:ok, user} = 
       Accounts.update_user(user, %{username: "updated name"})
-    assert %User{} = user
     assert user.username == "updated name"
   end
 
   test "delete_user/1" do
-    user = user_fixture()
+    user = insert(:user)
     assert {:ok, %User{}} = Accounts.delete_user(user)
     assert Accounts.list_users() == []
   end
 
   describe "register_user/1" do
-    @valid_attrs %{
-      username: "Alice",
-      password: "asecret"
-    }
-    @invalid_attrs %{}
-
     test "with valid data inserts user" do
-      assert {:ok, %User{id: id} = user} = Accounts.register_user(@valid_attrs)
-      assert user.username == "Alice"
+      assert {:ok, %User{id: id}} = Accounts.register_user(params_for(:register_user))
       assert [%User{id: ^id}] = Accounts.list_users()
     end
 
     test "with invalid data does not insert user" do
-      assert {:error, _changeset} = Accounts.register_user(@invalid_attrs)
+      assert {:error, _changeset} = Accounts.register_user(params_for(:invalid_user))
       assert Accounts.list_users() == []
     end
 
     test "enforeces unique username" do
-      assert {:ok, %User{id: id}} = Accounts.register_user(@valid_attrs)
-      assert {:error, changeset} = Accounts.register_user(@valid_attrs)
+      attrs = Map.put(params_for(:register_user), :username, "Username")
+      assert {:ok, %User{id: id}} = Accounts.register_user(attrs)
+      attrs = Map.put(params_for(:register_user), :username, "Username")
+      assert {:error, changeset} = Accounts.register_user(attrs)
 
       assert %{username: ["このユーザーネームは既に取得されています。"]} = errors_on(changeset)
       assert [%User{id: ^id}] = Accounts.list_users()
     end
 
     test "does not accept long usernames" do
-      attrs = Map.put(@valid_attrs, :username, String.duplicate("a", 100))
+      attrs = Map.put(params_for(:user), :username, String.duplicate("a", 100))
       {:error, changeset} = Accounts.register_user(attrs)
 
       assert %{username: ["ユーザーネームは20文字以下である必要があります。"]} =
@@ -80,7 +69,7 @@ defmodule Project.AccountsTest do
     end
 
     test "requires password to be at least 6 chars long" do
-      attrs = Map.put(@valid_attrs, :password, "12345")
+      attrs = Map.put(params_for(:user), :password, "12345")
       {:error, changeset} = Accounts.register_user(attrs)
 
       assert %{password: ["パスワードは6文字以上100文字以下である必要があります。"]} =
@@ -90,10 +79,12 @@ defmodule Project.AccountsTest do
   end
 
   describe "authenticate_by_username_and_pass/2" do
-    @pass "asecret"
+    @pass "password"
 
     setup do
-      {:ok, user: user_fixture(password: @pass)}
+      attrs = Map.put(params_for(:user), :password, @pass)
+      {:ok, user} = Accounts.register_user(attrs)
+      {:ok, user: user}
     end
 
     test "returns user with correct password", %{user: user} do
