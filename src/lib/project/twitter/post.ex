@@ -2,6 +2,9 @@ defmodule Project.Twitter.Post do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @typedoc """
+  A post
+  """
   @type t :: %__MODULE__{
     id: integer,
     tweet: String.t(),

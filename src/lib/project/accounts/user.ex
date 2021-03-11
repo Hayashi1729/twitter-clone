@@ -2,6 +2,9 @@ defmodule Project.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @typedoc """
+  A user
+  """
   @type t :: %__MODULE__{
     id: integer,
     password: String.t(),
