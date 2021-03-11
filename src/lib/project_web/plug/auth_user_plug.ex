@@ -6,6 +6,10 @@ defmodule ProjectWeb.AuthUserPlug do
   @spec init(Plug.opts) :: Plug.opts
   def init(opts), do: opts
 
+  @doc """
+  ログイン判定処理
+  """
+  @spec call(Plug.Conn.t, Plug.opts) :: Plug.Conn.t
   def call(conn, _opts) do
     if conn.assigns.current_user do
       conn
