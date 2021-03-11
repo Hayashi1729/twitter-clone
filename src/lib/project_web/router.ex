@@ -18,12 +18,15 @@ defmodule ProjectWeb.Router do
     plug ProjectWeb.AuthUserPlug
   end
 
+  pipeline :redirect_if_authenticated do
+    plug ProjectWeb.RedirectPlug
+  end
+
   scope "/", ProjectWeb do
     pipe_through :browser
 
     get "/", PageController, :index
     resources "/users", UserController, only: [:new, :create]
-    resources "/sessions", SessionController, only: [:new, :create]
   end
 
   scope "/", ProjectWeb do
@@ -32,6 +35,12 @@ defmodule ProjectWeb.Router do
     resources "/posts", PostController
     resources "/users", UserController, except: [:new, :create]
     resources "/sessions", SessionController, only: [:delete]
+  end
+
+  scope "/", ProjectWeb do
+    pipe_through [:browser, :redirect_if_authenticated]
+
+    resources "/sessions", SessionController, only: [:new, :create]
   end
 
   # Other scopes may use custom stacks.
