@@ -4,7 +4,7 @@ defmodule ProjectWeb.PostController do
   alias Project.Twitter
   alias Project.Twitter.Post
 
-  plug :authenticate when action in [:index, :show, :new]
+  plug ProjectWeb.AuthUserPlug
 
   @doc """
   ツイートの一覧を取得して表示。
@@ -90,16 +90,5 @@ defmodule ProjectWeb.PostController do
     conn
     |> put_flash(:info, "Post deleted successfully.")
     |> redirect(to: Routes.post_path(conn, :index))
-  end
-  
-  defp authenticate(conn, _opts) do
-    if conn.assigns.current_user do
-      conn
-    else
-      conn
-      |> put_flash(:error, "You must be logged in to access that page")
-      |> redirect(to: Routes.page_path(conn, :index))
-      |> halt()
-    end
   end
 end

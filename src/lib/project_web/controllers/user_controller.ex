@@ -4,7 +4,7 @@ defmodule ProjectWeb.UserController do
   alias Project.Accounts
   alias Project.Accounts.User
 
-  plug :authenticate when action in [:index, :show]
+  plug ProjectWeb.AuthUserPlug when action in [:index, :show, :edit]
 
   @doc """
   ユーザーの一覧を取得して表示。
@@ -89,16 +89,5 @@ defmodule ProjectWeb.UserController do
     conn
     |> put_flash(:info, "User deleted successfully.")
     |> redirect(to: Routes.user_path(conn, :index))
-  end
-
-  defp authenticate(conn, _opts) do
-    if conn.assigns.current_user do
-      conn
-    else
-      conn
-      |> put_flash(:error, "You must be logged in to access that page")
-      |> redirect(to: Routes.page_path(conn, :index))
-      |> halt()
-    end
   end
 end
