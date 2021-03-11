@@ -14,13 +14,24 @@ defmodule ProjectWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :auth do
+    plug ProjectWeb.AuthUserPlug
+  end
+
   scope "/", ProjectWeb do
     pipe_through :browser
 
     get "/", PageController, :index
+    resources "/users", UserController, only: [:new, :create]
+    resources "/sessions", SessionController, only: [:new, :create]
+  end
+
+  scope "/", ProjectWeb do
+    pipe_through [:browser, :auth]
+
     resources "/posts", PostController
-    resources "/users", UserController
-    resources "/sessions", SessionController, only: [:new, :create, :delete]
+    resources "/users", UserController, except: [:new, :create]
+    resources "/sessions", SessionController, only: [:delete]
   end
 
   # Other scopes may use custom stacks.

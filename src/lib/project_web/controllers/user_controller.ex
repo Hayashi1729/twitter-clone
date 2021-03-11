@@ -4,8 +4,6 @@ defmodule ProjectWeb.UserController do
   alias Project.Accounts
   alias Project.Accounts.User
 
-  plug ProjectWeb.AuthUserPlug when action in [:index, :show, :edit]
-
   @doc """
   ユーザーの一覧を取得して表示。
   """

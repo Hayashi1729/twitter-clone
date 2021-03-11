@@ -4,8 +4,6 @@ defmodule ProjectWeb.PostController do
   alias Project.Twitter
   alias Project.Twitter.Post
 
-  plug ProjectWeb.AuthUserPlug
-
   @doc """
   ツイートの一覧を取得して表示。
   """
