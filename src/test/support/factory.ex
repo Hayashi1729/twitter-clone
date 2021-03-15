@@ -36,4 +36,11 @@ defmodule Project.Factory do
       user: build(:user)
     }
   end
+
+  def favorite_factory do
+    %Project.Twitter.Favorite{
+      user: build(:user),
+      post: build(:post)
+    }
+  end
 end

@@ -5,6 +5,7 @@ defmodule Project.TwitterTest do
 
   alias Project.Twitter
   alias Project.Twitter.Post
+  alias Project.Twitter.Favorite
 
   test "list_posts/0" do
     post1 = insert(:post)
@@ -58,5 +59,18 @@ defmodule Project.TwitterTest do
     post = insert(:post)
     assert {:ok, %Post{}} = Twitter.delete_post(post)
     assert Twitter.list_posts() == []
+  end
+  
+  test "create_favorite creates the favorite" do
+    current_user = insert(:user)
+    post = insert(:post)
+
+    assert {:ok, %Favorite{}} = Twitter.create_favorite(post.id, current_user.id)
+  end
+
+  test "delete_favorite deletes the favorite" do
+    favorite = insert(:favorite)
+
+    assert {:ok, %Favorite{}} = Twitter.delete_favorite(favorite)
   end
 end

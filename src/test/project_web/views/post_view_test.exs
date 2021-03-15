@@ -3,6 +3,7 @@ defmodule ProjectWeb.PostViewTest do
   import Phoenix.View
 
   test "renders index.html", %{conn: conn} do 
+    current_user = %Project.Accounts.User{id: 10, username: "User"}
     posts = [
       %Project.Twitter.Post{id: 1, tweet: "first_post", user_id: 1, user: %Project.Accounts.User{id: 1, username: "User1"}}, 
       %Project.Twitter.Post{id: 1, tweet: "second_post", user_id: 2, user: %Project.Accounts.User{id: 1, username: "User2"}}
@@ -12,7 +13,8 @@ defmodule ProjectWeb.PostViewTest do
       ProjectWeb.PostView, 
       "index.html", 
       conn: conn, 
-      posts: posts)
+      posts: posts,
+      current_user: current_user)
 
     assert String.contains?(content, "ツイート一覧")
 
