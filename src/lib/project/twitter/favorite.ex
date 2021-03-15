@@ -3,7 +3,8 @@ defmodule Project.Twitter.Favorite do
   import Ecto.Changeset
 
   @typedoc """
-  A favorite
+  A favorite.
+  A join table between User table and Post table.
   """
   @type t :: %__MODULE__{
     user_id: integer,

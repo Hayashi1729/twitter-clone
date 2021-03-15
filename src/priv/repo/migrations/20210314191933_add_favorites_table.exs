@@ -3,10 +3,10 @@ defmodule Project.Repo.Migrations.AddFavoritesTable do
 
   def up do
     create table(:favorites) do
-        add :user_id, references(:users)
-        add :post_id, references(:posts)
+      add :user_id, references(:users)
+      add :post_id, references(:posts)
 
-        timestamps()
+      timestamps()
     end
 
     create unique_index(:favorites, [:user_id, :post_id])
