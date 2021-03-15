@@ -22,4 +22,12 @@ defmodule Project.Twitter.Favorite do
 
     timestamps()
   end
+  
+  @doc false
+  @spec changeset(struct(), map()) :: Ecto.Changeset.t()
+  def changeset(favorite, attrs \\ %{}) do
+    favorite
+    |> cast(attrs, [:user_id, :post_id])
+    |> validate_required([:user_id, :post_id])
+  end
 end

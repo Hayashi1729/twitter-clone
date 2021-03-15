@@ -125,8 +125,11 @@ defmodule Project.Twitter do
   """
   @spec create_favorite(integer, integer) :: {:ok, Favorite.t()} | {:error, %Ecto.Changeset{}}
   def create_favorite(post_id, user_id) do
-    fav = %Favorite{post_id: post_id, user_id: user_id}
-    Repo.insert(fav)
+    attrs = %{post_id: post_id, user_id: user_id}
+    
+    %Favorite{}
+    |> Favorite.changeset(attrs)
+    |> Repo.insert()
   end
   
   @doc """
