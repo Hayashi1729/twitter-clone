@@ -22,6 +22,14 @@
         <span><%= link "Edit", to: Routes.post_path(@conn, :edit, post) %></span>
         <span><%= link "Delete", to: Routes.post_path(@conn, :delete, post), method: :delete, data: [confirm: "Are you sure?"] %></span>
       </td>
+
+    <td>
+    <%= if Project.Twitter.is_favorited?(post.id, @current_user.id) do %>
+      <%= link "お気に入り登録を解除する", to: Routes.post_favorite_path(@conn, :delete, post), method: :delete %>
+    <% else %>
+      <%= link "お気に入り登録する", to: Routes.post_favorite_path(@conn, :create, post), method: :create %>
+    <% end %>
+    </td>
     </tr>
 <% end %>
   </tbody>

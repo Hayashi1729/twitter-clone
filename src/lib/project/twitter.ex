@@ -6,6 +6,7 @@ defmodule Project.Twitter do
   import Ecto.Query, warn: false
   alias Project.Repo
   alias Project.Twitter.Post
+  alias Project.Twitter.Favorite
 
   @doc """
   Returns the list of posts.
@@ -97,5 +98,35 @@ defmodule Project.Twitter do
   @spec delete_post(Post.t()) :: {:ok, Post.t()} | {:error, %Ecto.Changeset{}}
   def delete_post(%Post{} = post) do
     Repo.delete(post)
+  end
+
+  def list_favorite_posts(user_id) do
+    query = from f in Favorite,
+      where: f.user_id == ^user_id
+    Repo.all(query)
+  end
+
+  def list_favorite_users(post_id) do
+    query = from f in Favorite,
+      where: f.post_id == ^post_id
+    Repo.all(query)
+  end
+
+  def create_favorite(post_id, user_id) do
+    #changeset = Favorite.changeset(
+    #  %Favorite{}, %{post_id: post_id, user_id: user_id}
+    #)
+    fav = %Favorite{post_id: post_id, user_id: user_id}
+    Repo.insert(fav)
+  end
+  
+  def delete_favorite(%Favorite{} = fav) do
+    Repo.delete(fav)
+  end
+
+  def is_favorited?(post_id, user_id) do
+    query = from f in Favorite,
+      where: f.post_id == ^post_id and f.user_id == ^user_id
+    Repo.exists?(query)
   end
 end

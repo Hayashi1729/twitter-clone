@@ -32,7 +32,10 @@ defmodule ProjectWeb.Router do
   scope "/", ProjectWeb do
     pipe_through [:browser, :auth]
 
-    resources "/posts", PostController
+    resources "/posts", PostController do
+      post   "/favorite", FavoriteController, :create
+      delete "/favorite", FavoriteController, :delete
+    end
     resources "/users", UserController, except: [:new, :create]
     resources "/sessions", SessionController, only: [:delete]
   end

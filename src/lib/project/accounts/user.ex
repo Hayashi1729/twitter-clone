@@ -22,6 +22,7 @@ defmodule Project.Accounts.User do
     field :username, :string
 
     has_many :posts, Project.Twitter.Post
+    has_many :favorites, Project.Twitter.Favorite
 
     timestamps()
   end
