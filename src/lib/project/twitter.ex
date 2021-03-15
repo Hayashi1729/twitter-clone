@@ -105,9 +105,9 @@ defmodule Project.Twitter do
   """
   @spec list_favorite_posts(integer) :: list(Favorite.t())
   def list_favorite_posts(user_id) do
-    query = from f in Favorite,
-      where: f.user_id == ^user_id
-    Repo.all(query)
+    Favorite
+    |> where([f], f.user_id == ^user_id)
+    |> Repo.all()
   end
 
   @doc """
@@ -115,9 +115,9 @@ defmodule Project.Twitter do
   """
   @spec list_favorite_users(integer) :: list(Favorite.t())
   def list_favorite_users(post_id) do
-    query = from f in Favorite,
-      where: f.post_id == ^post_id
-    Repo.all(query)
+    Favorite
+    |> where([f], f.post_id == ^post_id)
+    |> Repo.all()
   end
 
   @doc """
@@ -142,8 +142,8 @@ defmodule Project.Twitter do
   """
   @spec is_favorited?(integer, integer) :: boolean
   def is_favorited?(post_id, user_id) do
-    query = from f in Favorite,
-      where: f.post_id == ^post_id and f.user_id == ^user_id
-    Repo.exists?(query)
+    Favorite
+    |> where([f], f.post_id == ^post_id and f.user_id == ^user_id)
+    |> Repo.exists?()
   end
 end
