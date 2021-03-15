@@ -7,6 +7,10 @@ defmodule ProjectWeb.FavoriteController do
   alias Project.Twitter.Favorite
   alias Project.Repo
 
+  @doc """
+  お気に入り登録処理を行う。
+  """
+  @spec create(Plug.Conn.t(), map) :: Plug.Conn.t() 
   def create(conn, %{"post_id" => post_id}) do
     current_user = conn.assigns.current_user
     post = Twitter.get_post!(post_id)
@@ -24,6 +28,10 @@ defmodule ProjectWeb.FavoriteController do
     end
   end
 
+  @doc """
+  お気に入り登録解除処理を行う
+  """
+  @spec delete(Plug.Conn.t(), map) :: Plug.Conn.t()
   def delete(conn, %{"post_id" => post_id}) do
     current_user = conn.assigns.current_user
     query = from f in Favorite,

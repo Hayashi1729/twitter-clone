@@ -100,30 +100,47 @@ defmodule Project.Twitter do
     Repo.delete(post)
   end
 
+  @doc """
+  あるユーザーのお気に入り登録一覧のリストを返す。
+  """
+  @spec list_favorite_posts(integer) :: list(Favorite.t())
   def list_favorite_posts(user_id) do
     query = from f in Favorite,
       where: f.user_id == ^user_id
     Repo.all(query)
   end
 
+  @doc """
+  あるツイートに記録されたお気に入り一覧のリストを返す。
+  """
+  @spec list_favorite_users(integer) :: list(Favorite.t())
   def list_favorite_users(post_id) do
     query = from f in Favorite,
       where: f.post_id == ^post_id
     Repo.all(query)
   end
 
+  @doc """
+  Create a favorite.
+  """
+  @spec create_favorite(integer, integer) :: {:ok, Favorite.t()} | {:error, %Ecto.Changeset{}}
   def create_favorite(post_id, user_id) do
-    #changeset = Favorite.changeset(
-    #  %Favorite{}, %{post_id: post_id, user_id: user_id}
-    #)
     fav = %Favorite{post_id: post_id, user_id: user_id}
     Repo.insert(fav)
   end
   
+  @doc """
+  Delete a favorite.
+  """
+  @spec delete_favorite(Favorite.t()) :: {:ok, Favorite.t()} | {:error, %Ecto.Changeset{}}
   def delete_favorite(%Favorite{} = fav) do
     Repo.delete(fav)
   end
 
+  @doc """
+  Returns true if a favorite exists; otherwise returns false.
+  """
+  @spec is_favorited?(integer, integer) :: boolean
   def is_favorited?(post_id, user_id) do
     query = from f in Favorite,
       where: f.post_id == ^post_id and f.user_id == ^user_id

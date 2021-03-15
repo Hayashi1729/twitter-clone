@@ -21,10 +21,4 @@ defmodule Project.Twitter.Favorite do
 
     timestamps()
   end
-
-  def changeset(favorite, attrs \\ %{}) do
-    favorite
-    |> cast(attrs, @required_fields)
-    |> validate_required([:user_id, :post_id])
-  end
 end
