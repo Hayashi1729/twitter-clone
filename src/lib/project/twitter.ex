@@ -20,7 +20,7 @@ defmodule Project.Twitter do
   @spec list_posts :: list(Post.t())
   def list_posts do
     Post
-    |> preload(:user)
+    |> preload([:user, :favorites])
     |> Repo.all()
   end
 
@@ -100,6 +100,17 @@ defmodule Project.Twitter do
     Repo.delete(post)
   end
 
+  @spec list_posts_with_favorite(integer) :: list(integer)
+  @doc """
+  あるユーザーにお気に入り登録されたツイートIDのリストを返す。
+  """
+  def list_posts_with_favorite(user_id) do
+    Favorite
+    |> where([f], f.user_id == ^user_id)
+    |> select([f], f.post_id)
+    |> Repo.all()
+  end
+
   @doc """
   あるユーザーのお気に入り登録一覧のリストを返す。
   """
@@ -126,12 +137,12 @@ defmodule Project.Twitter do
   @spec create_favorite(integer, integer) :: {:ok, Favorite.t()} | {:error, %Ecto.Changeset{}}
   def create_favorite(post_id, user_id) do
     attrs = %{post_id: post_id, user_id: user_id}
-    
+
     %Favorite{}
     |> Favorite.changeset(attrs)
     |> Repo.insert()
   end
-  
+
   @doc """
   Delete a favorite.
   """

@@ -9,10 +9,16 @@ defmodule ProjectWeb.PostController do
   """
   @spec index(Plug.Conn.t(), any) :: Plug.Conn.t()
   def index(conn, _params) do
+    current_user = conn.assigns.current_user
     posts = Twitter.list_posts()
-    render(conn, "index.html", posts: posts)
+    posts_favorited_by_current_user = Twitter.list_posts_with_favorite(current_user.id)
+
+    render(conn, "index.html",
+      posts: posts,
+      posts_favorited_by_current_user: posts_favorited_by_current_user
+    )
   end
-  
+
   @doc """
   新しいツイートの投稿画面を表示。
   """
@@ -25,10 +31,11 @@ defmodule ProjectWeb.PostController do
   @doc """
   ツイート作成処理を行う。
   """
-  @spec create(Plug.Conn.t(), map) :: Plug.Conn.t()  
+  @spec create(Plug.Conn.t(), map) :: Plug.Conn.t()
   def create(conn, %{"post" => post_params}) do
     current_user = conn.assigns.current_user
     changeset = Ecto.build_assoc(current_user, :posts, post_params)
+
     case Twitter.create_post(changeset, post_params) do
       {:ok, _} ->
         conn
@@ -40,7 +47,7 @@ defmodule ProjectWeb.PostController do
     end
   end
 
-  @doc """ 
+  @doc """
   ツイート詳細表示画面を表示。
   """
   @spec show(Plug.Conn.t(), map) :: Plug.Conn.t()
