@@ -1,20 +1,23 @@
 defmodule ProjectWeb.PostViewTest do
   use ProjectWeb.ConnCase, async: true
   import Phoenix.View
+  import Project.Factory
+  alias Project.Repo
 
-  test "renders index.html", %{conn: conn} do 
+  test "renders index.html", %{conn: conn} do
+    post1 = :post |> insert() |> Repo.preload(:favorites)
+    post2 = :post |> insert() |> Repo.preload(:favorites)
     current_user = %Project.Accounts.User{id: 10, username: "User"}
-    posts = [
-      %Project.Twitter.Post{id: 1, tweet: "first_post", user_id: 1, user: %Project.Accounts.User{id: 1, username: "User1"}}, 
-      %Project.Twitter.Post{id: 1, tweet: "second_post", user_id: 2, user: %Project.Accounts.User{id: 1, username: "User2"}}
-    ]
+    posts = [post1, post2]
+    posts_favorited_by_current_user = Project.Twitter.list_posts_with_favorite(current_user.id)
 
     content = render_to_string(
-      ProjectWeb.PostView, 
-      "index.html", 
-      conn: conn, 
+      ProjectWeb.PostView,
+      "index.html",
+      conn: conn,
       posts: posts,
-      current_user: current_user)
+      current_user: current_user,
+      posts_favorited_by_current_user: posts_favorited_by_current_user)
 
     assert String.contains?(content, "ツイート一覧")
 
@@ -23,7 +26,7 @@ defmodule ProjectWeb.PostViewTest do
     end
   end
 
-  test "renders new.html", %{conn: conn} do 
+  test "renders new.html", %{conn: conn} do
     changeset = Project.Twitter.Post.changeset(%Project.Twitter.Post{})
 
     content =
@@ -37,7 +40,7 @@ defmodule ProjectWeb.PostViewTest do
 
   test "renders show.html", %{conn: conn} do
     post = %Project.Twitter.Post{id: 1, tweet: "first_post", user_id: 1, user: %Project.Accounts.User{id: 1, username: "User1"}}
-    
+
     content = render_to_string(ProjectWeb.PostView, "show.html",
         conn: conn,
         post: post
