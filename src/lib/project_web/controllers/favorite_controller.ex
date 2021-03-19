@@ -1,6 +1,6 @@
 defmodule ProjectWeb.FavoriteController do
   use ProjectWeb, :controller
-  
+
   import Ecto.Query, warn: false
 
   alias Project.Twitter
@@ -10,7 +10,7 @@ defmodule ProjectWeb.FavoriteController do
   @doc """
   お気に入り登録処理を行う。
   """
-  @spec create(Plug.Conn.t(), map) :: Plug.Conn.t() 
+  @spec create(Plug.Conn.t(), map) :: Plug.Conn.t()
   def create(conn, %{"post_id" => post_id}) do
     current_user = conn.assigns.current_user
     post = Twitter.get_post!(post_id)
@@ -34,11 +34,11 @@ defmodule ProjectWeb.FavoriteController do
   @spec delete(Plug.Conn.t(), map) :: Plug.Conn.t()
   def delete(conn, %{"post_id" => post_id}) do
     current_user = conn.assigns.current_user
-    query = from f in Favorite,
-        where: f.post_id == ^post_id and f.user_id == ^current_user.id
-    fav = Repo.one(query)
-    Twitter.delete_favorite(fav)
-    
+    Favorite
+    |> where([f], f.post_id == ^post_id and f.user_id == ^current_user.id)
+    |> Repo.one()
+    |> Twitter.delete_favorite()
+
     conn
     |> put_flash(:info, "お気に入り登録を解除しました。")
     |> redirect(to: Routes.post_path(conn, :index))
