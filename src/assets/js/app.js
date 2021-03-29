@@ -13,3 +13,11 @@ import "../css/app.scss"
 //     import socket from "./socket"
 //
 import "phoenix_html"
+import Index from './vue/Index.vue'
+
+new Vue({
+    el: '#app',
+    components: { Index },
+    template: '<Index/>'
+
+});
