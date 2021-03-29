@@ -17,7 +17,5 @@ import Index from './vue/Index.vue'
 
 new Vue({
     el: '#app',
-    components: { Index },
-    template: '<Index/>'
-
+    components: { Index }
 });
