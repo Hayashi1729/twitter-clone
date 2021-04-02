@@ -25,7 +25,7 @@
             <td>
               <span>Show</span>
               <span>Edit</span>
-              <span>Delete</span>
+              <button v-on:click="deletePost(post.id)">Delete</button>
             </td>
 
             <td>
@@ -55,16 +55,25 @@ export default {
     };
   },
   created: function () {
-    axios.get("api/posts").then((response) => {
+    axios.get("../api/posts").then((response) => {
       this.posts = response.data;
     });
-    axios.get("api/favorited_post").then((response) => {
+    axios.get("../api/favorited_post").then((response) => {
       this.posts_favorited_by_current_user = response.data;
     });
   },
   computed: {
     reversePosts() {
       return this.posts.slice().reverse();
+    },
+  },
+  method: {
+    deletePost(id) {
+      axios.delete("/posts/" + id);
+
+      axios.get("api/posts").then((response) => {
+        this.posts = response.data;
+      });
     },
   },
 };

@@ -41,7 +41,7 @@ defmodule Project.Twitter do
   @spec get_post!(integer) :: Post.t()
   def get_post!(id) do
     Post
-    |> preload(:user)
+    |> preload([:user, :favorites])
     |> Repo.get!(id)
   end
 

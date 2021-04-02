@@ -17,8 +17,11 @@ import "phoenix_html"
 import Index from './vue/Index.vue'
 import UserIndex from './vue/UserIndex.vue'
 import PostIndex from './vue/PostIndex.vue'
+import PostNew from './vue/PostNew.vue'
+import PostShow from './vue/PostShow.vue'
+import PostEdit from './vue/PostEdit.vue'
 
 new Vue({
     el: '#app',
-    components: { Index, UserIndex, PostIndex }
+    components: { Index, UserIndex, PostIndex, PostNew, PostShow, PostEdit }
 });

@@ -16,3 +16,5 @@
 
 <span><%= link "Edit", to: Routes.post_path(@conn, :edit, @post) %></span>
 <span><%= link "Back", to: Routes.post_path(@conn, :index) %></span>
+
+<post-show></post-show>
