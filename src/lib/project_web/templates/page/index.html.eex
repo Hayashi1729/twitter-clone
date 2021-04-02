@@ -4,3 +4,5 @@
   <br>
   <span><%= link "タイムライン表示", to: Routes.post_path(@conn, :index) %></span>
 </section>
+
+<index></index>

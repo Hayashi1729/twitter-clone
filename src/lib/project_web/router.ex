@@ -33,9 +33,10 @@ defmodule ProjectWeb.Router do
     pipe_through [:browser, :auth]
 
     resources "/posts", PostController do
-      post   "/favorite", FavoriteController, :create
+      post "/favorite", FavoriteController, :create
       delete "/favorite", FavoriteController, :delete
     end
+
     resources "/users", UserController, except: [:new, :create]
     resources "/sessions", SessionController, only: [:delete]
   end
@@ -44,6 +45,13 @@ defmodule ProjectWeb.Router do
     pipe_through [:browser, :redirect_if_authenticated]
 
     resources "/sessions", SessionController, only: [:new, :create]
+  end
+
+  scope "/api", ProjectWeb do
+    pipe_through :api
+    get "/", ApiController, :index
+    get "/users", UserApiController, :index
+    get "/posts", PostApiController, :index
   end
 
   # Other scopes may use custom stacks.
