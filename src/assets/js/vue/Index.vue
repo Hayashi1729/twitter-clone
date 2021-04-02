@@ -1,9 +1,11 @@
 <template>
   <div>
-    {{ message }}
-    <div v-for="user in users" :key="user.id">
-      <pre>{{ user.username }}</pre>
-    </div>
+    <section class="phx-hero">
+      <h1>Welcome to {{ message }}!</h1>
+      <a href="/users/new">アカウント作成</a>
+      <br />
+      <a href="/posts">タイムライン表示</a>
+    </section>
   </div>
 </template>
 
@@ -11,14 +13,8 @@
 export default {
   data() {
     return {
-      message: "Hello",
-      users: [],
+      message: "Twitter",
     };
-  },
-  created: function () {
-    axios.get("api/users").then((response) => {
-      this.users = response.data;
-    });
   },
 };
 </script>

@@ -42,3 +42,5 @@
 </table>
 
 <span><%= link "新しい投稿", to: Routes.post_path(@conn, :new) %></span>
+
+<post-index></post-index>

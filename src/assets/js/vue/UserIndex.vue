@@ -24,7 +24,7 @@
         </div>
       </tbody>
     </table>
-    <span>New User</span>
+    <a href="users/new">New User</a>
   </div>
 </template>
 

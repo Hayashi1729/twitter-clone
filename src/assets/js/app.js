@@ -16,8 +16,9 @@ import "phoenix_html"
 
 import Index from './vue/Index.vue'
 import UserIndex from './vue/UserIndex.vue'
+import PostIndex from './vue/PostIndex.vue'
 
 new Vue({
     el: '#app',
-    components: { Index, UserIndex }
+    components: { Index, UserIndex, PostIndex }
 });

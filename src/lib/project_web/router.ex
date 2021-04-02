@@ -48,10 +48,15 @@ defmodule ProjectWeb.Router do
   end
 
   scope "/api", ProjectWeb do
-    pipe_through :api
+    pipe_through :browser
     get "/", ApiController, :index
+  end
+
+  scope "/api", ProjectWeb do
+    pipe_through [:browser, :auth]
     get "/users", UserApiController, :index
     get "/posts", PostApiController, :index
+    get "/favorited_post", PostApiController, :favorited_post
   end
 
   # Other scopes may use custom stacks.
