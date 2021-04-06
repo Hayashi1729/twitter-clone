@@ -16,9 +16,9 @@
             <td>{{ user.username }}</td>
 
             <td>
-              <span>Show</span>
-              <span>Edit</span>
-              <span>Delete</span>
+              <a v-bind:href="'users/' + user.id">Show</a>
+              <a v-bind:href="'users/' + user.id + '/edit'">Edit</a>
+              <button v-on:click="deleteUser(user.id)">Delete</button>
             </td>
           </tr>
         </div>
@@ -39,6 +39,15 @@ export default {
     axios.get("api/users").then((response) => {
       this.users = response.data;
     });
+  },
+  methods: {
+    deleteUser: function (id) {
+      axios.delete("../api/users/" + id);
+
+      axios.get("../api/users").then((response) => {
+        this.posts = response.data;
+      });
+    },
   },
 };
 </script>

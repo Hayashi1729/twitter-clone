@@ -23,17 +23,25 @@
             <td>{{ post.inserted_at }}</td>
 
             <td>
-              <span>Show</span>
-              <span>Edit</span>
+              <a v-bind:href="'posts/' + post.id">Show</a>
+              <a v-bind:href="'posts/' + post.id + '/edit'">Edit</a>
               <button v-on:click="deletePost(post.id)">Delete</button>
             </td>
 
             <td>
               <div v-if="posts_favorited_by_current_user.includes(post.id)">
-                <span>お気に入り登録を解除する</span>
+                <a
+                  v-bind:href="'posts/' + post.id + '/favorite'"
+                  v-on:click="deleteFavorite(post.id)"
+                  data-method="DELETE"
+                >
+                  お気に入り登録を解除する
+                </a>
               </div>
               <div v-else>
-                <span>お気に入り登録する</span>
+                <button v-on:click="createFavorite(post.id)">
+                  お気に入り登録する
+                </button>
               </div>
             </td>
             <td>{{ post.favorites.length }}</td>
@@ -67,13 +75,19 @@ export default {
       return this.posts.slice().reverse();
     },
   },
-  method: {
-    deletePost(id) {
-      axios.delete("/posts/" + id);
+  methods: {
+    deletePost: function (id) {
+      axios.delete("../api/posts/" + id);
 
-      axios.get("api/posts").then((response) => {
+      axios.get("../api/posts").then((response) => {
         this.posts = response.data;
       });
+    },
+    createFavorite: function (id) {
+      axios.post("posts/" + post.id + "/favorite");
+    },
+    deleteFavorite: function (id) {
+      axios.delete("posts/" + post.id + "/favorite");
     },
   },
 };

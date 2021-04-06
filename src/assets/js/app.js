@@ -16,12 +16,16 @@ import "phoenix_html"
 
 import Index from './vue/Index.vue'
 import UserIndex from './vue/UserIndex.vue'
+import UserNew from './vue/UserNew.vue'
+import UserShow from './vue/UserShow.vue'
+import UserEdit from './vue/UserEdit.vue'
 import PostIndex from './vue/PostIndex.vue'
 import PostNew from './vue/PostNew.vue'
 import PostShow from './vue/PostShow.vue'
 import PostEdit from './vue/PostEdit.vue'
+import SessionNew from './vue/SessionNew.vue'
 
 new Vue({
     el: '#app',
-    components: { Index, UserIndex, PostIndex, PostNew, PostShow, PostEdit }
+    components: { Index, UserIndex, UserNew, UserShow, UserEdit, PostIndex, PostNew, PostShow, PostEdit, SessionNew }
 });

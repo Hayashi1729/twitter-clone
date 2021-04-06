@@ -30,14 +30,11 @@ defmodule ProjectWeb.PostApiController do
     current_user = conn.assigns.current_user
     changeset = Ecto.build_assoc(current_user, :posts, post_params)
 
-    case Twitter.create_post(changeset, post_params) do
-      {:ok, _} ->
-        conn
-        |> put_flash(:info, "Post created successfully.")
-        |> redirect(to: Routes.post_path(conn, :index))
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.json", changeset: changeset)
+    with {:ok, %Post{} = post} <- Twitter.create_post(changeset, post_params) do
+      conn
+      |> put_status(:created)
+      |> put_resp_header("location", Routes.post_api_path(conn, :show, post))
+      |> render("post_show.json", post: post)
     end
   end
 
@@ -83,10 +80,9 @@ defmodule ProjectWeb.PostApiController do
   @spec delete(Plug.Conn.t(), map) :: Plug.Conn.t()
   def delete(conn, %{"id" => id}) do
     post = Twitter.get_post!(id)
-    {:ok, _post} = Twitter.delete_post(post)
 
-    conn
-    |> put_flash(:info, "Post deleted successfully.")
-    |> redirect(to: Routes.post_path(conn, :index))
+    with {:ok, %Post{}} <- Twitter.delete_post(post) do
+      send_resp(conn, :no_content, "")
+    end
   end
 end

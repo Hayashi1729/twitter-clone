@@ -16,7 +16,7 @@ export default {
   data: {
     tweet: [],
   },
-  method: {
+  methods: {
     editPost: function () {
       let params = new URLSearchParams();
       params.append("tweet", this.tweet);
