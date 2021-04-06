@@ -54,7 +54,7 @@ defmodule ProjectWeb.Router do
 
   scope "/api", ProjectWeb do
     pipe_through [:browser, :auth]
-    get "/users", UserApiController, :index
+    resources "/users", UserApiController, except: [:new, :create]
     resources "/posts", PostApiController
     get "/favorited_post", PostApiController, :favorited_post
   end

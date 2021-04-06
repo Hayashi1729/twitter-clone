@@ -8,6 +8,10 @@ defmodule ProjectWeb.UserApiController do
     render(conn, "user_index.json", api_data: params)
   end
 
+  def show(conn, %{"id" => id}) do
+    render(conn, "user_show.json", user_id: id)
+  end
+
   def delete(conn, %{"id" => id}) do
     user = Accounts.get_user(id)
 

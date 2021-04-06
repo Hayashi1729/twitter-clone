@@ -8,6 +8,8 @@
         {{ user.username }}
       </li>
     </ul>
+    <a v-bind:href="currentURL + '/edit'">Edit</a>
+    <a href="./">Back</a>
   </div>
 </template>
 
@@ -16,6 +18,7 @@ export default {
   data() {
     return {
       user: [],
+      currentURL: window.location.href,
     };
   },
   created: function () {
