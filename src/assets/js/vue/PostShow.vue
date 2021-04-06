@@ -14,7 +14,7 @@
       </li>
     </ul>
     <a v-bind:href="currentURL + '/edit'">Edit</a>
-    <a href="./">Back</a>
+    <a href="../posts">Back</a>
   </div>
 </template>
 

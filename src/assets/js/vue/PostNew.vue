@@ -7,7 +7,7 @@
 
       <button type="submit" v-on:click="createPost">Save</button>
     </form>
-    <a href="./">Back</a>
+    <a href="../posts">Back</a>
   </div>
 </template>
 

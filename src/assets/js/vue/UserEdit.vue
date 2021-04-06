@@ -10,7 +10,7 @@
 
       <button type="submit" v-on:click="createUser">Save</button>
     </form>
-    <a href="./">Back</a>
+    <a href="../../users">Back</a>
   </div>
 </template>
 

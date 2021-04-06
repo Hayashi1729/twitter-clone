@@ -9,7 +9,7 @@
       </li>
     </ul>
     <a v-bind:href="currentURL + '/edit'">Edit</a>
-    <a href="./">Back</a>
+    <a href="../users">Back</a>
   </div>
 </template>
 

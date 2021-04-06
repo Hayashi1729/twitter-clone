@@ -7,7 +7,7 @@
 
       <button type="submit" v-on:click="editPost">Save</button>
     </form>
-    <a href="../">Back</a>
+    <a href="../../posts">Back</a>
   </div>
 </template>
 
