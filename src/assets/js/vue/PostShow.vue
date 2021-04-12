@@ -14,7 +14,7 @@
       </li>
     </ul>
     <a v-bind:href="currentURL + '/edit'">Edit</a>
-    <a href="../posts">Back</a>
+    <a href="/posts">Back</a>
   </div>
 </template>
 
@@ -26,10 +26,13 @@ export default {
       currentURL: window.location.href,
     };
   },
-  created: function () {
-    axios.get("../api/" + window.location.pathname).then((response) => {
+  async created() {
+    try {
+      const response = await axios.get("/api" + window.location.pathname);
       this.post = response.data;
-    });
+    } catch (error) {
+      console.error(error);
+    }
   },
 };
 </script>

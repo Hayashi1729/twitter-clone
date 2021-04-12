@@ -15,16 +15,10 @@ defmodule ProjectWeb.FavoriteController do
     current_user = conn.assigns.current_user
     post = Twitter.get_post!(post_id)
 
-    case Twitter.create_favorite(post.id, current_user.id) do
-      {:ok, _} ->
-        conn
-        |> put_flash(:info, "お気に入り登録しました。")
-        |> redirect(to: Routes.post_path(conn, :index))
-
-      {:error, _} ->
-        conn
-        |> put_flash(:error, "お気に入り登録できませんでした。")
-        |> redirect(to: Routes.post_path(conn, :index))
+    with {:ok, %Favorite{} = favorite} <- Twitter.create_favorite(post.id, current_user.id) do
+      conn
+      |> put_status(:created)
+      |> render("favorite_show.json", favorite_id: favorite.id)
     end
   end
 
@@ -34,13 +28,14 @@ defmodule ProjectWeb.FavoriteController do
   @spec delete(Plug.Conn.t(), map) :: Plug.Conn.t()
   def delete(conn, %{"post_id" => post_id}) do
     current_user = conn.assigns.current_user
-    Favorite
-    |> where([f], f.post_id == ^post_id and f.user_id == ^current_user.id)
-    |> Repo.one()
-    |> Twitter.delete_favorite()
 
-    conn
-    |> put_flash(:info, "お気に入り登録を解除しました。")
-    |> redirect(to: Routes.post_path(conn, :index))
+    post =
+      Favorite
+      |> where([f], f.post_id == ^post_id and f.user_id == ^current_user.id)
+      |> Repo.one()
+
+    with {:ok, %Favorite{}} <- Twitter.delete_favorite(post) do
+      send_resp(conn, :no_content, "")
+    end
   end
 end

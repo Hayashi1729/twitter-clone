@@ -21,7 +21,7 @@ export default {
     password: "",
   },
   methods: {
-    createUser: function () {
+    async createUser() {
       axios
         .post("../api/users", {
           post: {

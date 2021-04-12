@@ -29,25 +29,6 @@ defmodule ProjectWeb.PostController do
   end
 
   @doc """
-  ツイート作成処理を行う。
-  """
-  @spec create(Plug.Conn.t(), map) :: Plug.Conn.t()
-  def create(conn, %{"post" => post_params}) do
-    current_user = conn.assigns.current_user
-    changeset = Ecto.build_assoc(current_user, :posts, post_params)
-
-    case Twitter.create_post(changeset, post_params) do
-      {:ok, _} ->
-        conn
-        |> put_flash(:info, "Post created successfully.")
-        |> redirect(to: Routes.post_path(conn, :index))
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
-    end
-  end
-
-  @doc """
   ツイート詳細表示画面を表示。
   """
   @spec show(Plug.Conn.t(), map) :: Plug.Conn.t()
@@ -64,24 +45,6 @@ defmodule ProjectWeb.PostController do
     post = Twitter.get_post!(id)
     changeset = Post.changeset(post)
     render(conn, "edit.html", post: post, changeset: changeset)
-  end
-
-  @doc """
-  ツイートの更新処理を行う。
-  """
-  @spec update(Plug.Conn.t(), map) :: Plug.Conn.t()
-  def update(conn, %{"id" => id, "post" => post_params}) do
-    post = Twitter.get_post!(id)
-
-    case Twitter.update_post(post, post_params) do
-      {:ok, post} ->
-        conn
-        |> put_flash(:info, "Post updated successfully.")
-        |> redirect(to: Routes.post_path(conn, :show, post))
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", post: post, changeset: changeset)
-    end
   end
 
   @doc """

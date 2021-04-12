@@ -21,7 +21,7 @@ export default {
       axios
         .post("../api/posts", {
           post: {
-            tweet: "test tweet",
+            tweet: this.tweet,
           },
         })
         .then((response) => {

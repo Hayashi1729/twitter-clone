@@ -41,12 +41,13 @@ export default {
     });
   },
   methods: {
-    deleteUser: function (id) {
-      axios.delete("../api/users/" + id);
-
-      axios.get("../api/users").then((response) => {
-        this.posts = response.data;
-      });
+    async deleteUser(id) {
+      try {
+        const response = await axios.delete("/api/users/" + id);
+        this.users = this.users.filter((user) => user.id !== id);
+      } catch (error) {
+        console.error(error);
+      }
     },
   },
 };

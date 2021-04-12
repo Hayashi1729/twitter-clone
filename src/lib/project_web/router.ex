@@ -57,6 +57,7 @@ defmodule ProjectWeb.Router do
     resources "/users", UserApiController, except: [:new, :create]
     resources "/posts", PostApiController
     get "/favorited_post", PostApiController, :favorited_post
+    get "/favorites", FavoriteApiController, :index
   end
 
   # Other scopes may use custom stacks.

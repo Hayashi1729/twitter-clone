@@ -100,6 +100,11 @@ defmodule Project.Twitter do
     Repo.delete(post)
   end
 
+  def list_favorites do
+    Favorite
+    |> Repo.all()
+  end
+
   @spec list_posts_with_favorite(integer) :: list(integer)
   @doc """
   あるユーザーにお気に入り登録されたツイートIDのリストを返す。
@@ -129,6 +134,11 @@ defmodule Project.Twitter do
     Favorite
     |> where([f], f.post_id == ^post_id)
     |> Repo.all()
+  end
+
+  def get_favorite!(id) do
+    Favorite
+    |> Repo.get!(id)
   end
 
   @doc """

@@ -13,6 +13,7 @@ import "../css/app.scss"
 //     import socket from "./socket"
 //
 import "phoenix_html"
+import babelPolyfill from '@babel/polyfill'
 
 import Index from './vue/Index.vue'
 import UserIndex from './vue/UserIndex.vue'
