@@ -30,17 +30,17 @@
 
             <td>
               <div v-if="posts_favorited_by_current_user.includes(post.id)">
-                <button v-on:click="deleteFavorite(post.id)">
+                <button v-on:click="deleteFavorite(post)">
                   お気に入り登録を解除する
                 </button>
               </div>
               <div v-else>
-                <button v-on:click="createFavorite(post.id)">
+                <button v-on:click="createFavorite(post)">
                   お気に入り登録する
                 </button>
               </div>
             </td>
-            <td>{{ favorite_num }}</td>
+            <td>{{ countFavorites(post) }}</td>
           </tr>
         </div>
       </tbody>
@@ -57,7 +57,6 @@ export default {
       posts: [],
       posts_favorited_by_current_user: [],
       favorites: [],
-      fav_num: 0,
     };
   },
   created: function () {
@@ -74,11 +73,6 @@ export default {
   computed: {
     reversePosts() {
       return this.posts.slice().reverse();
-    },
-    favorite_num() {
-      if (this.post.favorites && this.post.favorites.length > 1) {
-        return this.post.favorites.length;
-      }
     },
   },
   watch: {
@@ -98,25 +92,28 @@ export default {
         console.error(error);
       }
     },
-    async createFavorite(id) {
+    async createFavorite(post) {
       try {
-        const response = await axios.post("posts/" + id + "/favorite");
-        this.fav_num += 1;
-        this.posts_favorited_by_current_user.push(id);
+        const response = await axios.post("posts/" + post.id + "/favorite");
+        this.posts_favorited_by_current_user.push(post.id);
+        post.favorites.push(1);
       } catch (error) {
         console.error(error);
       }
     },
-    async deleteFavorite(id) {
+    async deleteFavorite(post) {
       try {
-        const response = await axios.delete("posts/" + id + "/favorite");
-        this.fav_num -= 1;
+        const response = await axios.delete("posts/" + post.id + "/favorite");
         this.posts_favorited_by_current_user = this.posts_favorited_by_current_user.filter(
-          (favorite_id) => favorite_id !== id
+          (favorite_id) => favorite_id !== post.id
         );
+        post.favorites.pop();
       } catch (error) {
         console.error(error);
       }
+    },
+    countFavorites(post) {
+      return post.favorites.length;
     },
   },
 };
