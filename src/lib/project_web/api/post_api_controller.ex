@@ -4,15 +4,27 @@ defmodule ProjectWeb.PostApiController do
   alias Project.Twitter
   alias Project.Twitter.Post
 
+  @doc """
+  Render post_index.json
+  """
+  @spec index(Plug.Conn.t(), any) :: Plug.Conn.t()
   def index(conn, params) do
     render(conn, "post_index.json", api_data: params)
   end
 
+  @doc """
+  Render posts_favorited_by_current_user.json
+  """
+  @spec favorited_post(Plug.Conn.t(), any) :: Plug.Conn.t()
   def favorited_post(conn, _params) do
     current_user = conn.assigns.current_user
     render(conn, "posts_favorited_by_current_user.json", api_data: current_user)
   end
 
+  @doc """
+  ツイート作成処理を行う。
+  """
+  @spec create(Plug.Conn.t(), map) :: Plug.Conn.t()
   def create(conn, %{"post" => post_params}) do
     current_user = conn.assigns.current_user
     changeset = Ecto.build_assoc(current_user, :posts, post_params)
@@ -32,6 +44,10 @@ defmodule ProjectWeb.PostApiController do
     render(conn, "post_show.json", post_id: id)
   end
 
+  @doc """
+  ツイート更新処理を行う。
+  """
+  @spec update(Plug.Conn.t(), map) :: Plug.Conn.t()
   def update(conn, %{"id" => id, "post" => post_params}) do
     post = Twitter.get_post!(id)
 

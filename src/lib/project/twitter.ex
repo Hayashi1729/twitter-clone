@@ -100,6 +100,10 @@ defmodule Project.Twitter do
     Repo.delete(post)
   end
 
+  @doc """
+  Returns the list of favorites.
+  """
+  @spec list_favorites :: list(Favorite.t())
   def list_favorites do
     Favorite
     |> Repo.all()
@@ -136,6 +140,10 @@ defmodule Project.Twitter do
     |> Repo.all()
   end
 
+  @doc """
+  Gets a single favorite.
+  """
+  @spec get_favorite!(integer()) :: Favorite.t()
   def get_favorite!(id) do
     Favorite
     |> Repo.get!(id)
