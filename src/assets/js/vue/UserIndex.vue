@@ -10,18 +10,16 @@
           <th></th>
         </tr>
       </thead>
-      <tbody>
-        <div v-for="user in users" :key="user.id">
-          <tr>
-            <td>{{ user.username }}</td>
+      <tbody v-for="user in users" :key="user.id">
+        <tr>
+          <td>{{ user.username }}</td>
 
-            <td>
-              <a v-bind:href="'users/' + user.id">Show</a>
-              <a v-bind:href="'users/' + user.id + '/edit'">Edit</a>
-              <button v-on:click="deleteUser(user.id)">Delete</button>
-            </td>
-          </tr>
-        </div>
+          <td>
+            <a v-bind:href="'users/' + user.id">Show</a>
+            <a v-bind:href="'users/' + user.id + '/edit'">Edit</a>
+            <button v-on:click="deleteUser(user.id)">Delete</button>
+          </td>
+        </tr>
       </tbody>
     </table>
     <a href="users/new">New User</a>
