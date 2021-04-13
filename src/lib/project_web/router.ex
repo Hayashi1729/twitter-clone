@@ -50,6 +50,7 @@ defmodule ProjectWeb.Router do
   scope "/api", ProjectWeb do
     pipe_through :browser
     get "/", ApiController, :index
+    post "/users", UserApiController, :create
   end
 
   scope "/api", ProjectWeb do

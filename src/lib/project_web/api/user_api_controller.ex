@@ -8,6 +8,14 @@ defmodule ProjectWeb.UserApiController do
     render(conn, "user_index.json", api_data: params)
   end
 
+  def create(conn, %{"user" => user_params}) do
+    with {:ok, %User{} = user} <- Accounts.create_user(user_params) do
+      conn
+      |> put_status(:created)
+      |> render("user_show.json", user_id: user.id)
+    end
+  end
+
   def show(conn, %{"id" => id}) do
     render(conn, "user_show.json", user_id: id)
   end

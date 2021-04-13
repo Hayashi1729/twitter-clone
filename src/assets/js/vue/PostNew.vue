@@ -7,7 +7,7 @@
 
       <button type="submit" v-on:click="createPost">Save</button>
     </form>
-    <a href="../posts">Back</a>
+    <a href="/posts">Back</a>
   </div>
 </template>
 
@@ -19,7 +19,7 @@ export default {
   methods: {
     createPost: function () {
       axios
-        .post("../api/posts", {
+        .post("/api/posts", {
           post: {
             tweet: this.tweet,
           },

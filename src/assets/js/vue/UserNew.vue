@@ -10,7 +10,7 @@
 
       <button type="submit" v-on:click="createUser">Save</button>
     </form>
-    <a href="../users">Back</a>
+    <a href="/users">Back</a>
   </div>
 </template>
 
@@ -23,8 +23,8 @@ export default {
   methods: {
     async createUser() {
       axios
-        .post("../api/users", {
-          post: {
+        .post("/api/users", {
+          user: {
             username: this.username,
             password: this.password,
           },

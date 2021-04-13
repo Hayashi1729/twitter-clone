@@ -21,13 +21,18 @@ export default {
     password: [],
   },
   methods: {
-    editPost: function () {
-      let params = new URLSearchParams();
-      params.append("username", this.username);
-      params.append("password", this.password);
-      axios.post("./", params).then((response) => {
-        console.log(response.data.username);
-      });
+    async createSession() {
+      try {
+        const response = await axios.post("/sessions", {
+          session: {
+            username: this.username,
+            password: this.password,
+          },
+        });
+        console.log(response.data);
+      } catch (error) {
+        console.error(error);
+      }
     },
   },
 };
