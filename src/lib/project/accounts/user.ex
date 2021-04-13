@@ -40,7 +40,7 @@ defmodule Project.Accounts.User do
   defp put_pass_hash(changeset) do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{password: pass}} ->
-        put_change(changeset, :password_hash, Pbkdf2.hash_pwd_salt(pass))
+        put_change(changeset, :password_hash, Bcrypt.hash_pwd_salt(pass))
 
       _ ->
         changeset

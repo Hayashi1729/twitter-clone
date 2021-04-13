@@ -15,14 +15,14 @@
           <td>{{ user.username }}</td>
 
           <td>
-            <a v-bind:href="'users/' + user.id">Show</a>
-            <a v-bind:href="'users/' + user.id + '/edit'">Edit</a>
+            <a v-bind:href="'/users/' + user.id">Show</a>
+            <a v-bind:href="'/users/' + user.id + '/edit'">Edit</a>
             <button v-on:click="deleteUser(user.id)">Delete</button>
           </td>
         </tr>
       </tbody>
     </table>
-    <a href="users/new">New User</a>
+    <a href="/users/new">New User</a>
   </div>
 </template>
 
@@ -34,7 +34,7 @@ export default {
     };
   },
   created: function () {
-    axios.get("../api/users").then((response) => {
+    axios.get("/api/users").then((response) => {
       this.users = response.data;
     });
   },

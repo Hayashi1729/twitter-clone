@@ -20,10 +20,14 @@ defmodule ProjectWeb.SessionController do
         conn,
         %{"session" => %{"username" => username, "password" => pass}}
       ) do
-    with {:ok, %User{} = user} <- Accounts.authenticate_by_username_and_pass(username, pass) do
-      conn
-      |> ProjectWeb.AuthorizationPlug.login(user)
-      |> send_resp(200, "ok")
+    case Accounts.authenticate_by_username_and_pass(username, pass) do
+      {:ok, %User{} = user} ->
+        conn
+        |> ProjectWeb.AuthorizationPlug.login(user)
+        |> send_resp(200, "ok")
+
+      {:error, _} ->
+        IO.inspect(username)
     end
   end
 

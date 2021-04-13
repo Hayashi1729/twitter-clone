@@ -17,10 +17,15 @@ defmodule ProjectWeb.UserApiController do
   """
   @spec create(Plug.Conn.t(), map) :: Plug.Conn.t()
   def create(conn, %{"user" => user_params}) do
-    with {:ok, %User{} = user} <- Accounts.create_user(user_params) do
-      conn
-      |> put_status(:created)
-      |> render("user_show.json", user_id: user.id)
+    case Accounts.register_user(user_params) do
+      {:ok, user} ->
+        conn
+        |> ProjectWeb.AuthorizationPlug.login(user)
+        |> put_status(:created)
+        |> render("user_show.json", user_id: user.id)
+
+      {:error, %Ecto.Changeset{}} ->
+        IO.inspect("a")
     end
   end
 

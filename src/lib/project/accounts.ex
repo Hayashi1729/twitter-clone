@@ -54,25 +54,6 @@ defmodule Project.Accounts do
   def get_user_by(params), do: Repo.get_by(User, params)
 
   @doc """
-  Creates a user.
-
-  ## Examples
-
-      iex> create_user(%{field: value})
-      {:ok, %User{}}
-
-      iex> create_user(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  @spec create_user(map) :: {:ok, User.t()} | {:error, %Ecto.Changeset{}}
-  def create_user(attrs \\ %{}) do
-    %User{}
-    |> User.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  @doc """
   Updates a user.
 
   ## Examples
@@ -119,7 +100,7 @@ defmodule Project.Accounts do
       iex> register_user(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
   """
-  @spec register_user(map()) ::  {:ok, User.t()} | {:error, Ecto.Changeset.t()}
+  @spec register_user(map()) :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
   def register_user(attrs \\ %{}) do
     %User{}
     |> User.registration_changeset(attrs)
@@ -140,19 +121,20 @@ defmodule Project.Accounts do
       iex> authenticate_by_username_and_pass("non_existing_user", "password")
       {:error, :not_found}
   """
-  @spec authenticate_by_username_and_pass(String.t(), Ecto.Schema.t() | nil) :: {:ok, User.t()} | {:error, :unauthorized} | {:error, :not_found}
+  @spec authenticate_by_username_and_pass(String.t(), String.t()) ::
+          {:ok, User.t()} | {:error, :unauthorized} | {:error, :not_found}
   def authenticate_by_username_and_pass(username, given_pass) do
     user = get_user_by(username: username)
 
     cond do
-      user && Pbkdf2.verify_pass(given_pass, user.password_hash) ->
+      user && Bcrypt.verify_pass(given_pass, user.password_hash) ->
         {:ok, user}
 
       user ->
         {:error, :unauthorized}
 
       true ->
-        Pbkdf2.no_user_verify()
+        Bcrypt.no_user_verify()
         {:error, :not_found}
     end
   end

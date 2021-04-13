@@ -18,8 +18,7 @@ defmodule ProjectWeb.UserController do
   """
   @spec new(Plug.Conn.t(), any) :: Plug.Conn.t()
   def new(conn, _params) do
-    changeset = User.registration_changeset(%User{}, %{})
-    render(conn, "new.html", changeset: changeset)
+    render(conn, "new.html")
   end
 
   @doc """
