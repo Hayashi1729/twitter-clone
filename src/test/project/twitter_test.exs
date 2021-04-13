@@ -81,6 +81,35 @@ defmodule Project.TwitterTest do
     assert {:ok, %Favorite{}} = Twitter.delete_favorite(favorite)
   end
 
+  test "get_favorite!/1" do
+    current_user = insert(:user)
+    post = insert(:post)
+
+    assert {:ok, %Favorite{post_id: post_id, user_id: user_id} = fav} =
+             Twitter.create_favorite(post.id, current_user.id)
+
+    assert %Favorite{post_id: ^post_id, user_id: ^user_id} = Twitter.get_favorite!(fav.id)
+  end
+
+  test "list_favorites/0" do
+    current_user = insert(:user)
+    post1 = insert(:post)
+
+    assert {:ok, %Favorite{post_id: post_id1, user_id: user_id1}} =
+             Twitter.create_favorite(post1.id, current_user.id)
+
+    current_user2 = insert(:user)
+    post2 = insert(:post)
+
+    assert {:ok, %Favorite{post_id: post_id2, user_id: user_id2}} =
+             Twitter.create_favorite(post2.id, current_user2.id)
+
+    assert [
+             %Favorite{post_id: ^post_id1, user_id: ^user_id1},
+             %Favorite{post_id: ^post_id2, user_id: ^user_id2}
+           ] = Twitter.list_favorites()
+  end
+
   test "list_posts_with_favorite/1" do
     current_user = insert(:user)
     post1 = insert(:post)
@@ -95,22 +124,43 @@ defmodule Project.TwitterTest do
   test "list_favorite_posts/1" do
     current_user = insert(:user)
     post1 = insert(:post)
-    assert {:ok, %Favorite{post_id: post_id1}} = Twitter.create_favorite(post1.id, current_user.id)
+
+    assert {:ok, %Favorite{post_id: post_id1}} =
+             Twitter.create_favorite(post1.id, current_user.id)
 
     post2 = insert(:post)
-    assert {:ok, %Favorite{post_id: post_id2}} = Twitter.create_favorite(post2.id, current_user.id)
 
-    assert [%Favorite{post_id: ^post_id1}, %Favorite{post_id: ^post_id2}] = Twitter.list_favorite_posts(current_user.id)
+    assert {:ok, %Favorite{post_id: post_id2}} =
+             Twitter.create_favorite(post2.id, current_user.id)
+
+    assert [%Favorite{post_id: ^post_id1}, %Favorite{post_id: ^post_id2}] =
+             Twitter.list_favorite_posts(current_user.id)
   end
 
   test "list_favorite_users/1" do
     post = insert(:post)
     current_user1 = insert(:user)
-    assert {:ok, %Favorite{user_id: user_id1}} = Twitter.create_favorite(post.id, current_user1.id)
+
+    assert {:ok, %Favorite{user_id: user_id1}} =
+             Twitter.create_favorite(post.id, current_user1.id)
 
     current_user2 = insert(:user)
-    assert {:ok, %Favorite{user_id: user_id2}} = Twitter.create_favorite(post.id, current_user2.id)
 
-    assert [%Favorite{user_id: ^user_id1}, %Favorite{user_id: ^user_id2}] = Twitter.list_favorite_users(post.id)
+    assert {:ok, %Favorite{user_id: user_id2}} =
+             Twitter.create_favorite(post.id, current_user2.id)
+
+    assert [%Favorite{user_id: ^user_id1}, %Favorite{user_id: ^user_id2}] =
+             Twitter.list_favorite_users(post.id)
+  end
+
+  test "is_favorite?/2" do
+    current_user = insert(:user)
+    post = insert(:post)
+    assert {:ok, %Favorite{} = fav} = Twitter.create_favorite(post.id, current_user.id)
+
+    assert Twitter.is_favorited?(fav.post_id, fav.user_id)
+
+    current_user2 = insert(:user)
+    refute Twitter.is_favorited?(fav.post_id, current_user2.id)
   end
 end

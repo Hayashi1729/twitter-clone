@@ -13,11 +13,12 @@ defmodule ProjectWeb.FavoriteControllerTest do
 
   test "create", %{conn: conn, post: post} do
     conn = post(conn, Routes.post_favorite_path(conn, :create, post))
-    assert redirected_to(conn, 302) == "/posts"
+    fav = json_response(conn, 201)
+    assert Map.keys(fav) == ["post_id", "user_id"]
   end
 
   test "delete", %{conn: conn, post: post} do
     conn = post(conn, Routes.post_favorite_path(conn, :delete, post))
-    assert redirected_to(conn, 302) == "/posts"
+    assert response(conn, 201) =~ ""
   end
 end

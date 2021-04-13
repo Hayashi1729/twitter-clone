@@ -2,7 +2,7 @@ defmodule ProjectWeb.SessonViewTest do
   use ProjectWeb.ConnCase, async: true
   import Phoenix.View
 
-  test "renders new.html", %{conn: conn} do 
+  test "renders new.html", %{conn: conn} do
     changeset = Project.Accounts.User.registration_changeset(%Project.Accounts.User{}, %{})
 
     content =
@@ -11,6 +11,6 @@ defmodule ProjectWeb.SessonViewTest do
         changeset: changeset
       )
 
-    assert String.contains?(content, "Login")
+    assert String.contains?(content, "session-new")
   end
 end
