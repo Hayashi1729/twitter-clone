@@ -2,7 +2,6 @@ defmodule ProjectWeb.PostApiView do
   use ProjectWeb, :view
 
   alias Project.Twitter
-  alias Project.Twitter.Post
 
   def render("post_index.json", %{api_data: _params}) do
     Twitter.list_posts()
