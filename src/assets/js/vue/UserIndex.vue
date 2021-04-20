@@ -27,7 +27,7 @@
 </template>
 
 <script>
-const { reactive } = VueCompositionAPI;
+const { reactive, onMounted } = VueCompositionAPI;
 
 export default {
   setup() {
@@ -35,9 +35,12 @@ export default {
       users: [],
     });
 
-    axios.get("/api/users").then((response) => {
+    const getUsers = async () => {
+      const response = await axios.get("/api/users");
       state.users = response.data;
-    });
+    };
+
+    onMounted(getUsers);
 
     async function deleteUser(id) {
       try {

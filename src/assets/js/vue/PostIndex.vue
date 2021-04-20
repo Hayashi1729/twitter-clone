@@ -49,7 +49,7 @@
 </template>
 
 <script>
-const { reactive, computed } = VueCompositionAPI;
+const { reactive, onMounted, computed } = VueCompositionAPI;
 
 export default {
   setup() {
@@ -59,15 +59,22 @@ export default {
       favorites: [],
     });
 
-    axios.get("/api/posts").then((response) => {
+    const getPosts = async () => {
+      const response = await axios.get("/api/posts");
       state.posts = response.data;
-    });
-    axios.get("/api/favorited_post").then((response) => {
+    };
+
+    const getFavoritedPost = async () => {
+      const response = await axios.get("/api/favorited_post");
       state.posts_favorited_by_current_user = response.data;
-    });
-    axios.get("/api/favorites").then((response) => {
+    };
+
+    const getFavorites = async () => {
+      const response = await axios.get("/api/favorites");
       state.favorites = response.data;
-    });
+    };
+
+    onMounted(getPosts, getFavoritedPost, getFavorites);
 
     const reversePosts = computed(() => {
       return state.posts.slice().reverse();

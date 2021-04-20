@@ -12,7 +12,7 @@
 </template>
 
 <script>
-const { reactive } = VueCompositionAPI;
+const { reactive, onMounted } = VueCompositionAPI;
 
 export default {
   setup() {
@@ -21,9 +21,12 @@ export default {
     });
 
     const url = window.location.pathname.split("/");
-    axios.get("/api/posts/" + url[2]).then(function (response) {
+    const getPost = async () => {
+      const response = await axios.get("/api/posts/" + url[2]);
       state.post = response.data;
-    });
+    };
+
+    onMounted(getPost);
 
     async function editPost(id) {
       try {

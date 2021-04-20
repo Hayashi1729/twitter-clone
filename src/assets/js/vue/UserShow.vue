@@ -14,7 +14,7 @@
 </template>
 
 <script>
-const { reactive } = VueCompositionAPI;
+const { reactive, onMounted } = VueCompositionAPI;
 
 export default {
   setup() {
@@ -23,9 +23,12 @@ export default {
       currentURL: window.location.href,
     });
 
-    axios.get("/api" + window.location.pathname).then(function (response) {
+    const getUser = async () => {
+      const response = await axios.get("/api" + window.location.pathname);
       state.user = response.data;
-    });
+    };
+
+    onMounted(getUser);
 
     return {
       state,

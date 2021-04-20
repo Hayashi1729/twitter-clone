@@ -16,7 +16,7 @@
 
 
 <script>
-const { reactive } = VueCompositionAPI;
+const { reactive, onMounted } = VueCompositionAPI;
 
 export default {
   setup() {
@@ -25,9 +25,12 @@ export default {
     });
 
     const url = window.location.pathname.split("/");
-    axios.get("/api/users/" + url[2]).then(function (response) {
+    const getUser = async () => {
+      const response = await axios.get("/api/users/" + url[2]);
       state.user = response.data;
-    });
+    };
+
+    onMounted(getUser);
 
     async function editUser(id) {
       try {
