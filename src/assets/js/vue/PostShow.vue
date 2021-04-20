@@ -5,34 +5,36 @@
     <ul>
       <li>
         <strong>Tweet:</strong>
-        {{ post.tweet }}
+        {{ state.post.tweet }}
       </li>
 
       <li>
         <strong>Username:</strong>
-        {{ post.user.username }}
+        {{ state.post.user.username }}
       </li>
     </ul>
-    <a v-bind:href="currentURL + '/edit'">Edit</a>
+    <a v-bind:href="state.currentURL + '/edit'">Edit</a>
     <a href="/posts">Back</a>
   </div>
 </template>
 
 <script>
+const { reactive } = VueCompositionAPI;
+
 export default {
-  data() {
-    return {
+  setup() {
+    const state = reactive({
       post: [],
       currentURL: window.location.href,
+    });
+
+    axios.get("/api" + window.location.pathname).then(function (response) {
+      state.post = response.data;
+    });
+
+    return {
+      state,
     };
-  },
-  async created() {
-    try {
-      const response = await axios.get("/api" + window.location.pathname);
-      this.post = response.data;
-    } catch (error) {
-      console.error(error);
-    }
   },
 };
 </script>

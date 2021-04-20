@@ -3,7 +3,7 @@
     <h1>New Post</h1>
     <form>
       <label for="tweet">Tweet</label>
-      <input type="text" id="tweet" v-model="tweet" />
+      <input type="text" id="tweet" v-model="state.tweet" />
 
       <button type="submit" v-on:click="createPost">Save</button>
     </form>
@@ -12,22 +12,29 @@
 </template>
 
 <script>
+const { reactive } = VueCompositionAPI;
+
 export default {
-  data: {
-    tweet: "",
-  },
-  methods: {
-    createPost: function () {
-      axios
-        .post("/api/posts", {
-          post: {
-            tweet: this.tweet,
-          },
-        })
-        .then((response) => {
-          console.log("Tweet:" + response.data.tweet);
+  setup() {
+    const state = reactive({
+      tweet: "",
+    });
+
+    async function createPost() {
+      try {
+        const response = await axios.post("/api/posts", {
+          post: { tweet: state.tweet },
         });
-    },
+        console.log("Tweet:" + response.data.tweet);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    return {
+      state,
+      createPost,
+    };
   },
 };
 </script>

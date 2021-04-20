@@ -3,12 +3,12 @@
     <h1>Edit User</h1>
     <form>
       <label for="username">Username</label>
-      <input type="text" id="username" v-model="username" />
+      <input type="text" id="username" v-model="state.user.username" />
 
       <label for="password">Password</label>
-      <input type="password" id="password" v-model="password" />
+      <input type="password" id="password" v-model="state.user.password" />
 
-      <button type="submit" v-on:click="editUser(user.id)">Save</button>
+      <button type="submit" v-on:click="editUser(state.user.id)">Save</button>
     </form>
     <a href="/users">Back</a>
   </div>
@@ -16,35 +16,38 @@
 
 
 <script>
+const { reactive } = VueCompositionAPI;
+
 export default {
-  data: {
-    user: [],
-  },
-  async created() {
-    try {
-      const url = window.location.pathname.split("/");
-      const response = await axios.get("/api/users/" + url[2]);
-      console.log(response);
-      this.user = response.data;
-    } catch (error) {
-      console.error(error);
-    }
-  },
-  methods: {
-    async editUser(id) {
+  setup() {
+    const state = reactive({
+      user: [],
+    });
+
+    const url = window.location.pathname.split("/");
+    axios.get("/api/users/" + url[2]).then(function (response) {
+      state.user = response.data;
+    });
+
+    async function editUser(id) {
       try {
         const response = await axios.put("/api/users/" + id, {
           id: id,
           user: {
-            username: this.username,
-            password: this.password,
+            username: state.user.username,
+            password: state.user.password,
           },
         });
-        console.log(response.data);
+        console.log(response.data.user);
       } catch (error) {
         console.error(error);
       }
-    },
+    }
+
+    return {
+      state,
+      editUser,
+    };
   },
 };
 </script>

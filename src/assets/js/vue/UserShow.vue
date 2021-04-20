@@ -5,26 +5,31 @@
     <ul>
       <li>
         <strong>Username:</strong>
-        {{ user.username }}
+        {{ state.user.username }}
       </li>
     </ul>
     <a v-bind:href="currentURL + '/edit'">Edit</a>
-    <a href="../users">Back</a>
+    <a href="/users">Back</a>
   </div>
 </template>
 
 <script>
+const { reactive } = VueCompositionAPI;
+
 export default {
-  data() {
-    return {
+  setup() {
+    const state = reactive({
       user: [],
       currentURL: window.location.href,
-    };
-  },
-  created: function () {
-    axios.get("../api/" + window.location.pathname).then((response) => {
-      this.user = response.data;
     });
+
+    axios.get("/api" + window.location.pathname).then(function (response) {
+      state.user = response.data;
+    });
+
+    return {
+      state,
+    };
   },
 };
 </script>

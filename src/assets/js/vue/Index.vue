@@ -10,10 +10,14 @@
 </template>
 
 <script>
+const { ref } = VueCompositionAPI;
+
 export default {
-  data() {
+  setup() {
+    const message = ref("Twitter");
+
     return {
-      message: "Twitter",
+      message,
     };
   },
 };

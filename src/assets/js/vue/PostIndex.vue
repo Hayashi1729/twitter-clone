@@ -28,7 +28,7 @@
           </td>
 
           <td>
-            <div v-if="posts_favorited_by_current_user.includes(post.id)">
+            <div v-if="state.posts_favorited_by_current_user.includes(post.id)">
               <button v-on:click="deleteFavorite(post)">
                 お気に入り登録を解除する
               </button>
@@ -49,70 +49,73 @@
 </template>
 
 <script>
+const { reactive, computed } = VueCompositionAPI;
+
 export default {
-  data() {
-    return {
+  setup() {
+    const state = reactive({
       posts: [],
       posts_favorited_by_current_user: [],
       favorites: [],
-    };
-  },
-  created: function () {
+    });
+
     axios.get("/api/posts").then((response) => {
-      this.posts = response.data;
+      state.posts = response.data;
     });
     axios.get("/api/favorited_post").then((response) => {
-      this.posts_favorited_by_current_user = response.data;
+      state.posts_favorited_by_current_user = response.data;
     });
     axios.get("/api/favorites").then((response) => {
-      this.favorites = response.data;
+      state.favorites = response.data;
     });
-  },
-  computed: {
-    reversePosts() {
-      return this.posts.slice().reverse();
-    },
-  },
-  watch: {
-    post: {
-      handler: function () {
-        console.log("caught!");
-      },
-      deep: true,
-    },
-  },
-  methods: {
-    async deletePost(id) {
+
+    const reversePosts = computed(() => {
+      return state.posts.slice().reverse();
+    });
+
+    async function deletePost(id) {
       try {
         const response = await axios.delete("/api/posts/" + id);
-        this.posts = this.posts.filter((post) => post.id !== id);
+        state.posts = state.posts.filter((post) => post.id !== id);
       } catch (error) {
         console.error(error);
       }
-    },
-    async createFavorite(post) {
+    }
+
+    async function createFavorite(post) {
       try {
         const response = await axios.post("posts/" + post.id + "/favorite");
-        this.posts_favorited_by_current_user.push(post.id);
+        state.posts_favorited_by_current_user.push(post.id);
         post.favorites.push(1);
       } catch (error) {
         console.error(error);
       }
-    },
-    async deleteFavorite(post) {
+    }
+
+    async function deleteFavorite(post) {
       try {
         const response = await axios.delete("posts/" + post.id + "/favorite");
-        this.posts_favorited_by_current_user = this.posts_favorited_by_current_user.filter(
+        state.posts_favorited_by_current_user = state.posts_favorited_by_current_user.filter(
           (favorite_id) => favorite_id !== post.id
         );
         post.favorites.pop();
       } catch (error) {
         console.error(error);
       }
-    },
-    countFavorites(post) {
+    }
+
+    function countFavorites(post) {
       return post.favorites.length;
-    },
+    }
+
+    return {
+      state,
+      reversePosts,
+      deletePost,
+      createFavorite,
+      deleteFavorite,
+      countFavorites,
+    };
   },
 };
 </script>

@@ -10,7 +10,7 @@
           <th></th>
         </tr>
       </thead>
-      <tbody v-for="user in users" :key="user.id">
+      <tbody v-for="user in state.users" :key="user.id">
         <tr>
           <td>{{ user.username }}</td>
 
@@ -27,26 +27,31 @@
 </template>
 
 <script>
+const { reactive } = VueCompositionAPI;
+
 export default {
-  data() {
-    return {
+  setup() {
+    const state = reactive({
       users: [],
-    };
-  },
-  created: function () {
-    axios.get("/api/users").then((response) => {
-      this.users = response.data;
     });
-  },
-  methods: {
-    async deleteUser(id) {
+
+    axios.get("/api/users").then((response) => {
+      state.users = response.data;
+    });
+
+    async function deleteUser(id) {
       try {
         const response = await axios.delete("/api/users/" + id);
-        this.users = this.users.filter((user) => user.id !== id);
+        state.users = state.users.filter((user) => user.id !== id);
       } catch (error) {
         console.error(error);
       }
-    },
+    }
+
+    return {
+      state,
+      deleteUser,
+    };
   },
 };
 </script>
