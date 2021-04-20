@@ -28,7 +28,7 @@
           </td>
 
           <td>
-            <div v-if="state.posts_favorited_by_current_user.includes(post.id)">
+            <div v-if="is_favorited(post.id)">
               <button v-on:click="deleteFavorite(post)">
                 お気に入り登録を解除する
               </button>
@@ -58,23 +58,24 @@ export default {
       posts_favorited_by_current_user: [],
       favorites: [],
     });
-
     const getPosts = async () => {
       const response = await axios.get("/api/posts");
       state.posts = response.data;
     };
+    onMounted(getPosts);
 
     const getFavoritedPost = async () => {
       const response = await axios.get("/api/favorited_post");
       state.posts_favorited_by_current_user = response.data;
+      console.log(state.posts_favorited_by_current_user);
     };
+    onMounted(getFavoritedPost);
 
     const getFavorites = async () => {
       const response = await axios.get("/api/favorites");
       state.favorites = response.data;
     };
-
-    onMounted(getPosts, getFavoritedPost, getFavorites);
+    onMounted(getFavorites);
 
     const reversePosts = computed(() => {
       return state.posts.slice().reverse();
@@ -115,6 +116,10 @@ export default {
       return post.favorites.length;
     }
 
+    function is_favorited(id) {
+      return state.posts_favorited_by_current_user.includes(id);
+    }
+
     return {
       state,
       reversePosts,
@@ -122,6 +127,7 @@ export default {
       createFavorite,
       deleteFavorite,
       countFavorites,
+      is_favorited,
     };
   },
 };
