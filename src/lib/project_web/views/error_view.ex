@@ -13,4 +13,35 @@ defmodule ProjectWeb.ErrorView do
   def template_not_found(template, _assigns) do
     Phoenix.Controller.status_message_from_template(template)
   end
+
+  def translate_errors(changeset) do
+    Ecto.Changeset.traverse_errors(changeset, &translate_error/1)
+  end
+
+  def render("error.json", %{changeset: changeset}) do
+    %{errors: translate_errors(changeset)}
+  end
+
+  def render("error.json", %{status: status}) do
+    case status do
+      :unauthorized ->
+        %{
+          errors: %{
+            password: ["パスワードが違います"]
+          }
+        }
+
+      :not_found ->
+        %{
+          errors: %{
+            username: ["ユーザーが存在しません"]
+          }
+        }
+
+      _ ->
+        %{
+          errors: "An unexpected error has occurred"
+        }
+    end
+  end
 end

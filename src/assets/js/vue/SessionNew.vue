@@ -1,15 +1,20 @@
 <template>
   <div>
     <h1>Login</h1>
-    <form>
-      <label for="username">Username</label>
-      <input type="text" id="username" v-model="state.username" />
 
-      <label for="password">Password</label>
-      <input type="password" id="password" v-model="state.password" />
+    <label for="username">Username</label>
+    <input type="text" id="username" v-model="state.username" />
+    <p v-if="state.errors.username" style="color: red">
+      {{ state.errors.username[0] }}
+    </p>
 
-      <button type="submit" v-on:click="createSession">Log in</button>
-    </form>
+    <label for="password">Password</label>
+    <input type="password" id="password" v-model="state.password" />
+    <p v-if="state.errors.password" style="color: red">
+      {{ state.errors.password[0] }}
+    </p>
+
+    <button type="submit" v-on:click="createSession" action="/">Log in</button>
   </div>
 </template>
 
@@ -20,8 +25,9 @@ const { reactive } = VueCompositionAPI;
 export default {
   setup() {
     const state = reactive({
-      username: [],
-      password: [],
+      username: "",
+      password: "",
+      errors: "",
     });
 
     async function createSession() {
@@ -33,8 +39,12 @@ export default {
           },
         });
         console.log(response.data);
+        window.location.href = "/";
       } catch (error) {
-        console.error(error);
+        if (error.response.data && error.response.data.errors) {
+          console.log(error);
+          state.errors = error.response.data.errors;
+        }
       }
     }
 

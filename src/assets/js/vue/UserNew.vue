@@ -1,15 +1,21 @@
 <template>
   <div>
     <h1>New User</h1>
-    <form>
-      <label for="username">Username</label>
-      <input type="text" id="username" v-model="state.username" />
 
-      <label for="password">Password</label>
-      <input type="password" id="password" v-model="state.password" />
+    <label for="username">Username</label>
+    <input type="text" id="username" v-model="state.username" />
+    <p v-if="state.errors.username" style="color: red">
+      {{ state.errors.username[0] }}
+    </p>
 
-      <button type="submit" v-on:click="createUser">Save</button>
-    </form>
+    <label for="password">Password</label>
+    <input type="password" id="password" v-model="state.password" />
+    <p v-if="state.errors.password" style="color: red">
+      {{ state.errors.password[0] }}
+    </p>
+
+    <button type="submit" v-on:click="createUser" action="/">Save</button>
+
     <a href="/users">Back</a>
   </div>
 </template>
@@ -22,6 +28,7 @@ export default {
     const state = reactive({
       username: "",
       password: "",
+      errors: "",
     });
 
     async function createUser() {
@@ -33,8 +40,12 @@ export default {
           },
         });
         console.log("Username:" + response.data.username);
+        window.location.href = "/users";
       } catch (error) {
-        console.error(error);
+        if (error.response.data && error.response.data.errors) {
+          console.log(error);
+          state.errors = error.response.data.errors;
+        }
       }
     }
 

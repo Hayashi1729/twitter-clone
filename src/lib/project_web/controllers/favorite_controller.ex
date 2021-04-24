@@ -15,10 +15,11 @@ defmodule ProjectWeb.FavoriteController do
     current_user = conn.assigns.current_user
     post = Twitter.get_post!(post_id)
 
-    with {:ok, %Favorite{} = favorite} <- Twitter.create_favorite(post.id, current_user.id) do
-      conn
-      |> put_status(:created)
-      |> render("favorite_show.json", favorite_id: favorite.id)
+    case Twitter.create_favorite(post.id, current_user.id) do
+      {:ok, %Favorite{} = favorite} ->
+        conn
+        |> put_status(:created)
+        |> render("favorite_show.json", favorite_id: favorite.id)
     end
   end
 
@@ -34,8 +35,9 @@ defmodule ProjectWeb.FavoriteController do
       |> where([f], f.post_id == ^post_id and f.user_id == ^current_user.id)
       |> Repo.one()
 
-    with {:ok, %Favorite{}} <- Twitter.delete_favorite(post) do
-      send_resp(conn, :no_content, "")
+    case Twitter.delete_favorite(post) do
+      {:ok, %Favorite{}} ->
+        send_resp(conn, :no_content, "")
     end
   end
 end

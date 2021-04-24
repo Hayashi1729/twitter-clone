@@ -26,8 +26,10 @@ defmodule ProjectWeb.SessionController do
         |> ProjectWeb.AuthorizationPlug.login(user)
         |> send_resp(200, "ok")
 
-      {:error, _} ->
-        IO.inspect(username)
+      {:error, status} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render(ProjectWeb.ErrorView, "error.json", status: status)
     end
   end
 

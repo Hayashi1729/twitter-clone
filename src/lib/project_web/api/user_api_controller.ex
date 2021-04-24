@@ -18,14 +18,16 @@ defmodule ProjectWeb.UserApiController do
   @spec create(Plug.Conn.t(), map) :: Plug.Conn.t()
   def create(conn, %{"user" => user_params}) do
     case Accounts.register_user(user_params) do
-      {:ok, user} ->
+      {:ok, %User{} = user} ->
         conn
         |> ProjectWeb.AuthorizationPlug.login(user)
         |> put_status(:created)
         |> render("user_show.json", user_id: user.id)
 
-      {:error, %Ecto.Changeset{}} ->
-        IO.inspect("a")
+      {:error, %Ecto.Changeset{} = changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render(ProjectWeb.ErrorView, "error.json", changeset: changeset)
     end
   end
 
@@ -44,8 +46,16 @@ defmodule ProjectWeb.UserApiController do
   def update(conn, %{"id" => id, "user" => user_params}) do
     user = Accounts.get_user(id)
 
-    with {:ok, %User{}} <- Accounts.update_user(user, user_params) do
-      render(conn, "user_show.json", user_id: user.id)
+    case Accounts.update_user(user, user_params) do
+      {:ok, %User{} = user} ->
+        conn
+        |> put_status(:created)
+        |> render("user_show.json", user_id: user.id)
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render(ProjectWeb.ErrorView, "error.json", changeset: changeset)
     end
   end
 
@@ -56,8 +66,9 @@ defmodule ProjectWeb.UserApiController do
   def delete(conn, %{"id" => id}) do
     user = Accounts.get_user(id)
 
-    with {:ok, %User{}} <- Accounts.delete_user(user) do
-      send_resp(conn, :no_content, "")
+    case Accounts.delete_user(user) do
+      {:ok, %User{}} ->
+        send_resp(conn, :no_content, "")
     end
   end
 end

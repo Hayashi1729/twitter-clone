@@ -46,17 +46,4 @@ defmodule ProjectWeb.PostController do
     changeset = Post.changeset(post)
     render(conn, "edit.html", post: post, changeset: changeset)
   end
-
-  @doc """
-  ツイート削除処理を行う。
-  """
-  @spec delete(Plug.Conn.t(), map) :: Plug.Conn.t()
-  def delete(conn, %{"id" => id}) do
-    post = Twitter.get_post!(id)
-    {:ok, _post} = Twitter.delete_post(post)
-
-    conn
-    |> put_flash(:info, "Post deleted successfully.")
-    |> redirect(to: Routes.post_path(conn, :index))
-  end
 end

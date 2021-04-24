@@ -29,10 +29,16 @@ defmodule ProjectWeb.PostApiController do
     current_user = conn.assigns.current_user
     changeset = Ecto.build_assoc(current_user, :posts, post_params)
 
-    with {:ok, %Post{} = post} <- Twitter.create_post(changeset, post_params) do
-      conn
-      |> put_status(:created)
-      |> render("post_show.json", post_id: post.id)
+    case Twitter.create_post(changeset, post_params) do
+      {:ok, %Post{} = post} ->
+        conn
+        |> put_status(:created)
+        |> render("post_show.json", post_id: post.id)
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render(ProjectWeb.ErrorView, "error.json", changeset: changeset)
     end
   end
 
@@ -51,8 +57,16 @@ defmodule ProjectWeb.PostApiController do
   def update(conn, %{"id" => id, "post" => post_params}) do
     post = Twitter.get_post!(id)
 
-    with {:ok, %Post{}} <- Twitter.update_post(post, post_params) do
-      send_resp(conn, 200, "ok")
+    case Twitter.update_post(post, post_params) do
+      {:ok, %Post{}} ->
+        conn
+        |> put_status(:created)
+        |> render("post_show.json", post_id: post.id)
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render(ProjectWeb.ErrorView, "error.json", changeset: changeset)
     end
   end
 
@@ -63,8 +77,9 @@ defmodule ProjectWeb.PostApiController do
   def delete(conn, %{"id" => id}) do
     post = Twitter.get_post!(id)
 
-    with {:ok, %Post{}} <- Twitter.delete_post(post) do
-      send_resp(conn, :no_content, "")
+    case Twitter.delete_post(post) do
+      {:ok, %Post{}} ->
+        send_resp(conn, :no_content, "")
     end
   end
 end
