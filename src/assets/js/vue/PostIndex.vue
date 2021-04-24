@@ -58,24 +58,18 @@ export default {
       posts_favorited_by_current_user: [],
       favorites: [],
     });
-    const getPosts = async () => {
-      const response = await axios.get("/api/posts");
-      state.posts = response.data;
-    };
-    onMounted(getPosts);
+    const getData = async () => {
+      const posts = await axios.get("/api/posts");
+      state.posts = posts.data;
 
-    const getFavoritedPost = async () => {
-      const response = await axios.get("/api/favorited_post");
-      state.posts_favorited_by_current_user = response.data;
-      console.log(state.posts_favorited_by_current_user);
-    };
-    onMounted(getFavoritedPost);
+      const favorited_post = await axios.get("/api/favorited_post");
+      state.posts_favorited_by_current_user = favorited_post.data;
 
-    const getFavorites = async () => {
-      const response = await axios.get("/api/favorites");
-      state.favorites = response.data;
+      const favorites = await axios.get("/api/favorites");
+      state.favorites = favorites.data;
     };
-    onMounted(getFavorites);
+
+    onMounted(getData);
 
     const reversePosts = computed(() => {
       return state.posts.slice().reverse();
