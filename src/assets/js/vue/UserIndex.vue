@@ -15,8 +15,8 @@
           <td>{{ user.username }}</td>
 
           <td>
-            <a v-bind:href="'/users/' + user.id">Show</a>
-            <a v-bind:href="'/users/' + user.id + '/edit'">Edit</a>
+            <a v-bind:href="`/users/${user.id}`">Show</a>
+            <a v-bind:href="`/users/${user.id}/edit`">Edit</a>
             <button v-on:click="deleteUser(user.id)">Delete</button>
           </td>
         </tr>
@@ -44,7 +44,7 @@ export default {
 
     async function deleteUser(id) {
       try {
-        const response = await axios.delete("/api/users/" + id);
+        const response = await axios.delete(`/api/users/${id}`);
         state.users = state.users.filter((user) => user.id !== id);
       } catch (error) {
         console.error(error);

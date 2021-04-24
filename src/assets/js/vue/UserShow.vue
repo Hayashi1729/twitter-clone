@@ -8,7 +8,7 @@
         {{ state.user.username }}
       </li>
     </ul>
-    <a v-bind:href="currentURL + '/edit'">Edit</a>
+    <a v-bind:href="`${state.currentURL}/edit`">Edit</a>
     <a href="/users">Back</a>
   </div>
 </template>

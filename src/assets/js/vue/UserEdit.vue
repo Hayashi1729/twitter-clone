@@ -32,7 +32,7 @@ export default {
 
     const url = window.location.pathname.split("/");
     const getUser = async () => {
-      const response = await axios.get("/api/users/" + url[2]);
+      const response = await axios.get(`/api/users/${url[2]}`);
       state.user = response.data;
     };
 
@@ -40,7 +40,7 @@ export default {
 
     async function editUser(id) {
       try {
-        const response = await axios.put("/api/users/" + id, {
+        const response = await axios.put(`/api/users/${id}`, {
           id: id,
           user: {
             username: state.user.username,

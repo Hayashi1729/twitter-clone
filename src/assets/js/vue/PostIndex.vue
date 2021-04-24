@@ -22,8 +22,8 @@
           <td>{{ post.inserted_at }}</td>
 
           <td>
-            <a v-bind:href="'/posts/' + post.id">Show</a>
-            <a v-bind:href="'/posts/' + post.id + '/edit'">Edit</a>
+            <a v-bind:href="`/posts/${post.id}`">Show</a>
+            <a v-bind:href="`/posts/${post.id}/edit`">Edit</a>
             <button v-on:click="deletePost(post.id)">Delete</button>
           </td>
 
@@ -83,7 +83,7 @@ export default {
 
     async function deletePost(id) {
       try {
-        const response = await axios.delete("/api/posts/" + id);
+        const response = await axios.delete(`/api/posts/${id}`);
         state.posts = state.posts.filter((post) => post.id !== id);
       } catch (error) {
         console.error(error);
@@ -92,7 +92,7 @@ export default {
 
     async function createFavorite(post) {
       try {
-        const response = await axios.post("posts/" + post.id + "/favorite");
+        const response = await axios.post(`posts/${post.id}/favorite`);
         state.posts_favorited_by_current_user.push(post.id);
         post.favorites.push(1);
       } catch (error) {
@@ -102,7 +102,7 @@ export default {
 
     async function deleteFavorite(post) {
       try {
-        const response = await axios.delete("posts/" + post.id + "/favorite");
+        const response = await axios.delete(`posts/${post.id}/favorite`);
         state.posts_favorited_by_current_user = state.posts_favorited_by_current_user.filter(
           (favorite_id) => favorite_id !== post.id
         );

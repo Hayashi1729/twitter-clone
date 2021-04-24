@@ -24,7 +24,7 @@ export default {
 
     const url = window.location.pathname.split("/");
     const getPost = async () => {
-      const response = await axios.get("/api/posts/" + url[2]);
+      const response = await axios.get(`/api/posts/${url[2]}`);
       state.post = response.data;
     };
 
@@ -32,7 +32,7 @@ export default {
 
     async function editPost(id) {
       try {
-        const response = await axios.put("/api/posts/" + id, {
+        const response = await axios.put(`/api/posts/${id}`, {
           id: post.id,
           post: {
             tweet: state.post.tweet,
