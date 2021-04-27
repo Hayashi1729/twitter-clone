@@ -63,6 +63,8 @@ export default {
       throw new Error(`post_list is not provided`);
     }
 
+    console.log(post_list.post_delete);
+
     const getData = async () => {
       const favorited_post = await axios.get("/api/favorited_post");
       state.posts_favorited_by_current_user = favorited_post.data;
@@ -80,7 +82,7 @@ export default {
     async function deletePost(id) {
       try {
         const response = await axios.delete(`/api/posts/${id}`);
-        post_list.post = post_list.post.filter((post) => post.id !== id);
+        post_list.post_delete(id);
       } catch (error) {
         console.error(error);
       }

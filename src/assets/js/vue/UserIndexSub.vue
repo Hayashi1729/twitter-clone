@@ -39,7 +39,7 @@ export default {
     async function deleteUser(id) {
       try {
         const response = await axios.delete(`/api/users/${id}`);
-        user_list.user = user_list.user.filter((user) => user.id !== id);
+        user_list.user_delete(id);
       } catch (error) {
         console.error(error);
       }
