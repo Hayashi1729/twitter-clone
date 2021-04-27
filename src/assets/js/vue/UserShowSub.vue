@@ -1,20 +1,15 @@
 <template>
   <div>
-    <h1>Show Post</h1>
+    <h1>Show User</h1>
 
     <ul>
       <li>
-        <strong>Tweet:</strong>
-        {{ getPost().tweet }}
-      </li>
-
-      <li>
         <strong>Username:</strong>
-        {{ getPost().user.username }}
+        {{ getUser().username }}
       </li>
     </ul>
     <a v-bind:href="`${state.currentURL}/edit`">Edit</a>
-    <a href="/posts">Back</a>
+    <a href="/users">Back</a>
   </div>
 </template>
 
@@ -27,18 +22,19 @@ export default {
       currentURL: window.location.href,
     });
 
-    const post_list = inject("post_list");
-    if (!post_list) {
-      throw new Error(`post_list is not provided`);
+    const user_list = inject("user_list");
+    if (!user_list) {
+      throw new Error(`user_list is not provided`);
     }
+
     const id = window.location.pathname.split("/")[2];
-    function getPost() {
-      const postIndex = post_list.post.findIndex((data) => data.id == id);
-      return post_list.post[postIndex];
+    function getUser() {
+      const userIndex = user_list.user.findIndex((data) => data.id == id);
+      return user_list.user[userIndex];
     }
 
     return {
-      getPost,
+      getUser,
       state,
     };
   },
