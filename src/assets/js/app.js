@@ -26,6 +26,7 @@ import PostShow from './vue/PostShow.vue'
 import PostEdit from './vue/PostEdit.vue'
 import SessionNew from './vue/SessionNew.vue'
 
+
 new Vue({
     el: '#app',
     components: { Index, UserIndex, UserNew, UserShow, UserEdit, PostIndex, PostNew, PostShow, PostEdit, SessionNew }
