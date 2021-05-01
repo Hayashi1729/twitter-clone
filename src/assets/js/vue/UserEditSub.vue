@@ -4,14 +4,14 @@
 
     <label for="username">Username</label>
     <input type="text" id="username" v-model="getUser().username" />
-    <p v-if="state.errors.username" style="color: red">
-      {{ state.errors.username[0] }}
+    <p v-if="errors.username" style="color: red">
+      {{ errors.username[0] }}
     </p>
 
     <label for="password">Password</label>
     <input type="password" id="password" v-model="getUser().password" />
-    <p v-if="state.errors.password" style="color: red">
-      {{ state.errors.password[0] }}
+    <p v-if="errors.password" style="color: red">
+      {{ errors.password[0] }}
     </p>
 
     <button type="submit" v-on:click="editUser(getUser().id)">Save</button>
@@ -21,7 +21,7 @@
 
 
 <script>
-const { reactive, inject } = VueCompositionAPI;
+const { reactive, inject, toRefs } = VueCompositionAPI;
 
 export default {
   setup() {
@@ -33,10 +33,12 @@ export default {
     if (!user_list) {
       throw new Error(`user_list is not provided`);
     }
-    const user_id = window.location.pathname.split("/")[2];
+    const user_id = parseInt(window.location.pathname.split("/")[2]);
     function getUser() {
-      const userIndex = user_list.user.findIndex((data) => data.id == user_id);
-      return user_list.user[userIndex];
+      const userIndex = user_list.users.value.findIndex(
+        (data) => data.id === user_id
+      );
+      return user_list.users.value[userIndex];
     }
 
     async function editUser(id) {
@@ -59,7 +61,7 @@ export default {
     }
 
     return {
-      state,
+      ...toRefs(state),
       getUser,
       editUser,
     };

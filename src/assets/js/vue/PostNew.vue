@@ -3,9 +3,9 @@
     <h1>New Post</h1>
 
     <label for="tweet">Tweet</label>
-    <input type="text" id="tweet" v-model="state.tweet" />
-    <p v-if="state.errors" style="color: red">
-      {{ state.errors.tweet[0] }}
+    <input type="text" id="tweet" v-model="tweet" />
+    <p v-if="errors" style="color: red">
+      {{ errors.tweet[0] }}
     </p>
 
     <button type="submit" v-on:click="createPost">Save</button>
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-const { reactive } = VueCompositionAPI;
+const { reactive, toRefs } = VueCompositionAPI;
 
 export default {
   setup() {
@@ -40,7 +40,7 @@ export default {
     }
 
     return {
-      state,
+      ...toRefs(state),
       createPost,
     };
   },

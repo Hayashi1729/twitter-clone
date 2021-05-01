@@ -5,7 +5,7 @@
     <ul>
       <li>
         <strong>Username:</strong>
-        {{ getUser().username }}
+        {{ getUser.username }}
       </li>
     </ul>
     <a v-bind:href="`${state.currentURL}/edit`">Edit</a>
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-const { reactive, inject } = VueCompositionAPI;
+const { reactive, inject, computed } = VueCompositionAPI;
 
 export default {
   setup() {
@@ -27,11 +27,13 @@ export default {
       throw new Error(`user_list is not provided`);
     }
 
-    const id = window.location.pathname.split("/")[2];
-    function getUser() {
-      const userIndex = user_list.user.findIndex((data) => data.id == id);
-      return user_list.user[userIndex];
-    }
+    const getUser = computed(() => {
+      const id = parseInt(window.location.pathname.split("/")[2]);
+      const userIndex = user_list.users.value.findIndex(
+        (data) => data.id === id
+      );
+      return user_list.users.value[userIndex];
+    });
 
     return {
       getUser,

@@ -2,18 +2,18 @@
   <div>
     <h1>Edit Post</h1>
     <label for="post">Tweet</label>
-    <input type="text" id="post" v-model="getPost().tweet" />
-    <p v-if="state.errors" style="color: red">
-      {{ state.errors.tweet[0] }}
+    <input type="text" id="post" v-model="getPost.tweet" />
+    <p v-if="errors" style="color: red">
+      {{ errors.tweet[0] }}
     </p>
 
-    <button type="submit" v-on:click="editPost(getPost().id)">Save</button>
+    <button type="submit" v-on:click="editPost(getPost.id)">Save</button>
     <a href="/posts">Back</a>
   </div>
 </template>
 
 <script>
-const { reactive, inject } = VueCompositionAPI;
+const { reactive, inject, toRefs, computed } = VueCompositionAPI;
 
 export default {
   setup() {
@@ -25,18 +25,29 @@ export default {
     if (!post_list) {
       throw new Error(`post_list is not provided`);
     }
-    const post_id = window.location.pathname.split("/")[2];
-    function getPost() {
-      const postIndex = post_list.post.findIndex((data) => data.id == post_id);
-      return post_list.post[postIndex];
-    }
+
+    const getPost = computed(() => {
+      const id = parseInt(window.location.pathname.split("/")[2]);
+      const postIndex = post_list.posts.value.findIndex(
+        (data) => data.id === id
+      );
+      return post_list.posts.value[postIndex];
+    });
+
+    //const post_id = parseInt(window.location.pathname.split("/")[2]);
+    //function getPost() {
+    //  const postIndex = post_list.posts.value.findIndex(
+    //    (data) => data.id === post_id
+    //  );
+    //  return post_list.posts.value[postIndex];
+    //}
 
     async function editPost(id) {
       try {
         const response = await axios.put(`/api/posts/${id}`, {
-          id: post.id,
+          id: id,
           post: {
-            tweet: getPost().tweet,
+            tweet: getPost.tweet,
           },
         });
         console.log(response.data.tweet);
@@ -50,7 +61,7 @@ export default {
     }
 
     return {
-      state,
+      ...toRefs(state),
       getPost,
       editPost,
     };

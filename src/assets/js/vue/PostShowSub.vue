@@ -5,12 +5,12 @@
     <ul>
       <li>
         <strong>Tweet:</strong>
-        {{ getPost().tweet }}
+        {{ getPost.tweet }}
       </li>
 
       <li>
         <strong>Username:</strong>
-        {{ getPost().user.username }}
+        {{ getPost.user.username }}
       </li>
     </ul>
     <a v-bind:href="`${state.currentURL}/edit`">Edit</a>
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-const { reactive, inject } = VueCompositionAPI;
+const { reactive, inject, computed } = VueCompositionAPI;
 
 export default {
   setup() {
@@ -31,11 +31,14 @@ export default {
     if (!post_list) {
       throw new Error(`post_list is not provided`);
     }
-    const id = window.location.pathname.split("/")[2];
-    function getPost() {
-      const postIndex = post_list.post.findIndex((data) => data.id == id);
-      return post_list.post[postIndex];
-    }
+
+    const getPost = computed(() => {
+      const id = parseInt(window.location.pathname.split("/")[2]);
+      const postIndex = post_list.posts.value.findIndex(
+        (data) => data.id === id
+      );
+      return post_list.posts.value[postIndex];
+    });
 
     return {
       getPost,

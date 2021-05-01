@@ -44,7 +44,9 @@
       </tbody>
     </table>
 
-    <a href="posts/new">新しい投稿</a>
+    <a href="/posts/new">新しい投稿</a>
+    <br />
+    <a href="/">トップページに戻る</a>
   </div>
 </template>
 
@@ -63,8 +65,6 @@ export default {
       throw new Error(`post_list is not provided`);
     }
 
-    console.log(post_list.post_delete);
-
     const getData = async () => {
       const favorited_post = await axios.get("/api/favorited_post");
       state.posts_favorited_by_current_user = favorited_post.data;
@@ -76,7 +76,7 @@ export default {
     onMounted(getData);
 
     const reversePosts = computed(() => {
-      return post_list.post.slice().reverse();
+      return post_list.posts.value.slice().reverse();
     });
 
     async function deletePost(id) {

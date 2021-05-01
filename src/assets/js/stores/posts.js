@@ -1,4 +1,4 @@
-const { reactive } = VueCompositionAPI;
+const { reactive, readonly, toRefs } = VueCompositionAPI;
 
 export default function postStore() {
     const state = reactive({
@@ -9,16 +9,13 @@ export default function postStore() {
         state.posts = response.data
     })
 
-
     function post_delete(id) {
         console.log(id)
         state.posts = state.posts.filter((post) => post.id !== id);
     }
 
     return {
-        get post() {
-            return state.posts
-        },
+        ...toRefs(state),
         post_delete
     }
 }

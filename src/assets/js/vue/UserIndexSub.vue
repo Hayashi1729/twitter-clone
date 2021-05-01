@@ -10,7 +10,7 @@
           <th></th>
         </tr>
       </thead>
-      <tbody v-for="user in user_list.user" :key="user.id">
+      <tbody v-for="user in user_list.users.value" :key="user.id">
         <tr>
           <td>{{ user.username }}</td>
 
@@ -23,6 +23,8 @@
       </tbody>
     </table>
     <a href="/users/new">New User</a>
+    <br />
+    <a href="/">トップページに戻る</a>
   </div>
 </template>
 

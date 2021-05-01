@@ -1,4 +1,4 @@
-const { reactive } = VueCompositionAPI;
+const { reactive, toRefs } = VueCompositionAPI;
 
 export default function userStore() {
     const state = reactive({
@@ -14,9 +14,7 @@ export default function userStore() {
     }
 
     return {
-        get user() {
-            return state.users
-        },
+        ...toRefs(state),
         user_delete
     }
 }

@@ -3,24 +3,25 @@
     <h1>Login</h1>
 
     <label for="username">Username</label>
-    <input type="text" id="username" v-model="state.username" />
-    <p v-if="state.errors.username" style="color: red">
-      {{ state.errors.username[0] }}
+    <input type="text" id="username" v-model="username" />
+    <p v-if="errors.username" style="color: red">
+      {{ errors.username[0] }}
     </p>
 
     <label for="password">Password</label>
-    <input type="password" id="password" v-model="state.password" />
-    <p v-if="state.errors.password" style="color: red">
-      {{ state.errors.password[0] }}
+    <input type="password" id="password" v-model="password" />
+    <p v-if="errors.password" style="color: red">
+      {{ errors.password[0] }}
     </p>
 
     <button type="submit" v-on:click="createSession" action="/">Log in</button>
+    <a href="/">トップページに戻る</a>
   </div>
 </template>
 
 
 <script>
-const { reactive } = VueCompositionAPI;
+const { reactive, toRefs } = VueCompositionAPI;
 
 export default {
   setup() {
@@ -49,7 +50,7 @@ export default {
     }
 
     return {
-      state,
+      ...toRefs(state),
       createSession,
     };
   },
