@@ -60,9 +60,8 @@ export default {
         });
         window.location.href = "/posts";
       } catch (error) {
-        console.log(error);
         if (error.response.data && error.response.data.errors) {
-          console.log(error);
+          console.error(error);
           state.errors = error.response.data.errors;
         }
       }

@@ -39,11 +39,10 @@ export default {
             password: state.password,
           },
         });
-        console.log(response.data);
         window.location.href = "/";
       } catch (error) {
         if (error.response.data && error.response.data.errors) {
-          console.log(error);
+          console.error(error);
           state.errors = error.response.data.errors;
         }
       }

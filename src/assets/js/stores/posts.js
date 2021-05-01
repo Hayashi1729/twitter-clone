@@ -10,7 +10,6 @@ export default function postStore() {
     })
 
     function post_delete(id) {
-        console.log(id)
         state.posts = state.posts.filter((post) => post.id !== id);
     }
 

@@ -39,11 +39,10 @@ export default {
             password: state.password,
           },
         });
-        console.log("Username:" + response.data.username);
         window.location.href = "/users";
       } catch (error) {
         if (error.response.data && error.response.data.errors) {
-          console.log(error);
+          console.error(error);
           state.errors = error.response.data.errors;
         }
       }

@@ -29,11 +29,10 @@ export default {
         const response = await axios.post("/api/posts", {
           post: { tweet: state.tweet },
         });
-        console.log("Tweet:" + response.data.tweet);
         window.location.href = "/posts";
       } catch (error) {
         if (error.response.data && error.response.data.errors) {
-          console.log(error);
+          console.error(error);
           state.errors = error.response.data.errors;
         }
       }
