@@ -22,15 +22,15 @@ export default {
       errors: "",
     });
 
-    const post_list = inject("post_list");
-    if (!post_list) {
-      throw new Error(`post_list is not provided`);
+    const postList = inject("postList");
+    if (!postList) {
+      throw new Error(`postList is not provided`);
     }
 
     const postId = parseInt(window.location.pathname.split("/")[2]);
 
     const postIndex = computed(() => {
-      const index = post_list.posts.value.findIndex(
+      const index = postList.posts.value.findIndex(
         (data) => data.id === postId
       );
 
@@ -39,14 +39,14 @@ export default {
 
     const currentPostTweet = computed({
       get: () => {
-        if (post_list.posts.value[postIndex.value]) {
-          return post_list.posts.value[postIndex.value].tweet;
+        if (postList.posts.value[postIndex.value]) {
+          return postList.posts.value[postIndex.value].tweet;
         } else {
           return "";
         }
       },
       set: (value) => {
-        post_list.posts.value[postIndex.value].tweet = value;
+        postList.posts.value[postIndex.value].tweet = value;
       },
     });
 

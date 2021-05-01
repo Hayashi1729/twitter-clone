@@ -22,17 +22,17 @@ export default {
       currentURL: window.location.href,
     });
 
-    const user_list = inject("user_list");
-    if (!user_list) {
-      throw new Error(`user_list is not provided`);
+    const userList = inject("userList");
+    if (!userList) {
+      throw new Error(`userList is not provided`);
     }
 
     const currentUser = computed(() => {
       const id = parseInt(window.location.pathname.split("/")[2]);
-      const userIndex = user_list.users.value.findIndex(
+      const userIndex = userList.users.value.findIndex(
         (data) => data.id === id
       );
-      return user_list.users.value[userIndex];
+      return userList.users.value[userIndex];
     });
 
     return {

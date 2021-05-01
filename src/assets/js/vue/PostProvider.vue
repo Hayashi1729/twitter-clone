@@ -10,7 +10,7 @@ import postStore from "../stores/posts";
 
 export default {
   setup() {
-    provide("post_list", postStore());
+    provide("postList", postStore());
 
     return {};
   },

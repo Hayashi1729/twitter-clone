@@ -28,7 +28,7 @@
           </td>
 
           <td>
-            <div v-if="is_favorited(post.id)">
+            <div v-if="isFavorited(post.id)">
               <button v-on:click="deleteFavorite(post)">
                 お気に入り登録を解除する
               </button>
@@ -56,18 +56,18 @@ const { reactive, onMounted, computed, inject } = VueCompositionAPI;
 export default {
   setup() {
     const state = reactive({
-      posts_favorited_by_current_user: [],
+      postsFavoritedByCurrentUser: [],
       favorites: [],
     });
 
-    const post_list = inject("post_list");
-    if (!post_list) {
-      throw new Error(`post_list is not provided`);
+    const postList = inject("postList");
+    if (!postList) {
+      throw new Error(`postList is not provided`);
     }
 
     const getData = async () => {
-      const favorited_post = await axios.get("/api/favorited_post");
-      state.posts_favorited_by_current_user = favorited_post.data;
+      const favoritedPost = await axios.get("/api/favorited_post");
+      state.postsFavoritedByCurrentUser = favoritedPost.data;
 
       const favorites = await axios.get("/api/favorites");
       state.favorites = favorites.data;
@@ -76,13 +76,13 @@ export default {
     onMounted(getData);
 
     const reversePosts = computed(() => {
-      return post_list.posts.value.slice().reverse();
+      return postList.posts.value.slice().reverse();
     });
 
     async function deletePost(id) {
       try {
         const response = await axios.delete(`/api/posts/${id}`);
-        post_list.post_delete(id);
+        postList.postDelete(id);
       } catch (error) {
         console.error(error);
       }
@@ -91,7 +91,7 @@ export default {
     async function createFavorite(post) {
       try {
         const response = await axios.post(`posts/${post.id}/favorite`);
-        state.posts_favorited_by_current_user.push(post.id);
+        state.postsFavoritedByCurrentUser.push(post.id);
         post.favorites.push(1);
       } catch (error) {
         console.error(error);
@@ -101,8 +101,8 @@ export default {
     async function deleteFavorite(post) {
       try {
         const response = await axios.delete(`posts/${post.id}/favorite`);
-        state.posts_favorited_by_current_user = state.posts_favorited_by_current_user.filter(
-          (favorite_id) => favorite_id !== post.id
+        state.postsFavoritedByCurrentUser = state.postsFavoritedByCurrentUser.filter(
+          (favoriteId) => favoriteId !== post.id
         );
         post.favorites.pop();
       } catch (error) {
@@ -114,19 +114,19 @@ export default {
       return post.favorites.length;
     }
 
-    function is_favorited(id) {
-      return state.posts_favorited_by_current_user.includes(id);
+    function isFavorited(id) {
+      return state.postsFavoritedByCurrentUser.includes(id);
     }
 
     return {
-      post_list,
+      postList,
       state,
       reversePosts,
       deletePost,
       createFavorite,
       deleteFavorite,
       countFavorites,
-      is_favorited,
+      isFavorited,
     };
   },
 };

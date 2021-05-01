@@ -9,12 +9,12 @@ export default function userStore() {
         state.users = response.data
     })
 
-    function user_delete(id) {
+    function userDelete(id) {
         state.users = state.users.filter((user) => user.id !== id);
     }
 
     return {
         ...toRefs(state),
-        user_delete
+        userDelete
     }
 }

@@ -29,14 +29,14 @@ export default {
       errors: "",
     });
 
-    const user_list = inject("user_list");
-    if (!user_list) {
-      throw new Error(`user_list is not provided`);
+    const userList = inject("userList");
+    if (!userList) {
+      throw new Error(`userList is not provided`);
     }
     const userId = parseInt(window.location.pathname.split("/")[2]);
 
     const userIndex = computed(() => {
-      const index = user_list.users.value.findIndex(
+      const index = userList.users.value.findIndex(
         (data) => data.id === userId
       );
 
@@ -45,27 +45,27 @@ export default {
 
     const currentUserUsername = computed({
       get: () => {
-        if (user_list.users.value[userIndex.value]) {
-          return user_list.users.value[userIndex.value].username;
+        if (userList.users.value[userIndex.value]) {
+          return userList.users.value[userIndex.value].username;
         } else {
           return "";
         }
       },
       set: (value) => {
-        user_list.users.value[userIndex.value].username = value;
+        userList.users.value[userIndex.value].username = value;
       },
     });
 
     const currentUserPassword = computed({
       get: () => {
-        if (user_list.users.value[userIndex.value]) {
-          return user_list.users.value[userIndex.value].password;
+        if (userList.users.value[userIndex.value]) {
+          return userList.users.value[userIndex.value].password;
         } else {
           return "";
         }
       },
       set: (value) => {
-        user_list.users.value[userIndex.value].password = value;
+        userList.users.value[userIndex.value].password = value;
       },
     });
 

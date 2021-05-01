@@ -10,7 +10,7 @@
           <th></th>
         </tr>
       </thead>
-      <tbody v-for="user in user_list.users.value" :key="user.id">
+      <tbody v-for="user in userList.users.value" :key="user.id">
         <tr>
           <td>{{ user.username }}</td>
 
@@ -33,22 +33,22 @@ const { inject } = VueCompositionAPI;
 
 export default {
   setup() {
-    const user_list = inject("user_list");
-    if (!user_list) {
-      throw new Error(`user_list is not provided`);
+    const userList = inject("userList");
+    if (!userList) {
+      throw new Error(`userList is not provided`);
     }
 
     async function deleteUser(id) {
       try {
         const response = await axios.delete(`/api/users/${id}`);
-        user_list.user_delete(id);
+        userList.userDelete(id);
       } catch (error) {
         console.error(error);
       }
     }
 
     return {
-      user_list,
+      userList,
       deleteUser,
     };
   },

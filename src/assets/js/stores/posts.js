@@ -9,13 +9,13 @@ export default function postStore() {
         state.posts = response.data
     })
 
-    function post_delete(id) {
+    function postDelete(id) {
         state.posts = state.posts.filter((post) => post.id !== id);
     }
 
     return {
         ...toRefs(state),
-        post_delete
+        postDelete
     }
 }
 
