@@ -1,16 +1,16 @@
 <template>
-  <div>
+  <div v-if="currentUser">
     <h1>Show Post</h1>
 
     <ul>
       <li>
         <strong>Tweet:</strong>
-        {{ getPost.tweet }}
+        {{ currentUser.tweet }}
       </li>
 
       <li>
         <strong>Username:</strong>
-        {{ getPost.user.username }}
+        {{ currentUser.user.username }}
       </li>
     </ul>
     <a v-bind:href="`${state.currentURL}/edit`">Edit</a>
@@ -32,7 +32,7 @@ export default {
       throw new Error(`post_list is not provided`);
     }
 
-    const getPost = computed(() => {
+    const currentUser = computed(() => {
       const id = parseInt(window.location.pathname.split("/")[2]);
       const postIndex = post_list.posts.value.findIndex(
         (data) => data.id === id
@@ -41,7 +41,7 @@ export default {
     });
 
     return {
-      getPost,
+      currentUser,
       state,
     };
   },

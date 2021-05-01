@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div v-if="currentUser">
     <h1>Show User</h1>
 
     <ul>
       <li>
         <strong>Username:</strong>
-        {{ getUser.username }}
+        {{ currentUser.username }}
       </li>
     </ul>
     <a v-bind:href="`${state.currentURL}/edit`">Edit</a>
@@ -27,7 +27,7 @@ export default {
       throw new Error(`user_list is not provided`);
     }
 
-    const getUser = computed(() => {
+    const currentUser = computed(() => {
       const id = parseInt(window.location.pathname.split("/")[2]);
       const userIndex = user_list.users.value.findIndex(
         (data) => data.id === id
@@ -36,7 +36,7 @@ export default {
     });
 
     return {
-      getUser,
+      currentUser,
       state,
     };
   },
