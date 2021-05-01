@@ -13,13 +13,13 @@
         {{ currentUser.user.username }}
       </li>
     </ul>
-    <a v-bind:href="`${state.currentURL}/edit`">Edit</a>
+    <a v-bind:href="`${currentURL}/edit`">Edit</a>
     <a href="/posts">Back</a>
   </div>
 </template>
 
 <script>
-const { reactive, inject, computed } = VueCompositionAPI;
+const { reactive, inject, computed, toRefs } = VueCompositionAPI;
 
 export default {
   setup() {
@@ -42,7 +42,7 @@ export default {
 
     return {
       currentUser,
-      state,
+      ...toRefs(state),
     };
   },
 };
