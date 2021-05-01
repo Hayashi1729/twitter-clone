@@ -9,8 +9,13 @@ export default function userStore() {
         state.users = response.data
     })
 
-    function userDelete(id) {
-        state.users = state.users.filter((user) => user.id !== id);
+    async function userDelete(id) {
+        try {
+            const response = await axios.delete(`/api/users/${id}`);
+            state.users = state.users.filter((user) => user.id !== id);
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     return {

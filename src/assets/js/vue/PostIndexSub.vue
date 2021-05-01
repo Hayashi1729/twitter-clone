@@ -79,13 +79,8 @@ export default {
       return postList.posts.value.slice().reverse();
     });
 
-    async function deletePost(id) {
-      try {
-        const response = await axios.delete(`/api/posts/${id}`);
-        postList.postDelete(id);
-      } catch (error) {
-        console.error(error);
-      }
+    function deletePost(id) {
+      postList.postDelete(id);
     }
 
     async function createFavorite(post) {

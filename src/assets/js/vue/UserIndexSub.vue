@@ -38,13 +38,8 @@ export default {
       throw new Error(`userList is not provided`);
     }
 
-    async function deleteUser(id) {
-      try {
-        const response = await axios.delete(`/api/users/${id}`);
-        userList.userDelete(id);
-      } catch (error) {
-        console.error(error);
-      }
+    function deleteUser(id) {
+      userList.userDelete(id);
     }
 
     return {
