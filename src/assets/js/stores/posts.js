@@ -1,28 +1,28 @@
-const { reactive, readonly, toRefs } = VueCompositionAPI;
+import { reactive, toRefs } from "@vue/composition-api";
 
 export default function postStore() {
-    const state = reactive({
-        posts: [],
-    })
+  const state = reactive({
+    posts: [],
+  })
 
-    axios.get('/api/posts').then(response => {
-        state.posts = response.data
-    })
+  axios.get('/api/posts').then(response => {
+    state.posts = response.data
+  })
 
-    async function postDelete(id) {
-        try {
-            const response = await axios.delete(`/api/posts/${id}`);
-            state.posts = state.posts.filter((post) => post.id !== id);
-        } catch (error) {
-            console.error(error);
-        }
+  async function postDelete(id) {
+    try {
+      const response = await axios.delete(`/api/posts/${id}`);
+      state.posts = state.posts.filter((post) => post.id !== id);
+    } catch (error) {
+      console.error(error);
     }
+  }
 
 
 
-    return {
-        ...toRefs(state),
-        postDelete
-    }
+  return {
+    ...toRefs(state),
+    postDelete
+  }
 }
 

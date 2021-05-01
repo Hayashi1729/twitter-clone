@@ -51,7 +51,7 @@
 </template>
 
 <script>
-const { reactive, onMounted, computed, inject } = VueCompositionAPI;
+import { reactive, onMounted, computed, inject } from "@vue/composition-api";
 
 export default {
   setup() {

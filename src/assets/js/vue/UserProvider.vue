@@ -5,7 +5,7 @@
 </template>
 
 <script>
-const { provide } = VueCompositionAPI;
+import { provide } from "@vue/composition-api";
 import userStore from "../stores/users";
 
 export default {

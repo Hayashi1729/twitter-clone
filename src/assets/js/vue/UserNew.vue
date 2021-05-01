@@ -21,7 +21,7 @@
 </template>
 
 <script>
-const { reactive, toRefs } = VueCompositionAPI;
+import { reactive, toRefs } from "@vue/composition-api";
 
 export default {
   setup() {

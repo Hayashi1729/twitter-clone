@@ -29,7 +29,7 @@
 </template>
 
 <script>
-const { inject } = VueCompositionAPI;
+import { inject } from "@vue/composition-api";
 
 export default {
   setup() {

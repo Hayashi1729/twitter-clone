@@ -14,7 +14,7 @@
 </template>
 
 <script>
-const { reactive, inject, computed, toRefs } = VueCompositionAPI;
+import { reactive, inject, computed, toRefs } from "@vue/composition-api";
 
 export default {
   setup() {

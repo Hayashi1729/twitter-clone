@@ -10,9 +10,10 @@
 </template>
 
 <script>
-const { ref } = VueCompositionAPI;
+import { ref, defineComponent } from "@vue/composition-api";
 
-export default {
+export default defineComponent({
+  name: "Index",
   setup() {
     const message = ref("Twitter");
 
@@ -20,5 +21,5 @@ export default {
       message,
     };
   },
-};
+});
 </script>
