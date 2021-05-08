@@ -37,6 +37,7 @@ export default {
     if (!userList) {
       throw new Error(`userList is not provided`);
     }
+    userList.userGet();
 
     function deleteUser(id) {
       userList.userDelete(id);

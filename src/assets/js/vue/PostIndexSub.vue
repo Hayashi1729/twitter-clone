@@ -64,6 +64,7 @@ export default {
     if (!postList) {
       throw new Error(`postList is not provided`);
     }
+    postList.postGet();
 
     const getData = async () => {
       const favoritedPost = await axios.get("/api/favorited_post");

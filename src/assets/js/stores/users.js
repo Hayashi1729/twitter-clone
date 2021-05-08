@@ -1,13 +1,15 @@
 import { reactive, toRefs } from "@vue/composition-api";
+import axios from 'axios'
 
 export default function userStore() {
   const state = reactive({
     users: [],
   })
 
-  axios.get('/api/users').then(response => {
+  async function userGet() {
+    const response = await axios.get('/api/users')
     state.users = response.data
-  })
+  }
 
   async function userDelete(id) {
     try {
@@ -20,6 +22,7 @@ export default function userStore() {
 
   return {
     ...toRefs(state),
+    userGet,
     userDelete
   }
 }

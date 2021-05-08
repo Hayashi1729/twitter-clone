@@ -1,8 +1,8 @@
 <template>
-  <div v-if="currentUser">
+  <div>
     <h1>Show User</h1>
 
-    <ul>
+    <ul v-if="currentUser">
       <li>
         <strong>Username:</strong>
         {{ currentUser.username }}
@@ -26,6 +26,7 @@ export default {
     if (!userList) {
       throw new Error(`userList is not provided`);
     }
+    userList.userGet();
 
     const currentUser = computed(() => {
       const id = parseInt(window.location.pathname.split("/")[2]);

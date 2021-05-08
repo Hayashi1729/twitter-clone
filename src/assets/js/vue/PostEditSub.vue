@@ -26,6 +26,7 @@ export default {
     if (!postList) {
       throw new Error(`postList is not provided`);
     }
+    postList.postGet();
 
     const postId = parseInt(window.location.pathname.split("/")[2]);
 

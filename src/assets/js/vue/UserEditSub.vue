@@ -33,6 +33,7 @@ export default {
     if (!userList) {
       throw new Error(`userList is not provided`);
     }
+    userList.userGet();
     const userId = parseInt(window.location.pathname.split("/")[2]);
 
     const userIndex = computed(() => {
