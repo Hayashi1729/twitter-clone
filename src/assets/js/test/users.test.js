@@ -9,7 +9,7 @@ jest.mock('axios');
 
 import "regenerator-runtime/runtime";
 
-axios.get.mockResolvedValue({ data: { users: [{ id: 1, username: 'test' }] } });
+axios.get.mockResolvedValue({ data: [{ id: 1, username: 'test' }] });
 
 describe(`users.js`, () => {
   const options = { localVue }
@@ -17,7 +17,7 @@ describe(`users.js`, () => {
   it('get users', async () => {
     const store = userStore()
     await store.userGet();
-    const response = store.users.value.users[0].username
+    const response = store.users.value[0].username
     expect(response).toEqual("test");
   })
 

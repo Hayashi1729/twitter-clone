@@ -9,7 +9,15 @@ jest.mock('axios')
 
 import "regenerator-runtime/runtime";
 
-axios.post.mockResolvedValue({ data: { session: [{ username: 'test', password: 'password' }] } });
+global.window = Object.create(window);
+const pathname = "/sessions/new";
+Object.defineProperty(window, 'location', {
+  value: {
+    pathname: pathname
+  },
+})
+
+axios.post.mockResolvedValue({ data: { session: { username: 'test', password: 'password' } } });
 
 describe(`SessionNew.vue`, () => {
   const options = { localVue }

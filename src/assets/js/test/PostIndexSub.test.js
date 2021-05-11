@@ -40,7 +40,6 @@ describe(`PostIndexSub.vue`, () => {
   })
 
   it('reversePosts', () => {
-    console.log(wrapper.vm)
     expect(wrapper.vm.reversePosts[0].id).toBe(2)
     expect(wrapper.vm.reversePosts[1].id).toBe(1)
   })
