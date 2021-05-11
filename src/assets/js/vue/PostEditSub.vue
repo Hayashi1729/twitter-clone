@@ -71,6 +71,7 @@ export default {
 
     return {
       ...toRefs(state),
+      postIndex,
       currentPostTweet,
       editPost,
       postId,

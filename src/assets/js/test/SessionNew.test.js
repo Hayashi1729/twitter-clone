@@ -33,6 +33,6 @@ describe(`SessionNew.vue`, () => {
 
   it('createSession', async () => {
     await wrapper.vm.createSession()
-    expect(window.location.pathname).toBe("/")
+    expect(window.location.href).toBe("/")
   })
 })

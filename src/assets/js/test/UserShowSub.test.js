@@ -4,20 +4,44 @@ import CompositionApi from "@vue/composition-api";
 const localVue = createLocalVue();
 localVue.use(CompositionApi);
 
+global.window = Object.create(window);
+const pathname = "/users/1";
+Object.defineProperty(window, 'location', {
+  value: {
+    pathname: pathname
+  },
+});
+
+const testUser = {
+  id: 1,
+  username: "TestUser_1",
+}
 describe(`UserShowSub.vue`, () => {
   const wrapper = shallowMount(UserShowSub, {
     provide: {
-      foo() {
-        return 'bar'
-      }
-    }
+      userList: {
+        users: {
+          value: [
+            testUser
+          ]
+        },
+        userGet() {
+          return 'hoge'
+        },
+        userDelete() {
+          this.users.value.pop()
+        }
+      },
+    },
+    localVue
   })
 
   it('render UserShowSub', () => {
     expect(wrapper.html()).toContain('Show User')
+    expect(wrapper.html()).toContain('TestUser_1')
   })
 
-  it('', () => {
-
+  it('currentUser', () => {
+    expect(wrapper.vm.currentUser.username).toEqual("TestUser_1")
   })
 })

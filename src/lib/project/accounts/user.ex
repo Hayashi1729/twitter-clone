@@ -14,7 +14,7 @@ defmodule Project.Accounts.User do
           inserted_at: NaiveDateTime.t(),
           updated_at: NaiveDateTime.t()
         }
-  @derive {Jason.Encoder, only: [:id, :username]}
+  @derive {Jason.Encoder, only: [:id, :username, :password]}
   schema "users" do
     field :password, :string, virtual: true
     field :password_hash, :string

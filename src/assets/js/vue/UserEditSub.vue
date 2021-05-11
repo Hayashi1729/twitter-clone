@@ -41,7 +41,6 @@ export default {
       const index = userList.users.value.findIndex(
         (data) => data.id === userId
       );
-
       return index;
     });
 
@@ -77,7 +76,7 @@ export default {
           id: id,
           user: {
             username: currentUserUsername.value,
-            password: currentUserUsername.value,
+            password: currentUserPassword.value,
           },
         });
         window.location.href = "/users";
@@ -91,6 +90,7 @@ export default {
 
     return {
       ...toRefs(state),
+      userIndex,
       currentUserUsername,
       currentUserPassword,
       editUser,

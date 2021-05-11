@@ -8,7 +8,6 @@ localVue.use(CompositionApi);
 const testUser = {
   id: 1,
   username: "TestUser_1",
-  inserted_at: "Test"
 }
 describe(`UserIndexSub.vue`, () => {
   const wrapper = shallowMount(UserIndexSub, {
@@ -18,20 +17,24 @@ describe(`UserIndexSub.vue`, () => {
           value: [
             testUser
           ]
+        },
+        userGet() {
+          return 'hoge'
+        },
+        userDelete() {
+          this.users.value.pop()
         }
-      }
-    }
+      },
+    },
+    localVue
   })
-  console.log(this.userList)
 
   it('render UserIndexSub', () => {
-    wrapper.vm.$nextTick(() => {
-      expect(wrapper.html()).toContain('Listing Users')
-      done()
-    })
+    expect(wrapper.html()).toContain('Listing Users')
   })
 
-  it('', () => {
-
+  it('deleteUser', () => {
+    wrapper.vm.deleteUser(1)
+    expect(wrapper.vm.userList.users.value).toEqual([])
   })
 })
