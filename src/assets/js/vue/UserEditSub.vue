@@ -22,6 +22,7 @@
 
 <script>
 import { reactive, inject, toRefs, computed } from "@vue/composition-api";
+import axios from "axios";
 
 export default {
   setup() {

@@ -5,11 +5,11 @@ const localVue = createLocalVue();
 localVue.use(CompositionApi);
 
 import axios from 'axios';
-jest.mock('axios');
+jest.mock('axios')
 
 import "regenerator-runtime/runtime";
 
-axios.post.mockResolvedValue({ data: { users: [{ id: 1, username: 'test', password: 'password' }] } });
+axios.post.mockResolvedValue({ data: { session: [{ username: 'test', password: 'password' }] } });
 
 describe(`SessionNew.vue`, () => {
   const options = { localVue }
@@ -32,7 +32,7 @@ describe(`SessionNew.vue`, () => {
   })
 
   it('createSession', async () => {
-    console.log(wrapper.vm.createSession)
     await wrapper.vm.createSession()
+    expect(window.location.pathname).toBe("/")
   })
 })

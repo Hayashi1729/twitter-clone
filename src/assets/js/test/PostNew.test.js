@@ -4,6 +4,8 @@ import CompositionApi from "@vue/composition-api";
 const localVue = createLocalVue();
 localVue.use(CompositionApi);
 
+import "regenerator-runtime/runtime";
+
 describe(`PostNew.vue`, () => {
   const options = { localVue }
   const wrapper = shallowMount(PostNew, options)

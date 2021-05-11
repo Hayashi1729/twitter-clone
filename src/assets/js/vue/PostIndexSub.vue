@@ -52,12 +52,12 @@
 
 <script>
 import { reactive, onMounted, computed, inject } from "@vue/composition-api";
+import axios from "axios";
 
 export default {
   setup() {
     const state = reactive({
       postsFavoritedByCurrentUser: [],
-      favorites: [],
     });
 
     const postList = inject("postList");
@@ -69,9 +69,6 @@ export default {
     const getData = async () => {
       const favoritedPost = await axios.get("/api/favorited_post");
       state.postsFavoritedByCurrentUser = favoritedPost.data;
-
-      const favorites = await axios.get("/api/favorites");
-      state.favorites = favorites.data;
     };
 
     onMounted(getData);

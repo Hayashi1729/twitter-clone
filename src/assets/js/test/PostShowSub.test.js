@@ -5,13 +5,7 @@ const localVue = createLocalVue();
 localVue.use(CompositionApi);
 
 describe(`PostShowSub.vue`, () => {
-  const wrapper = shallowMount(PostShowSub, {
-    provide: {
-      foo() {
-        return 'bar'
-      }
-    }
-  })
+  const wrapper = shallowMount(PostShowSub, { provide: {} })
 
   it('render PostShowSub', () => {
     expect(wrapper.html()).toContain('Show Post')
