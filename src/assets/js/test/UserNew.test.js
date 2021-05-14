@@ -17,8 +17,6 @@ Object.defineProperty(window, 'location', {
   },
 })
 
-axios.post.mockResolvedValue({ data: { user: { username: 'test', password: 'password' } } });
-
 describe(`UserNew.vue`, () => {
   const options = { localVue }
   const wrapper = shallowMount(UserNew, options)
@@ -40,7 +38,21 @@ describe(`UserNew.vue`, () => {
   })
 
   it('createUser', async () => {
+    axios.post.mockResolvedValue({ data: { user: { username: 'test', password: 'password' } } });
     await wrapper.vm.createUser()
     expect(window.location.href).toBe("/users")
   })
+
+  it('error in createUser ', async () => {
+    expect.assertions(2);
+    try {
+      axios.post.mockResolvedValue({ data: { user: { username: '', password: '' } } });
+      await wrapper.vm.createUser()
+      const msg = { response: { data: { errors: { username: ["ユーザーネームを入力してください"], password: ['パスワードを入力してください。パスワードは6文字以上100文字以下である必要があります。'] } } } }
+      throw msg
+    } catch (error) {
+      expect(error.response.data.errors.username[0]).toEqual("ユーザーネームを入力してください");
+      expect(error.response.data.errors.password[0]).toEqual("パスワードを入力してください。パスワードは6文字以上100文字以下である必要があります。");
+    }
+  });
 })

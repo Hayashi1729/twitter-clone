@@ -17,8 +17,6 @@ Object.defineProperty(window, 'location', {
   },
 })
 
-axios.post.mockResolvedValue({ data: { session: { username: 'test', password: 'password' } } });
-
 describe(`SessionNew.vue`, () => {
   const options = { localVue }
   const wrapper = shallowMount(SessionNew, options)
@@ -40,7 +38,20 @@ describe(`SessionNew.vue`, () => {
   })
 
   it('createSession', async () => {
+    axios.post.mockResolvedValue({ data: { session: { username: 'test', password: 'password' } } });
     await wrapper.vm.createSession()
     expect(window.location.href).toBe("/")
   })
+
+  it('error in createSession ', async () => {
+    expect.assertions(1);
+    try {
+      axios.post.mockResolvedValue({ data: { session: { username: '', password: '' } } });
+      await wrapper.vm.createSession()
+      const msg = { response: { data: { errors: { username: ["ユーザーが存在しません"] } } } }
+      throw msg
+    } catch (error) {
+      expect(error.response.data.errors.username[0]).toEqual("ユーザーが存在しません");
+    }
+  });
 })

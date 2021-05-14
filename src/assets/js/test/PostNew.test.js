@@ -17,8 +17,6 @@ Object.defineProperty(window, 'location', {
   },
 })
 
-axios.post.mockResolvedValue({ data: { post: [{ tweet: 'new post' }] } });
-
 describe(`PostNew.vue`, () => {
   const options = { localVue }
   const wrapper = shallowMount(PostNew, options)
@@ -35,7 +33,20 @@ describe(`PostNew.vue`, () => {
   })
 
   it('createPost', async () => {
+    axios.post.mockResolvedValue({ data: { post: { tweet: 'new post' } } });
     await wrapper.vm.createPost()
     expect(window.location.href).toBe("/posts")
   })
+
+  it('error in createPost ', async () => {
+    expect.assertions(1);
+    try {
+      axios.post.mockResolvedValue({ data: { post: { tweet: '' } } });
+      await wrapper.vm.createPost()
+      const msg = { response: { data: { errors: { tweet: ["can't be blank"] } } } }
+      throw msg
+    } catch (error) {
+      expect(error.response.data.errors.tweet[0]).toEqual("can't be blank");
+    }
+  });
 })

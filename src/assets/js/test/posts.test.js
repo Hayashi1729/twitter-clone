@@ -17,15 +17,25 @@ describe(`posts.js`, () => {
   it('get posts', async () => {
     const store = postStore()
     await store.postGet();
-    const response = store.posts.value[0].tweet
-    expect(response).toEqual("test");
+    expect(store.posts.value[0].tweet).toEqual("test");
   })
 
   it('delete posts', async () => {
     const store = postStore()
-    await store.postDelete(1)
-
-    const response = store.posts.value
-    expect(response).toEqual([]);
+    store.posts.value = [{ id: 1, tweet: 'test' }]
+    await store.postDelete(1);
+    expect(store.posts.value).toEqual([]);
   })
+
+  it('error in delete posts ', async () => {
+    expect.assertions(1);
+    try {
+      const store = postStore()
+      await store.postDelete(100);
+      const msg = { response: { data: { errors: { tweet: ["ツイートが存在しません"] } } } }
+      throw msg
+    } catch (error) {
+      expect(error.response.data.errors.tweet[0]).toEqual("ツイートが存在しません");
+    }
+  });
 })

@@ -23,9 +23,20 @@ describe(`users.js`, () => {
 
   it('delete users', async () => {
     const store = userStore()
+    store.users.value = [{ id: 1, username: 'test' }]
     await store.userDelete(1)
-
-    const response = store.users.value
-    expect(response).toEqual([]);
+    expect(store.users.value).toEqual([]);
   })
+
+  it('error in delete users ', async () => {
+    expect.assertions(1);
+    try {
+      const store = userStore()
+      await store.userDelete(100);
+      const msg = { response: { data: { errors: { username: ["ユーザーが存在しません"] } } } }
+      throw msg
+    } catch (error) {
+      expect(error.response.data.errors.username[0]).toEqual("ユーザーが存在しません");
+    }
+  });
 })

@@ -90,6 +90,7 @@ export default {
 
     return {
       ...toRefs(state),
+      userList,
       userIndex,
       currentUserUsername,
       currentUserPassword,
