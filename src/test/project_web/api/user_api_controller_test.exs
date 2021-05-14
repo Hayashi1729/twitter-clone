@@ -19,6 +19,7 @@ defmodule ProjectWeb.UserApiControllerTest do
       Enum.each(user_list, fn x ->
         assert Map.keys(x) == [
                  "id",
+                 "password",
                  "username"
                ]
       end)
@@ -30,6 +31,7 @@ defmodule ProjectWeb.UserApiControllerTest do
 
       assert Map.keys(user) == [
                "id",
+               "password",
                "username"
              ]
     end
@@ -46,6 +48,7 @@ defmodule ProjectWeb.UserApiControllerTest do
 
     assert Map.keys(user) == [
              "id",
+             "password",
              "username"
            ]
   end
