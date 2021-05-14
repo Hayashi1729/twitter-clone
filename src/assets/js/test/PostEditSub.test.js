@@ -17,8 +17,6 @@ Object.defineProperty(window, 'location', {
   },
 });
 
-axios.put.mockResolvedValue({ id: 1, post: { tweet: "edit tweet" } });
-
 describe(`PostEditSub.vue`, () => {
   const wrapper = shallowMount(PostEditSub, {
     provide: {
@@ -54,7 +52,20 @@ describe(`PostEditSub.vue`, () => {
   })
 
   it('editPost', async () => {
+    axios.put.mockResolvedValue({ id: 1, post: { tweet: "edit tweet" } });
     await wrapper.vm.editPost(1)
     expect(window.location.href).toBe("/posts")
   })
+
+  it('error in editPost ', async () => {
+    expect.assertions(1);
+    try {
+      axios.put.mockResolvedValue({ id: 1, post: { tweet: "" } });
+      await wrapper.vm.editPost(1)
+      const msg = { response: { data: { errors: { tweet: ["can't be blank"] } } } }
+      throw msg
+    } catch (error) {
+      expect(error.response.data.errors.tweet[0]).toEqual("can't be blank");
+    }
+  });
 })

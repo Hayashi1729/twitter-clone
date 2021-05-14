@@ -28,5 +28,6 @@ defmodule Project.Twitter.Favorite do
     favorite
     |> cast(attrs, [:user_id, :post_id])
     |> validate_required([:user_id, :post_id])
+    |> unique_constraint([:user_id, :post_id], message: "このツイートはすでにお気に入り登録されています。")
   end
 end

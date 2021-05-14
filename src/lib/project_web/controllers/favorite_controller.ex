@@ -20,6 +20,11 @@ defmodule ProjectWeb.FavoriteController do
         conn
         |> put_status(:created)
         |> render("favorite_show.json", favorite_id: favorite.id)
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render(ProjectWeb.ErrorView, "error.json", changeset: changeset)
     end
   end
 
@@ -35,9 +40,22 @@ defmodule ProjectWeb.FavoriteController do
       |> where([f], f.post_id == ^post_id and f.user_id == ^current_user.id)
       |> Repo.one()
 
-    case Twitter.delete_favorite(post) do
-      {:ok, %Favorite{}} ->
-        send_resp(conn, :no_content, "")
+    if post do
+      case Twitter.delete_favorite(post) do
+        {:ok, %Favorite{}} ->
+          send_resp(conn, :no_content, "")
+
+        {:error, %Ecto.Changeset{} = changeset} ->
+          conn
+          |> put_status(:unprocessable_entity)
+          |> render(ProjectWeb.ErrorView, "error.json", changeset: changeset)
+      end
+    else
+      status = :favorite_not_found
+
+      conn
+      |> put_status(:unprocessable_entity)
+      |> render(ProjectWeb.ErrorView, "error.json", status: status)
     end
   end
 end

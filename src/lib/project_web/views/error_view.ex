@@ -38,6 +38,13 @@ defmodule ProjectWeb.ErrorView do
           }
         }
 
+      :favorite_not_found ->
+        %{
+          errors: %{
+            favorite: ["このツイートはお気に入り登録されていません"]
+          }
+        }
+
       _ ->
         %{
           errors: "An unexpected error has occurred"
