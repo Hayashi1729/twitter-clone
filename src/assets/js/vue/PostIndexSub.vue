@@ -27,19 +27,10 @@
             <button v-on:click="deletePost(post.id)">Delete</button>
           </td>
 
-          <td>
-            <div v-if="isFavorited(post.id)">
-              <button v-on:click="deleteFavorite(post)">
-                お気に入り登録を解除する
-              </button>
-            </div>
-            <div v-else>
-              <button v-on:click="createFavorite(post)">
-                お気に入り登録する
-              </button>
-            </div>
-          </td>
-          <td>{{ countFavorites(post) }}</td>
+          <post-index-sub-favorite
+            v-bind:post="post"
+            v-bind:fav="postsFavoritedByCurrentUser"
+          ></post-index-sub-favorite>
         </tr>
       </tbody>
     </table>
@@ -51,10 +42,18 @@
 </template>
 
 <script>
-import { reactive, onMounted, computed, inject } from "@vue/composition-api";
+import {
+  reactive,
+  onMounted,
+  computed,
+  inject,
+  toRefs,
+} from "@vue/composition-api";
 import axios from "axios";
+import PostIndexSubFavorite from "./PostIndexSubFavorite.vue";
 
 export default {
+  components: { PostIndexSubFavorite },
   setup() {
     const state = reactive({
       postsFavoritedByCurrentUser: [],
@@ -81,45 +80,11 @@ export default {
       postList.postDelete(id);
     }
 
-    async function createFavorite(post) {
-      try {
-        const response = await axios.post(`posts/${post.id}/favorite`);
-        state.postsFavoritedByCurrentUser.push(post.id);
-        post.favorites.push(1);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    async function deleteFavorite(post) {
-      try {
-        const response = await axios.delete(`posts/${post.id}/favorite`);
-        state.postsFavoritedByCurrentUser = state.postsFavoritedByCurrentUser.filter(
-          (favoriteId) => favoriteId !== post.id
-        );
-        post.favorites.pop();
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    function countFavorites(post) {
-      return post.favorites.length;
-    }
-
-    function isFavorited(id) {
-      return state.postsFavoritedByCurrentUser.includes(id);
-    }
-
     return {
       postList,
-      state,
+      ...toRefs(state),
       reversePosts,
       deletePost,
-      createFavorite,
-      deleteFavorite,
-      countFavorites,
-      isFavorited,
     };
   },
 };
