@@ -8,8 +8,9 @@ defmodule ProjectWeb.PostApiController do
   Render post_index.json
   """
   @spec index(Plug.Conn.t(), any) :: Plug.Conn.t()
-  def index(conn, params) do
-    render(conn, "post_index.json", api_data: params)
+  def index(conn, _params) do
+    index = Twitter.list_posts()
+    render(conn, "post_index.json", api_data: index)
   end
 
   @doc """
@@ -18,7 +19,8 @@ defmodule ProjectWeb.PostApiController do
   @spec favorited_post(Plug.Conn.t(), any) :: Plug.Conn.t()
   def favorited_post(conn, _params) do
     current_user = conn.assigns.current_user
-    render(conn, "posts_favorited_by_current_user.json", api_data: current_user)
+    user_favorite = Twitter.list_posts_with_favorite(current_user.id)
+    render(conn, "posts_favorited_by_current_user.json", api_data: user_favorite)
   end
 
   @doc """
@@ -31,9 +33,11 @@ defmodule ProjectWeb.PostApiController do
 
     case Twitter.create_post(changeset, post_params) do
       {:ok, %Post{} = post} ->
+        get_post = Twitter.get_post!(post.id)
+
         conn
         |> put_status(:created)
-        |> render("post_show.json", post_id: post.id)
+        |> render("post_show.json", post: get_post)
 
       {:error, %Ecto.Changeset{} = changeset} ->
         conn
@@ -47,7 +51,8 @@ defmodule ProjectWeb.PostApiController do
   """
   @spec show(Plug.Conn.t(), map) :: Plug.Conn.t()
   def show(conn, %{"id" => id}) do
-    render(conn, "post_show.json", post_id: id)
+    get_post = Twitter.get_post!(id)
+    render(conn, "post_show.json", post: get_post)
   end
 
   @doc """
@@ -61,7 +66,7 @@ defmodule ProjectWeb.PostApiController do
       {:ok, %Post{}} ->
         conn
         |> put_status(:created)
-        |> render("post_show.json", post_id: post.id)
+        |> render("post_show.json", post: post)
 
       {:error, %Ecto.Changeset{} = changeset} ->
         conn

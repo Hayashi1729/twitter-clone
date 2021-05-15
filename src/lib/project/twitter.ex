@@ -105,8 +105,7 @@ defmodule Project.Twitter do
   """
   @spec list_favorites :: list(Favorite.t())
   def list_favorites do
-    Favorite
-    |> Repo.all()
+    Repo.all(Favorite)
   end
 
   @spec list_posts_with_favorite(integer) :: list(integer)
@@ -145,8 +144,7 @@ defmodule Project.Twitter do
   """
   @spec get_favorite!(integer()) :: Favorite.t()
   def get_favorite!(id) do
-    Favorite
-    |> Repo.get!(id)
+    Repo.get!(Favorite, id)
   end
 
   @doc """

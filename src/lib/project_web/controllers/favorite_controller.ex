@@ -17,9 +17,11 @@ defmodule ProjectWeb.FavoriteController do
 
     case Twitter.create_favorite(post.id, current_user.id) do
       {:ok, %Favorite{} = favorite} ->
+        fav = Twitter.get_favorite!(favorite.id)
+
         conn
         |> put_status(:created)
-        |> render("favorite_show.json", favorite_id: favorite.id)
+        |> render("favorite_show.json", favorite_id: fav)
 
       {:error, %Ecto.Changeset{} = changeset} ->
         conn

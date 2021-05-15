@@ -8,8 +8,9 @@ defmodule ProjectWeb.UserApiController do
   Render user_index.json
   """
   @spec index(Plug.Conn.t(), any) :: Plug.Conn.t()
-  def index(conn, params) do
-    render(conn, "user_index.json", api_data: params)
+  def index(conn, _params) do
+    list = Accounts.list_users()
+    render(conn, "user_index.json", api_data: list)
   end
 
   @doc """
@@ -19,10 +20,12 @@ defmodule ProjectWeb.UserApiController do
   def create(conn, %{"user" => user_params}) do
     case Accounts.register_user(user_params) do
       {:ok, %User{} = user} ->
+        get_user = Accounts.get_user(user.id)
+
         conn
         |> ProjectWeb.AuthorizationPlug.login(user)
         |> put_status(:created)
-        |> render("user_show.json", user_id: user.id)
+        |> render("user_show.json", user: get_user)
 
       {:error, %Ecto.Changeset{} = changeset} ->
         conn
@@ -36,7 +39,8 @@ defmodule ProjectWeb.UserApiController do
   """
   @spec show(Plug.Conn.t(), map) :: Plug.Conn.t()
   def show(conn, %{"id" => id}) do
-    render(conn, "user_show.json", user_id: id)
+    get_user = Accounts.get_user(id)
+    render(conn, "user_show.json", user: get_user)
   end
 
   @doc """
@@ -50,7 +54,7 @@ defmodule ProjectWeb.UserApiController do
       {:ok, %User{} = user} ->
         conn
         |> put_status(:created)
-        |> render("user_show.json", user_id: user.id)
+        |> render("user_show.json", user: user)
 
       {:error, %Ecto.Changeset{} = changeset} ->
         conn

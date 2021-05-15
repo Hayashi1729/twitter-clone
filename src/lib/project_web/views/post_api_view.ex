@@ -1,17 +1,15 @@
 defmodule ProjectWeb.PostApiView do
   use ProjectWeb, :view
 
-  alias Project.Twitter
-
-  def render("post_index.json", %{api_data: _params}) do
-    Twitter.list_posts()
+  def render("post_index.json", %{api_data: index}) do
+    index
   end
 
-  def render("posts_favorited_by_current_user.json", %{api_data: current_user}) do
-    Twitter.list_posts_with_favorite(current_user.id)
+  def render("posts_favorited_by_current_user.json", %{api_data: user_favorite}) do
+    user_favorite
   end
 
-  def render("post_show.json", %{post_id: id}) do
-    Twitter.get_post!(id)
+  def render("post_show.json", %{post: post}) do
+    post
   end
 end

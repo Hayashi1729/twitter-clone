@@ -31,24 +31,25 @@ export default {
 
     const postId = parseInt(window.location.pathname.split("/")[2]);
 
-    const postIndex = computed(() => {
+    const post = computed(() => {
       const index = postList.posts.value.findIndex(
         (data) => data.id === postId
       );
+      const currentPost = postList.posts.value[index];
 
-      return index;
+      return currentPost;
     });
 
     const currentPostTweet = computed({
       get: () => {
-        if (postList.posts.value[postIndex.value]) {
-          return postList.posts.value[postIndex.value].tweet;
+        if (post.value) {
+          return post.value.tweet;
         } else {
           return "";
         }
       },
       set: (value) => {
-        postList.posts.value[postIndex.value].tweet = value;
+        post.value.tweet = value;
       },
     });
 
@@ -71,7 +72,6 @@ export default {
 
     return {
       ...toRefs(state),
-      postIndex,
       currentPostTweet,
       editPost,
       postId,

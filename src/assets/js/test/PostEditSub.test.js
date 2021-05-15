@@ -43,9 +43,9 @@ describe(`PostEditSub.vue`, () => {
     expect(wrapper.html()).toContain('Edit Post')
   })
 
-  it('postIndex', () => {
-    expect(wrapper.vm.postIndex).toBe(0)
-  })
+  // it('post', () => {
+  //   expect(wrapper.vm.post.value.tweet).toBe("testpost")
+  // })
 
   it('currentPostTweet', () => {
     expect(wrapper.vm.currentPostTweet).toEqual("testpost")
