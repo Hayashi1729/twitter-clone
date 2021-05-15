@@ -40,9 +40,9 @@ defmodule ProjectWeb.PostApiControllerTest do
 
     test "create post", %{conn: conn} do
       conn = post(conn, Routes.post_api_path(conn, :create), post: params_for(:post))
-      user = json_response(conn, 201)
+      post = json_response(conn, 201)
 
-      assert Map.keys(user) == [
+      assert Map.keys(post) == [
                "favorites",
                "id",
                "inserted_at",
@@ -66,6 +66,14 @@ defmodule ProjectWeb.PostApiControllerTest do
                "user",
                "user_id"
              ]
+    end
+
+    test "update post", %{conn: conn, post: post} do
+      params = %{tweet: "update post"}
+      conn = put(conn, Routes.post_api_path(conn, :update, post.id), post: params)
+      post = json_response(conn, 201)
+
+      assert post["tweet"] == "update post"
     end
 
     test "deletes chosen post", %{conn: conn, post: post} do

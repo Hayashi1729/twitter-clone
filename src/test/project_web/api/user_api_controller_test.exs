@@ -36,6 +36,15 @@ defmodule ProjectWeb.UserApiControllerTest do
              ]
     end
 
+    test "update post", %{conn: conn, user: user} do
+      params = %{username: "update name", password: "update password"}
+      conn = put(conn, Routes.user_api_path(conn, :update, user.id), user: params)
+      user = json_response(conn, 201)
+
+      assert user["username"] == "update name"
+      assert user["password"] == nil
+    end
+
     test "deletes chosen user", %{conn: conn, user: user} do
       conn = delete(conn, Routes.user_api_path(conn, :delete, user))
       assert response(conn, 204) == ""

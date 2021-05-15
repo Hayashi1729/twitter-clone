@@ -52,9 +52,11 @@ defmodule ProjectWeb.UserApiController do
 
     case Accounts.update_user(user, user_params) do
       {:ok, %User{} = user} ->
+        get_user = Accounts.get_user(user.id)
+
         conn
         |> put_status(:created)
-        |> render("user_show.json", user: user)
+        |> render("user_show.json", user: get_user)
 
       {:error, %Ecto.Changeset{} = changeset} ->
         conn

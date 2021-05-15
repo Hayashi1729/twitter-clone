@@ -63,7 +63,7 @@ defmodule ProjectWeb.PostApiController do
     post = Twitter.get_post!(id)
 
     case Twitter.update_post(post, post_params) do
-      {:ok, %Post{}} ->
+      {:ok, %Post{} = post} ->
         conn
         |> put_status(:created)
         |> render("post_show.json", post: post)

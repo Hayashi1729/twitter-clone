@@ -1,16 +1,12 @@
 defmodule ProjectWeb.UserController do
   use ProjectWeb, :controller
 
-  alias Project.Accounts
-  alias Project.Accounts.User
-
   @doc """
   ユーザーの一覧を取得して表示。
   """
   @spec index(Plug.Conn.t(), any) :: Plug.Conn.t()
   def index(conn, _params) do
-    users = Accounts.list_users()
-    render(conn, "index.html", users: users)
+    render(conn, "index.html")
   end
 
   @doc """
@@ -25,18 +21,15 @@ defmodule ProjectWeb.UserController do
   ユーザー詳細表示画面を表示。
   """
   @spec show(Plug.Conn.t(), map) :: Plug.Conn.t()
-  def show(conn, %{"id" => id}) do
-    user = Accounts.get_user(id)
-    render(conn, "show.html", user: user)
+  def show(conn, _params) do
+    render(conn, "show.html")
   end
 
   @doc """
   ユーザー情報編集画面を表示。
   """
   @spec edit(Plug.Conn.t(), map) :: Plug.Conn.t()
-  def edit(conn, %{"id" => id}) do
-    user = Accounts.get_user(id)
-    changeset = User.registration_changeset(user, %{})
-    render(conn, "edit.html", user: user, changeset: changeset)
+  def edit(conn, _params) do
+    render(conn, "edit.html")
   end
 end
