@@ -22,12 +22,13 @@ export default {
   props: ["post", "fav"],
   setup(props) {
     const state = reactive({
+      favPost: props.fav,
       fav_num: props.post.favorites.length,
     });
     async function createFavorite(post) {
       try {
         const response = await axios.post(`posts/${post.id}/favorite`);
-        props.fav.push(post.id);
+        state.favPost.push(post.id);
         state.fav_num++;
       } catch (error) {
         console.error(error);
@@ -37,7 +38,9 @@ export default {
     async function deleteFavorite(post) {
       try {
         const response = await axios.delete(`posts/${post.id}/favorite`);
-        props.fav = props.fav.filter((favoriteId) => favoriteId !== post.id);
+        state.favPost = state.favPost.filter(
+          (favoriteId) => favoriteId !== post.id
+        );
         state.fav_num--;
       } catch (error) {
         console.error(error);
@@ -45,7 +48,7 @@ export default {
     }
 
     function isFavorited(id) {
-      return props.fav.includes(id);
+      return state.favPost.includes(id);
     }
     return {
       ...toRefs(state),

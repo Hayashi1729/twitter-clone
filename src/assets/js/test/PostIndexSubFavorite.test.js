@@ -29,13 +29,13 @@ describe(`PostIndexSubFavorite.vue`, () => {
   it("createFavorite", async () => {
     const post = { id: 100, favorites: [{ user_id: 1, post_id: 1 }] }
     await wrapper.vm.createFavorite(post)
-    expect(wrapper.props().fav).toEqual([1, 100])
+    expect(wrapper.vm.favPost).toEqual([1, 100])
     expect(wrapper.vm.fav_num).toBe(2)
   })
 
   it("deleteFavorite", async () => {
     await wrapper.vm.deleteFavorite(wrapper.props().post)
-    expect(wrapper.props().fav).toEqual([100])
+    expect(wrapper.vm.favPost).toEqual([100])
     expect(wrapper.vm.fav_num).toBe(1)
   })
 
