@@ -26,7 +26,9 @@ export default {
     });
     async function createFavorite(post) {
       try {
-        await axios.post(`posts/${post.id}/favorite`);
+        await axios.post(`/favorite`, {
+          post_id: post.id,
+        });
         props.favorite.push(post.id);
         state.numberOfFavorites++;
       } catch (error) {
@@ -36,7 +38,9 @@ export default {
 
     async function deleteFavorite(post) {
       try {
-        await axios.delete(`posts/${post.id}/favorite`);
+        await axios.delete(`/favorite`, {
+          data: { post_id: post.id },
+        });
         props.favorite = props.favorite.filter(
           (favoriteId) => favoriteId !== post.id
         );

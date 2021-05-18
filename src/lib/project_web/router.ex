@@ -5,13 +5,16 @@ defmodule ProjectWeb.Router do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_flash
-    # plug :protect_from_forgery
+    plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug ProjectWeb.AuthorizationPlug
   end
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug :fetch_session
+    plug :fetch_flash
+    plug ProjectWeb.AuthorizationPlug
   end
 
   pipeline :auth do
@@ -32,11 +35,7 @@ defmodule ProjectWeb.Router do
   scope "/", ProjectWeb do
     pipe_through [:browser, :auth]
 
-    resources "/posts", PostController do
-      post "/favorite", FavoriteController, :create
-      delete "/favorite", FavoriteController, :delete
-    end
-
+    resources "/posts", PostController
     resources "/users", UserController, except: [:new, :create]
     resources "/sessions", SessionController, only: [:delete]
   end
@@ -47,13 +46,20 @@ defmodule ProjectWeb.Router do
     resources "/sessions", SessionController, only: [:new, :create]
   end
 
+  scope "/", ProjectWeb do
+    pipe_through [:api, :auth]
+
+    post "/favorite", FavoriteController, :create
+    delete "/favorite", FavoriteController, :delete
+  end
+
   scope "/api", ProjectWeb do
-    pipe_through :browser
+    pipe_through :api
     post "/users", UserApiController, :create
   end
 
   scope "/api", ProjectWeb do
-    pipe_through [:browser, :auth]
+    pipe_through [:api, :auth]
     resources "/users", UserApiController, except: [:new, :create]
     resources "/posts", PostApiController
     get "/favorited_post", PostApiController, :favorited_post
