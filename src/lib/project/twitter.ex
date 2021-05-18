@@ -148,6 +148,16 @@ defmodule Project.Twitter do
   end
 
   @doc """
+  お気に入りを返す。
+  """
+  @spec get_current_favorite(integer(), integer()) :: Favorite.t() | nil
+  def get_current_favorite(post_id, user_id) do
+    Favorite
+    |> where([f], f.post_id == ^post_id and f.user_id == ^user_id)
+    |> Repo.one()
+  end
+
+  @doc """
   Create a favorite.
   """
   @spec create_favorite(integer, integer) :: {:ok, Favorite.t()} | {:error, %Ecto.Changeset{}}

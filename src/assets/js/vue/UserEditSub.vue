@@ -27,7 +27,7 @@ import axios from "axios";
 export default {
   setup() {
     const state = reactive({
-      errors: "",
+      errors: {},
     });
 
     const userList = inject("userList");
@@ -37,42 +37,40 @@ export default {
     userList.userGet();
     const userId = parseInt(window.location.pathname.split("/")[2]);
 
-    const userIndex = computed(() => {
-      const index = userList.users.value.findIndex(
-        (data) => data.id === userId
-      );
-      return index;
+    const currentUser = computed(() => {
+      const user = userList.users.value.find((data) => data.id === userId);
+      return user;
     });
 
     const currentUserUsername = computed({
       get: () => {
-        if (userList.users.value[userIndex.value]) {
-          return userList.users.value[userIndex.value].username;
+        if (currentUser.value) {
+          return currentUser.value.username;
         } else {
           return "";
         }
       },
       set: (value) => {
-        userList.users.value[userIndex.value].username = value;
+        currentUser.value.username = value;
       },
     });
 
     const currentUserPassword = computed({
       get: () => {
-        if (userList.users.value[userIndex.value]) {
-          return userList.users.value[userIndex.value].password;
+        if (currentUser.value) {
+          return currentUser.value.password;
         } else {
           return "";
         }
       },
       set: (value) => {
-        userList.users.value[userIndex.value].password = value;
+        currentUser.value.password = value;
       },
     });
 
     async function editUser(id) {
       try {
-        const response = await axios.put(`/api/users/${id}`, {
+        await axios.put(`/api/users/${id}`, {
           id: id,
           user: {
             username: currentUserUsername.value,
@@ -81,8 +79,8 @@ export default {
         });
         window.location.href = "/users";
       } catch (error) {
+        console.error(error);
         if (error.response.data && error.response.data.errors) {
-          console.error(error);
           state.errors = error.response.data.errors;
         }
       }
@@ -91,7 +89,6 @@ export default {
     return {
       ...toRefs(state),
       userList,
-      userIndex,
       currentUserUsername,
       currentUserPassword,
       editUser,

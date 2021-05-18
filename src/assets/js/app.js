@@ -15,6 +15,10 @@ import "../css/app.scss"
 import "phoenix_html"
 import babelPolyfill from '@babel/polyfill'
 
+import Vue from 'vue'
+import CompositionAPI from '@vue/composition-api'
+Vue.use(CompositionAPI)
+
 import Index from './vue/Index.vue'
 import UserIndex from './vue/UserIndex.vue'
 import UserNew from './vue/UserNew.vue'
@@ -25,7 +29,6 @@ import PostNew from './vue/PostNew.vue'
 import PostShow from './vue/PostShow.vue'
 import PostEdit from './vue/PostEdit.vue'
 import SessionNew from './vue/SessionNew.vue'
-
 
 new Vue({
     el: '#app',

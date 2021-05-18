@@ -4,7 +4,7 @@
     <label for="post">Tweet</label>
 
     <input type="text" id="post" v-model="currentPostTweet" />
-    <p v-if="errors" style="color: red">
+    <p v-if="errors.tweet" style="color: red">
       {{ errors.tweet[0] }}
     </p>
 
@@ -20,7 +20,7 @@ import axios from "axios";
 export default {
   setup() {
     const state = reactive({
-      errors: "",
+      errors: {},
     });
 
     const postList = inject("postList");
@@ -31,31 +31,28 @@ export default {
 
     const postId = parseInt(window.location.pathname.split("/")[2]);
 
-    const post = computed(() => {
-      const index = postList.posts.value.findIndex(
-        (data) => data.id === postId
-      );
-      const currentPost = postList.posts.value[index];
+    const currentPost = computed(() => {
+      const post = postList.posts.value.find((data) => data.id === postId);
 
-      return currentPost;
+      return post;
     });
 
     const currentPostTweet = computed({
       get: () => {
-        if (post.value) {
-          return post.value.tweet;
+        if (currentPost.value) {
+          return currentPost.value.tweet;
         } else {
           return "";
         }
       },
       set: (value) => {
-        post.value.tweet = value;
+        currentPost.value.tweet = value;
       },
     });
 
     async function editPost(id) {
       try {
-        const response = await axios.put(`/api/posts/${id}`, {
+        await axios.put(`/api/posts/${id}`, {
           id: id,
           post: {
             tweet: currentPostTweet.value,
@@ -63,8 +60,8 @@ export default {
         });
         window.location.href = "/posts";
       } catch (error) {
+        console.error(error);
         if (error.response.data && error.response.data.errors) {
-          console.error(error);
           state.errors = error.response.data.errors;
         }
       }

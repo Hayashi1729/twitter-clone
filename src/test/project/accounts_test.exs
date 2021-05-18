@@ -27,8 +27,7 @@ defmodule Project.AccountsTest do
 
   test "update_user/2" do
     assert {:ok, user} = Accounts.register_user(params_for(:register_user))
-    assert {:ok, user} = 
-      Accounts.update_user(user, %{username: "updated name"})
+    assert {:ok, user} = Accounts.update_user(user, %{username: "updated name"})
     assert user.username == "updated name"
   end
 
@@ -63,8 +62,7 @@ defmodule Project.AccountsTest do
       attrs = Map.put(params_for(:user), :username, String.duplicate("a", 100))
       {:error, changeset} = Accounts.register_user(attrs)
 
-      assert %{username: ["ユーザーネームは20文字以下である必要があります。"]} =
-             errors_on(changeset)
+      assert %{username: ["ユーザーネームは20文字以下である必要があります。"]} = errors_on(changeset)
       assert Accounts.list_users() == []
     end
 
@@ -72,8 +70,7 @@ defmodule Project.AccountsTest do
       attrs = Map.put(params_for(:user), :password, "12345")
       {:error, changeset} = Accounts.register_user(attrs)
 
-      assert %{password: ["パスワードは6文字以上100文字以下である必要があります。"]} =
-         errors_on(changeset)
+      assert %{password: ["パスワードは6文字以上100文字以下である必要があります。"]} = errors_on(changeset)
       assert Accounts.list_users() == []
     end
   end
@@ -88,20 +85,19 @@ defmodule Project.AccountsTest do
     end
 
     test "returns user with correct password", %{user: user} do
-      assert {:ok, auth_user} =
-             Accounts.authenticate_by_username_and_pass(user.username, @pass)
+      assert {:ok, auth_user} = Accounts.authenticate_by_username_and_pass(user.username, @pass)
 
       assert auth_user.id == user.id
     end
 
     test "returns unauthorized error with invalid password", %{user: user} do
       assert {:error, :unauthorized} =
-          Accounts.authenticate_by_username_and_pass(user.username, "bad_password")
+               Accounts.authenticate_by_username_and_pass(user.username, "bad_password")
     end
 
     test "returns not found error with no matching user" do
-      assert {:error, :not_found} =
-             Accounts.authenticate_by_username_and_pass("unknown_user", @pass)
+      assert {:error, :user_not_found} =
+               Accounts.authenticate_by_username_and_pass("unknown_user", @pass)
     end
   end
 end

@@ -29,12 +29,12 @@ export default {
     const state = reactive({
       username: "",
       password: "",
-      errors: "",
+      errors: {},
     });
 
     async function createUser() {
       try {
-        const response = await axios.post("/api/users", {
+        await axios.post("/api/users", {
           user: {
             username: state.username,
             password: state.password,
@@ -42,8 +42,8 @@ export default {
         });
         window.location.href = "/users";
       } catch (error) {
+        console.error(error);
         if (error.response.data && error.response.data.errors) {
-          console.error(error);
           state.errors = error.response.data.errors;
         }
       }

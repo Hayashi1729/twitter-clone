@@ -18,9 +18,7 @@ import { reactive, inject, computed, toRefs } from "@vue/composition-api";
 
 export default {
   setup() {
-    const state = reactive({
-      currentURL: window.location.href,
-    });
+    const currentURL = window.location.href;
 
     const userList = inject("userList");
     if (!userList) {
@@ -30,15 +28,13 @@ export default {
 
     const currentUser = computed(() => {
       const id = parseInt(window.location.pathname.split("/")[2]);
-      const userIndex = userList.users.value.findIndex(
-        (data) => data.id === id
-      );
-      return userList.users.value[userIndex];
+      const user = userList.users.value.find((data) => data.id === id);
+      return user;
     });
 
     return {
       currentUser,
-      ...toRefs(state),
+      currentURL,
     };
   },
 };

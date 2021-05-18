@@ -17,6 +17,7 @@ Object.defineProperty(window, 'location', {
   },
 });
 
+
 describe(`PostEditSub.vue`, () => {
   const wrapper = shallowMount(PostEditSub, {
     provide: {
@@ -42,10 +43,6 @@ describe(`PostEditSub.vue`, () => {
   it('render PostEditSub', () => {
     expect(wrapper.html()).toContain('Edit Post')
   })
-
-  // it('post', () => {
-  //   expect(wrapper.vm.post.value.tweet).toBe("testpost")
-  // })
 
   it('currentPostTweet', () => {
     expect(wrapper.vm.currentPostTweet).toEqual("testpost")

@@ -10,7 +10,7 @@
         <button v-on:click="createFavorite(post)">お気に入り登録する</button>
       </div>
     </td>
-    <td>{{ fav_num }}</td>
+    <td>{{ numberOfFavorites }}</td>
   </div>
 </template>
 
@@ -19,17 +19,16 @@ import { reactive, toRefs } from "@vue/composition-api";
 import axios from "axios";
 
 export default {
-  props: ["post", "fav"],
+  props: ["post", "favorite"],
   setup(props) {
     const state = reactive({
-      favPost: props.fav,
-      fav_num: props.post.favorites.length,
+      numberOfFavorites: props.post.favorites.length,
     });
     async function createFavorite(post) {
       try {
-        const response = await axios.post(`posts/${post.id}/favorite`);
-        state.favPost.push(post.id);
-        state.fav_num++;
+        await axios.post(`posts/${post.id}/favorite`);
+        props.favorite.push(post.id);
+        state.numberOfFavorites++;
       } catch (error) {
         console.error(error);
       }
@@ -37,24 +36,23 @@ export default {
 
     async function deleteFavorite(post) {
       try {
-        const response = await axios.delete(`posts/${post.id}/favorite`);
-        state.favPost = state.favPost.filter(
+        await axios.delete(`posts/${post.id}/favorite`);
+        props.favorite = props.favorite.filter(
           (favoriteId) => favoriteId !== post.id
         );
-        state.fav_num--;
+        state.numberOfFavorites--;
       } catch (error) {
         console.error(error);
       }
     }
 
     function isFavorited(id) {
-      return state.favPost.includes(id);
+      return props.favorite.includes(id);
     }
     return {
       ...toRefs(state),
       createFavorite,
       deleteFavorite,
-
       isFavorited,
     };
   },

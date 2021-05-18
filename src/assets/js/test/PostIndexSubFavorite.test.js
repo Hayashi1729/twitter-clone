@@ -9,15 +9,15 @@ jest.mock('axios');
 
 import "regenerator-runtime/runtime";
 
-axios.get.mockResolvedValue({ data: [1] })
-axios.post.mockResolvedValue({})
-axios.delete.mockResolvedValue({})
-
 describe(`PostIndexSubFavorite.vue`, () => {
+  axios.get.mockResolvedValue({ data: [1] })
+  axios.post.mockResolvedValue({})
+  axios.delete.mockResolvedValue({})
+
   const wrapper = shallowMount(PostIndexSubFavorite, {
     propsData: {
       post: { id: 1, tweet: 'test', user: { username: 'testuser' }, favorites: [{ user_id: 1, post_id: 1 }] },
-      fav: [1]
+      favorite: [1]
     },
     localVue
   })
@@ -29,14 +29,12 @@ describe(`PostIndexSubFavorite.vue`, () => {
   it("createFavorite", async () => {
     const post = { id: 100, favorites: [{ user_id: 1, post_id: 1 }] }
     await wrapper.vm.createFavorite(post)
-    expect(wrapper.vm.favPost).toEqual([1, 100])
-    expect(wrapper.vm.fav_num).toBe(2)
+    expect(wrapper.vm.numberOfFavorites).toBe(2)
   })
 
   it("deleteFavorite", async () => {
     await wrapper.vm.deleteFavorite(wrapper.props().post)
-    expect(wrapper.vm.favPost).toEqual([100])
-    expect(wrapper.vm.fav_num).toBe(1)
+    expect(wrapper.vm.numberOfFavorites).toBe(1)
   })
 
   it('error in createFavorite ', async () => {

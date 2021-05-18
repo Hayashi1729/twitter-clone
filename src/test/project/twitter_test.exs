@@ -91,6 +91,17 @@ defmodule Project.TwitterTest do
     assert %Favorite{post_id: ^post_id, user_id: ^user_id} = Twitter.get_favorite!(fav.id)
   end
 
+  test "get_current_favorite/2" do
+    current_user = insert(:user)
+    post = insert(:post)
+
+    assert {:ok, %Favorite{post_id: post_id, user_id: user_id}} =
+             Twitter.create_favorite(post.id, current_user.id)
+
+    assert %Favorite{post_id: ^post_id, user_id: ^user_id} =
+             Twitter.get_current_favorite(post.id, current_user.id)
+  end
+
   test "list_favorites/0" do
     current_user = insert(:user)
     post1 = insert(:post)

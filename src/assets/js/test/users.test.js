@@ -9,12 +9,11 @@ jest.mock('axios');
 
 import "regenerator-runtime/runtime";
 
-axios.get.mockResolvedValue({ data: [{ id: 1, username: 'test' }] });
-
 describe(`users.js`, () => {
   const options = { localVue }
 
   it('get users', async () => {
+    axios.get.mockResolvedValue({ data: [{ id: 1, username: 'test' }] });
     const store = userStore()
     await store.userGet();
     const response = store.users.value[0].username

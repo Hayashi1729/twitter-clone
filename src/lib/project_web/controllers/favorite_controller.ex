@@ -5,7 +5,6 @@ defmodule ProjectWeb.FavoriteController do
 
   alias Project.Twitter
   alias Project.Twitter.Favorite
-  alias Project.Repo
 
   @doc """
   お気に入り登録処理を行う。
@@ -36,28 +35,26 @@ defmodule ProjectWeb.FavoriteController do
   @spec delete(Plug.Conn.t(), map) :: Plug.Conn.t()
   def delete(conn, %{"post_id" => post_id}) do
     current_user = conn.assigns.current_user
+    favorite = Twitter.get_current_favorite(post_id, current_user.id)
 
-    post =
-      Favorite
-      |> where([f], f.post_id == ^post_id and f.user_id == ^current_user.id)
-      |> Repo.one()
+    case is_map(favorite) do
+      true ->
+        case Twitter.delete_favorite(favorite) do
+          {:ok, %Favorite{}} ->
+            send_resp(conn, :no_content, "")
 
-    if post do
-      case Twitter.delete_favorite(post) do
-        {:ok, %Favorite{}} ->
-          send_resp(conn, :no_content, "")
+          {:error, %Ecto.Changeset{} = changeset} ->
+            conn
+            |> put_status(:unprocessable_entity)
+            |> render(ProjectWeb.ErrorView, "error.json", changeset: changeset)
+        end
 
-        {:error, %Ecto.Changeset{} = changeset} ->
-          conn
-          |> put_status(:unprocessable_entity)
-          |> render(ProjectWeb.ErrorView, "error.json", changeset: changeset)
-      end
-    else
-      status = :favorite_not_found
+      false ->
+        status = :favorite_not_found
 
-      conn
-      |> put_status(:unprocessable_entity)
-      |> render(ProjectWeb.ErrorView, "error.json", status: status)
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render(ProjectWeb.ErrorView, "error.json", status: status)
     end
   end
 end

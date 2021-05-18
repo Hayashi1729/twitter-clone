@@ -119,7 +119,7 @@ defmodule Project.Accounts do
       {:error, :unauthorized}
 
       iex> authenticate_by_username_and_pass("non_existing_user", "password")
-      {:error, :not_found}
+      {:error, :user_not_found}
   """
   @spec authenticate_by_username_and_pass(String.t(), String.t()) ::
           {:ok, User.t()} | {:error, :unauthorized} | {:error, :not_found}
@@ -135,7 +135,7 @@ defmodule Project.Accounts do
 
       true ->
         Bcrypt.no_user_verify()
-        {:error, :not_found}
+        {:error, :user_not_found}
     end
   end
 end

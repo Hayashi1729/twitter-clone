@@ -9,12 +9,11 @@ jest.mock('axios');
 
 import "regenerator-runtime/runtime";
 
-axios.get.mockResolvedValue({ data: [{ id: 1, tweet: 'test' }] });
-
 describe(`posts.js`, () => {
   const options = { localVue }
 
   it('get posts', async () => {
+    axios.get.mockResolvedValue({ data: [{ id: 1, tweet: 'test' }] });
     const store = postStore()
     await store.postGet();
     expect(store.posts.value[0].tweet).toEqual("test");

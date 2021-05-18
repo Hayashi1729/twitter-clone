@@ -19,13 +19,11 @@
 </template>
 
 <script>
-import { reactive, inject, computed, toRefs } from "@vue/composition-api";
+import { inject, computed } from "@vue/composition-api";
 
 export default {
   setup() {
-    const state = reactive({
-      currentURL: window.location.href,
-    });
+    const currentURL = window.location.href;
 
     const postList = inject("postList");
     if (!postList) {
@@ -35,15 +33,13 @@ export default {
 
     const currentPost = computed(() => {
       const id = parseInt(window.location.pathname.split("/")[2]);
-      const postIndex = postList.posts.value.findIndex(
-        (data) => data.id === id
-      );
-      return postList.posts.value[postIndex];
+      const post = postList.posts.value.find((data) => data.id === id);
+      return post;
     });
 
     return {
       currentPost,
-      ...toRefs(state),
+      currentURL,
     };
   },
 };

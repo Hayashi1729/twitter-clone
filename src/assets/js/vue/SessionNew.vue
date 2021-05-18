@@ -29,12 +29,12 @@ export default {
     const state = reactive({
       username: "",
       password: "",
-      errors: "",
+      errors: {},
     });
 
     async function createSession() {
       try {
-        const response = await axios.post("/sessions", {
+        await axios.post("/sessions", {
           session: {
             username: state.username,
             password: state.password,
@@ -42,8 +42,8 @@ export default {
         });
         window.location.href = "/";
       } catch (error) {
+        console.error(error);
         if (error.response.data && error.response.data.errors) {
-          console.error(error);
           state.errors = error.response.data.errors;
         }
       }

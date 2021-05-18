@@ -51,8 +51,8 @@ defmodule ProjectWeb.PostApiController do
   """
   @spec show(Plug.Conn.t(), map) :: Plug.Conn.t()
   def show(conn, %{"id" => id}) do
-    get_post = Twitter.get_post!(id)
-    render(conn, "post_show.json", post: get_post)
+    post = Twitter.get_post!(id)
+    render(conn, "post_show.json", post: post)
   end
 
   @doc """
@@ -85,6 +85,11 @@ defmodule ProjectWeb.PostApiController do
     case Twitter.delete_post(post) do
       {:ok, %Post{}} ->
         send_resp(conn, :no_content, "")
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render(ProjectWeb.ErrorView, "error.json", changeset: changeset)
     end
   end
 end

@@ -29,7 +29,7 @@
 
           <post-index-sub-favorite
             v-bind:post="post"
-            v-bind:fav="postsFavoritedByCurrentUser"
+            v-bind:favorite="postsFavoritedByCurrentUser"
           ></post-index-sub-favorite>
         </tr>
       </tbody>

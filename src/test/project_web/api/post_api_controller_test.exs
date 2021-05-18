@@ -30,7 +30,7 @@ defmodule ProjectWeb.PostApiControllerTest do
       end)
     end
 
-    test "rendering favorited post", %{conn: conn, post: post} do
+    test "rendering favorite post", %{conn: conn, post: post} do
       current_user = conn.assigns.current_user
       Project.Twitter.create_favorite(post.id, current_user.id)
       conn = get(conn, Routes.post_api_path(conn, :favorited_post))

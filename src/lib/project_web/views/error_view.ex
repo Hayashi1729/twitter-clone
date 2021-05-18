@@ -31,7 +31,7 @@ defmodule ProjectWeb.ErrorView do
           }
         }
 
-      :not_found ->
+      :user_not_found ->
         %{
           errors: %{
             username: ["ユーザーが存在しません"]

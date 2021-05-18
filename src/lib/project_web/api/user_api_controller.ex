@@ -39,8 +39,8 @@ defmodule ProjectWeb.UserApiController do
   """
   @spec show(Plug.Conn.t(), map) :: Plug.Conn.t()
   def show(conn, %{"id" => id}) do
-    get_user = Accounts.get_user(id)
-    render(conn, "user_show.json", user: get_user)
+    user = Accounts.get_user(id)
+    render(conn, "user_show.json", user: user)
   end
 
   @doc """
@@ -75,6 +75,11 @@ defmodule ProjectWeb.UserApiController do
     case Accounts.delete_user(user) do
       {:ok, %User{}} ->
         send_resp(conn, :no_content, "")
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render(ProjectWeb.ErrorView, "error.json", changeset: changeset)
     end
   end
 end

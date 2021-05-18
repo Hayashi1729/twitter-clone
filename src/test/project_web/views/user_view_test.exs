@@ -17,10 +17,6 @@ defmodule ProjectWeb.UserViewTest do
       )
 
     assert String.contains?(content, "user-index")
-
-    # for user <- users do
-    #  assert String.contains?(content, user.username)
-    # end
   end
 
   test "renders new.html", %{conn: conn} do

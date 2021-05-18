@@ -22,10 +22,6 @@ defmodule ProjectWeb.PostViewTest do
       )
 
     assert String.contains?(content, "post-index")
-
-    # for post <- posts do
-    #  assert String.contains?(content, post.tweet)
-    # end
   end
 
   test "renders new.html", %{conn: conn} do
