@@ -20,7 +20,7 @@ import axios from "axios";
 
 export default {
   props: ["post", "favorite"],
-  setup(props) {
+  setup(props, { emit }) {
     const state = reactive({
       numberOfFavorites: props.post.favorites.length,
     });
@@ -29,7 +29,7 @@ export default {
         await axios.post(`/favorite`, {
           post_id: post.id,
         });
-        props.favorite.push(post.id);
+        emit("create", post);
         state.numberOfFavorites++;
       } catch (error) {
         console.error(error);
@@ -41,9 +41,7 @@ export default {
         await axios.delete(`/favorite`, {
           data: { post_id: post.id },
         });
-        props.favorite = props.favorite.filter(
-          (favoriteId) => favoriteId !== post.id
-        );
+        emit("delete", post);
         state.numberOfFavorites--;
       } catch (error) {
         console.error(error);

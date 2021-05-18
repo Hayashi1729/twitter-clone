@@ -30,6 +30,8 @@
           <post-index-sub-favorite
             v-bind:post="post"
             v-bind:favorite="postsFavoritedByCurrentUser"
+            v-on:create="pushFavorite"
+            v-on:delete="filterFavorite"
           ></post-index-sub-favorite>
         </tr>
       </tbody>
@@ -80,11 +82,23 @@ export default {
       postList.postDelete(id);
     }
 
+    function pushFavorite(post) {
+      state.postsFavoritedByCurrentUser.push(post.id);
+    }
+
+    function filterFavorite(post) {
+      state.postsFavoritedByCurrentUser = state.postsFavoritedByCurrentUser.filter(
+        (favoriteId) => favoriteId !== post.id
+      );
+    }
+
     return {
       postList,
       ...toRefs(state),
       reversePosts,
       deletePost,
+      pushFavorite,
+      filterFavorite,
     };
   },
 };

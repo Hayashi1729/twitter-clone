@@ -41,5 +41,17 @@ describe(`PostIndexSub.vue`, () => {
     wrapper.vm.deletePost(1)
     expect(wrapper.vm.postList.posts.value.length).toBe(1)
   })
+
+  it('pushFavorite', () => {
+    const post = { id: 100, tweet: 'post', user: { username: 'testuser' } }
+    wrapper.vm.pushFavorite(post)
+    expect(wrapper.vm.postsFavoritedByCurrentUser).toEqual([100])
+  })
+
+  it('filterFavorite', () => {
+    const post = { id: 100, tweet: 'post', user: { username: 'testuser' } }
+    wrapper.vm.filterFavorite(post)
+    expect(wrapper.vm.postsFavoritedByCurrentUser).toEqual([])
+  })
 })
 

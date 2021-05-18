@@ -47,10 +47,6 @@ describe(`UserEditSub.vue`, () => {
     expect(wrapper.html()).toContain('Edit User')
   })
 
-  it('userIndex', () => {
-    expect(wrapper.vm.userIndex).toBe(0)
-  })
-
   it('currentUserUsername getter', () => {
     expect(wrapper.vm.currentUserUsername).toEqual("TestUser_1")
   })
