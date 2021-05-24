@@ -16,7 +16,6 @@
 
 <script>
 import { reactive, toRefs } from "@vue/composition-api";
-import axios from "axios";
 
 export default {
   props: ["post", "favorite"],
@@ -24,33 +23,21 @@ export default {
     const state = reactive({
       numberOfFavorites: props.post.favorites.length,
     });
-    async function createFavorite(post) {
-      try {
-        await axios.post(`/favorite`, {
-          post_id: post.id,
-        });
-        emit("create", post);
-        state.numberOfFavorites++;
-      } catch (error) {
-        console.error(error);
-      }
+
+    function createFavorite(post) {
+      emit("create", post);
+      state.numberOfFavorites++;
     }
 
-    async function deleteFavorite(post) {
-      try {
-        await axios.delete(`/favorite`, {
-          data: { post_id: post.id },
-        });
-        emit("delete", post);
-        state.numberOfFavorites--;
-      } catch (error) {
-        console.error(error);
-      }
+    function deleteFavorite(post) {
+      emit("delete", post);
+      state.numberOfFavorites--;
     }
 
     function isFavorited(id) {
       return props.favorite.includes(id);
     }
+
     return {
       ...toRefs(state),
       createFavorite,

@@ -1,4 +1,4 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { createLocalVue } from "@vue/test-utils";
 import userStore from '../stores/users'
 import CompositionApi from "@vue/composition-api";
 const localVue = createLocalVue();
@@ -10,8 +10,6 @@ jest.mock('axios');
 import "regenerator-runtime/runtime";
 
 describe(`users.js`, () => {
-  const options = { localVue }
-
   it('get users', async () => {
     axios.get.mockResolvedValue({ data: [{ id: 1, username: 'test' }] });
     const store = userStore()

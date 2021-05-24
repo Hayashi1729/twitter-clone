@@ -9,17 +9,20 @@ jest.mock('axios')
 
 import "regenerator-runtime/runtime";
 
-global.window = Object.create(window);
-const pathname = "/sessions/new";
-Object.defineProperty(window, 'location', {
-  value: {
-    pathname: pathname
-  },
-})
-
 describe(`SessionNew.vue`, () => {
-  const options = { localVue }
-  const wrapper = shallowMount(SessionNew, options)
+  let wrapper;
+
+  beforeAll(() => {
+    const pathname = "/sessions/new";
+    Object.defineProperty(window, 'location', {
+      value: {
+        pathname: pathname
+      },
+    })
+
+    const options = { localVue }
+    wrapper = shallowMount(SessionNew, options)
+  })
 
   it('render SessionNew', () => {
     expect(wrapper.html()).toContain('Login')

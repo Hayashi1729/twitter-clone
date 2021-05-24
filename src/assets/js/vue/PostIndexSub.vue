@@ -29,7 +29,7 @@
 
           <post-index-sub-favorite
             v-bind:post="post"
-            v-bind:favorite="postsFavoritedByCurrentUser"
+            v-bind:favorite="favoriteList.favorites.value"
             v-on:create="pushFavorite"
             v-on:delete="filterFavorite"
           ></post-index-sub-favorite>
@@ -51,28 +51,22 @@ import {
   inject,
   toRefs,
 } from "@vue/composition-api";
-import axios from "axios";
 import PostIndexSubFavorite from "./PostIndexSubFavorite.vue";
 
 export default {
   components: { PostIndexSubFavorite },
   setup() {
-    const state = reactive({
-      postsFavoritedByCurrentUser: [],
-    });
-
     const postList = inject("postList");
     if (!postList) {
       throw new Error(`postList is not provided`);
     }
     postList.postGet();
 
-    const getData = async () => {
-      const favoritedPost = await axios.get("/api/favorited_post");
-      state.postsFavoritedByCurrentUser = favoritedPost.data;
-    };
-
-    onMounted(getData);
+    const favoriteList = inject("favoriteList");
+    if (!favoriteList) {
+      throw new Error(`favoriteList is not provided`);
+    }
+    favoriteList.favoriteGet();
 
     const reversePosts = computed(() => {
       return postList.posts.value.slice().reverse();
@@ -83,18 +77,16 @@ export default {
     }
 
     function pushFavorite(post) {
-      state.postsFavoritedByCurrentUser.push(post.id);
+      favoriteList.favoriteCreate(post);
     }
 
     function filterFavorite(post) {
-      state.postsFavoritedByCurrentUser = state.postsFavoritedByCurrentUser.filter(
-        (favoriteId) => favoriteId !== post.id
-      );
+      favoriteList.favoriteDelete(post);
     }
 
     return {
       postList,
-      ...toRefs(state),
+      favoriteList,
       reversePosts,
       deletePost,
       pushFavorite,

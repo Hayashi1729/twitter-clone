@@ -9,14 +9,6 @@ jest.mock('axios');
 
 import "regenerator-runtime/runtime";
 
-global.window = Object.create(window);
-const pathname = "/users/1/edit";
-Object.defineProperty(window, 'location', {
-  value: {
-    pathname: pathname
-  },
-});
-
 const testUser = {
   id: 1,
   username: "TestUser_1",
@@ -24,23 +16,34 @@ const testUser = {
 }
 
 describe(`UserEditSub.vue`, () => {
-  const wrapper = shallowMount(UserEditSub, {
-    provide: {
-      userList: {
-        users: {
-          value: [
-            testUser
-          ]
-        },
-        userGet() {
-          return 'hoge'
-        },
-        userDelete() {
-          this.users.value.pop()
-        }
+  let wrapper;
+
+  beforeAll(() => {
+    const pathname = "/users/1/edit";
+    Object.defineProperty(window, 'location', {
+      value: {
+        pathname: pathname
       },
-    },
-    localVue
+    });
+
+    wrapper = shallowMount(UserEditSub, {
+      provide: {
+        userList: {
+          users: {
+            value: [
+              testUser
+            ]
+          },
+          userGet() {
+            return 'hoge'
+          },
+          userDelete() {
+            this.users.value.pop()
+          }
+        },
+      },
+      localVue
+    })
   })
 
   it('render UserEditSub', () => {

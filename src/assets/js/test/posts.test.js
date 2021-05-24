@@ -1,4 +1,4 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { createLocalVue } from "@vue/test-utils";
 import postStore from '../stores/posts'
 import CompositionApi from "@vue/composition-api";
 const localVue = createLocalVue();
@@ -10,8 +10,6 @@ jest.mock('axios');
 import "regenerator-runtime/runtime";
 
 describe(`posts.js`, () => {
-  const options = { localVue }
-
   it('get posts', async () => {
     axios.get.mockResolvedValue({ data: [{ id: 1, tweet: 'test' }] });
     const store = postStore()

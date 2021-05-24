@@ -49,8 +49,11 @@ defmodule ProjectWeb.Router do
   scope "/", ProjectWeb do
     pipe_through [:api, :auth]
 
-    post "/favorite", FavoriteController, :create
-    delete "/favorite", FavoriteController, :delete
+    resources "/posts", PostController,
+      except: [:index, :edit, :new, :show, :create, :update, :delete] do
+      post "/favorite", FavoriteController, :create
+      delete "/favorite", FavoriteController, :delete
+    end
   end
 
   scope "/api", ProjectWeb do

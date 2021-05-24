@@ -9,35 +9,37 @@ jest.mock('axios');
 
 import "regenerator-runtime/runtime";
 
-global.window = Object.create(window);
-const pathname = "/users/1/edit";
-Object.defineProperty(window, 'location', {
-  value: {
-    pathname: pathname
-  },
-});
-
-
 describe(`PostEditSub.vue`, () => {
-  const wrapper = shallowMount(PostEditSub, {
-    provide: {
-      postList: {
-        posts: {
-          value: [{
-            id: 1, tweet: 'testpost', user: { username: 'testuser' }, favorites: [{ user_id: 1, post_id: 1 }]
-          }, {
-            id: 2, tweet: 'test2', user: { username: 'testuser' }, favorites: [{ user_id: 1, post_id: 2 }]
-          }]
-        },
-        postGet() {
-          return 'hoge'
-        },
-        postDelete() {
-          this.posts.value.pop()
+  let wrapper;
+
+  beforeAll(() => {
+    const pathname = "/posts/1/edit";
+    Object.defineProperty(window, 'location', {
+      value: {
+        pathname: pathname
+      },
+    });
+
+    wrapper = shallowMount(PostEditSub, {
+      provide: {
+        postList: {
+          posts: {
+            value: [{
+              id: 1, tweet: 'testpost', user: { username: 'testuser' }, favorites: [{ user_id: 1, post_id: 1 }]
+            }, {
+              id: 2, tweet: 'test2', user: { username: 'testuser' }, favorites: [{ user_id: 1, post_id: 2 }]
+            }]
+          },
+          postGet() {
+            return 'hoge'
+          },
+          postDelete() {
+            this.posts.value.pop()
+          }
         }
-      }
-    },
-    localVue
+      },
+      localVue
+    })
   })
 
   it('render PostEditSub', () => {

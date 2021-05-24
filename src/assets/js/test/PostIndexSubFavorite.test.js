@@ -10,16 +10,18 @@ jest.mock('axios');
 import "regenerator-runtime/runtime";
 
 describe(`PostIndexSubFavorite.vue`, () => {
-  axios.get.mockResolvedValue({ data: [1] })
-  axios.post.mockResolvedValue({})
-  axios.delete.mockResolvedValue({})
-
   const wrapper = shallowMount(PostIndexSubFavorite, {
     propsData: {
       post: { id: 1, tweet: 'test', user: { username: 'testuser' }, favorites: [{ user_id: 1, post_id: 1 }] },
       favorite: [1]
     },
     localVue
+  })
+
+  beforeAll(() => {
+    axios.get.mockResolvedValue({ data: [1] })
+    axios.post.mockResolvedValue({})
+    axios.delete.mockResolvedValue({})
   })
 
   it('isFavorited', () => {

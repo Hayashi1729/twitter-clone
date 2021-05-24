@@ -23,6 +23,20 @@ describe(`PostIndexSub.vue`, () => {
         postDelete() {
           this.posts.value.pop()
         }
+      },
+      favoriteList: {
+        favorites: {
+          value: [1, 2]
+        },
+        favoriteGet() {
+          return 'hoge'
+        },
+        favoriteCreate() {
+          this.favorites.value.push(100)
+        },
+        favoriteDelete() {
+          this.favorites.value.pop()
+        }
       }
     },
     localVue
@@ -45,13 +59,13 @@ describe(`PostIndexSub.vue`, () => {
   it('pushFavorite', () => {
     const post = { id: 100, tweet: 'post', user: { username: 'testuser' } }
     wrapper.vm.pushFavorite(post)
-    expect(wrapper.vm.postsFavoritedByCurrentUser).toEqual([100])
+    expect(wrapper.vm.favoriteList.favorites.value).toEqual([1, 2, 100])
   })
 
   it('filterFavorite', () => {
     const post = { id: 100, tweet: 'post', user: { username: 'testuser' } }
     wrapper.vm.filterFavorite(post)
-    expect(wrapper.vm.postsFavoritedByCurrentUser).toEqual([])
+    expect(wrapper.vm.favoriteList.favorites.value).toEqual([1, 2])
   })
 })
 

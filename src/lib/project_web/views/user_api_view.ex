@@ -9,7 +9,11 @@ defmodule ProjectWeb.UserApiView do
     render_one(user, ProjectWeb.UserApiView, "user.json")
   end
 
-  def render("user.json", user) do
-    user.user_api
+  def render("user.json", %{user_api: user}) do
+    %{
+      id: user.id,
+      username: user.username,
+      password: ""
+    }
   end
 end
