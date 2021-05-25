@@ -19,18 +19,29 @@ import Vue from 'vue'
 import CompositionAPI from '@vue/composition-api'
 Vue.use(CompositionAPI)
 
-import Index from './vue/Index.vue'
-import UserIndex from './vue/UserIndex.vue'
-import UserNew from './vue/UserNew.vue'
-import UserShow from './vue/UserShow.vue'
-import UserEdit from './vue/UserEdit.vue'
-import PostIndex from './vue/PostIndex.vue'
-import PostNew from './vue/PostNew.vue'
-import PostShow from './vue/PostShow.vue'
-import PostEdit from './vue/PostEdit.vue'
-import SessionNew from './vue/SessionNew.vue'
+import Index from './components/Index.vue'
+import UserIndex from './components/UserIndex.vue'
+import UserNew from './components/UserNew.vue'
+import UserShow from './components/UserShow.vue'
+import UserEdit from './components/UserEdit.vue'
+import PostIndex from './components/PostIndex.vue'
+import PostNew from './components/PostNew.vue'
+import PostShow from './components/PostShow.vue'
+import PostEdit from './components/PostEdit.vue'
+import SessionNew from './components/SessionNew.vue'
 
 new Vue({
     el: '#app',
-    components: { Index, UserIndex, UserNew, UserShow, UserEdit, PostIndex, PostNew, PostShow, PostEdit, SessionNew }
+    components: {
+        Index,
+        UserIndex,
+        UserNew,
+        UserShow,
+        UserEdit,
+        PostIndex,
+        PostNew,
+        PostShow,
+        PostEdit,
+        SessionNew
+    }
 });

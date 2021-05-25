@@ -1,5 +1,5 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
-import PostIndexSub from '../vue/PostIndexSub.vue'
+import PostIndexSub from '../components/PostIndexSub.vue'
 import CompositionApi from "@vue/composition-api";
 const localVue = createLocalVue();
 localVue.use(CompositionApi);
@@ -17,10 +17,10 @@ describe(`PostIndexSub.vue`, () => {
             id: 2, tweet: 'test2', user: { username: 'testuser' }, favorites: [{ user_id: 1, post_id: 2 }]
           }]
         },
-        postGet() {
+        getPost() {
           return 'hoge'
         },
-        postDelete() {
+        deletePost() {
           this.posts.value.pop()
         }
       },
@@ -28,13 +28,13 @@ describe(`PostIndexSub.vue`, () => {
         favorites: {
           value: [1, 2]
         },
-        favoriteGet() {
+        getFavorite() {
           return 'hoge'
         },
-        favoriteCreate() {
+        createFavorite() {
           this.favorites.value.push(100)
         },
-        favoriteDelete() {
+        deleteFavorite() {
           this.favorites.value.pop()
         }
       }

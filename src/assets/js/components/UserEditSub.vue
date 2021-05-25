@@ -34,7 +34,8 @@ export default {
     if (!userList) {
       throw new Error(`userList is not provided`);
     }
-    userList.userGet();
+    userList.getUser();
+
     const userId = parseInt(window.location.pathname.split("/")[2]);
 
     const currentUser = computed(() => {

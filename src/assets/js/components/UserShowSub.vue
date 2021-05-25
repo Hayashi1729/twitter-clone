@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { reactive, inject, computed, toRefs } from "@vue/composition-api";
+import { inject, computed } from "@vue/composition-api";
 
 export default {
   setup() {
@@ -24,7 +24,7 @@ export default {
     if (!userList) {
       throw new Error(`userList is not provided`);
     }
-    userList.userGet();
+    userList.getUser();
 
     const currentUser = computed(() => {
       const id = parseInt(window.location.pathname.split("/")[2]);

@@ -6,11 +6,11 @@
 
 <script>
 import { provide } from "@vue/composition-api";
-import postStore from "../stores/posts";
+import storeUser from "../stores/users";
 
 export default {
   setup() {
-    provide("postList", postStore());
+    provide("userList", storeUser());
 
     return {};
   },

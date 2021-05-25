@@ -1,17 +1,17 @@
 import { reactive, toRefs } from "@vue/composition-api";
 import axios from 'axios'
 
-export default function userStore() {
+export default function storeUser() {
   const state = reactive({
     users: [],
   })
 
-  async function userGet() {
+  async function getUser() {
     const response = await axios.get('/api/users')
     state.users = response.data
   }
 
-  async function userDelete(id) {
+  async function deleteUser(id) {
     try {
       await axios.delete(`/api/users/${id}`);
       state.users = state.users.filter((user) => user.id !== id);
@@ -22,7 +22,7 @@ export default function userStore() {
 
   return {
     ...toRefs(state),
-    userGet,
-    userDelete
+    getUser,
+    deleteUser
   }
 }

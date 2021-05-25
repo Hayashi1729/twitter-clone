@@ -1,5 +1,5 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
-import PostIndexSubFavorite from '../vue/PostIndexSubFavorite.vue'
+import PostIndexSubFavorite from '../components/PostIndexSubFavorite.vue'
 import CompositionApi from "@vue/composition-api";
 const localVue = createLocalVue();
 localVue.use(CompositionApi);

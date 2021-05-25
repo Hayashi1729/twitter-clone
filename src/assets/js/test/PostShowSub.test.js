@@ -1,5 +1,5 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
-import PostShowSub from '../vue/PostShowSub.vue'
+import PostShowSub from '../components/PostShowSub.vue'
 import CompositionApi from "@vue/composition-api";
 const localVue = createLocalVue();
 localVue.use(CompositionApi);
@@ -25,10 +25,10 @@ describe(`PostShowSub.vue`, () => {
               id: 2, tweet: 'test2', user: { username: 'testuser' }, favorites: [{ user_id: 1, post_id: 2 }]
             }]
           },
-          postGet() {
+          getPost() {
             return 'hoge'
           },
-          postDelete() {
+          deletePost() {
             this.posts.value.pop()
           }
         }

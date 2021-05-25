@@ -1,5 +1,5 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
-import UserShowSub from '../vue/UserShowSub.vue'
+import UserShowSub from '../components/UserShowSub.vue'
 import CompositionApi from "@vue/composition-api";
 const localVue = createLocalVue();
 localVue.use(CompositionApi);
@@ -27,10 +27,10 @@ describe(`UserShowSub.vue`, () => {
               testUser
             ]
           },
-          userGet() {
+          getUser() {
             return 'hoge'
           },
-          userDelete() {
+          deleteUser() {
             this.users.value.pop()
           }
         },

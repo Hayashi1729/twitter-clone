@@ -1,5 +1,5 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
-import PostNew from '../vue/PostNew.vue'
+import PostNew from '../components/PostNew.vue'
 import CompositionApi from "@vue/composition-api";
 const localVue = createLocalVue();
 localVue.use(CompositionApi);
@@ -9,17 +9,20 @@ jest.mock('axios')
 
 import "regenerator-runtime/runtime";
 
-global.window = Object.create(window);
-const pathname = "/posts/new";
-Object.defineProperty(window, 'location', {
-  value: {
-    pathname: pathname
-  },
-})
-
 describe(`PostNew.vue`, () => {
-  const options = { localVue }
-  const wrapper = shallowMount(PostNew, options)
+  let wrapper;
+
+  beforeAll(() => {
+    const pathname = "/posts/new";
+    Object.defineProperty(window, 'location', {
+      value: {
+        pathname: pathname
+      },
+    })
+
+    const options = { localVue }
+    wrapper = shallowMount(PostNew, options)
+  })
 
   it('render PostNew', () => {
     expect(wrapper.html()).toContain('New Post')

@@ -44,13 +44,7 @@
 </template>
 
 <script>
-import {
-  reactive,
-  onMounted,
-  computed,
-  inject,
-  toRefs,
-} from "@vue/composition-api";
+import { computed, inject } from "@vue/composition-api";
 import PostIndexSubFavorite from "./PostIndexSubFavorite.vue";
 
 export default {
@@ -60,28 +54,28 @@ export default {
     if (!postList) {
       throw new Error(`postList is not provided`);
     }
-    postList.postGet();
+    postList.getPost();
 
     const favoriteList = inject("favoriteList");
     if (!favoriteList) {
       throw new Error(`favoriteList is not provided`);
     }
-    favoriteList.favoriteGet();
+    favoriteList.getFavorite();
 
     const reversePosts = computed(() => {
       return postList.posts.value.slice().reverse();
     });
 
     function deletePost(id) {
-      postList.postDelete(id);
+      postList.deletePost(id);
     }
 
     function pushFavorite(post) {
-      favoriteList.favoriteCreate(post);
+      favoriteList.createFavorite(post);
     }
 
     function filterFavorite(post) {
-      favoriteList.favoriteDelete(post);
+      favoriteList.deleteFavorite(post);
     }
 
     return {

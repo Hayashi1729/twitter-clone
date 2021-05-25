@@ -1,5 +1,5 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
-import UserEditSub from '../vue/UserEditSub.vue'
+import UserEditSub from '../components/UserEditSub.vue'
 import CompositionApi from "@vue/composition-api";
 const localVue = createLocalVue();
 localVue.use(CompositionApi);
@@ -34,10 +34,10 @@ describe(`UserEditSub.vue`, () => {
               testUser
             ]
           },
-          userGet() {
+          getUser() {
             return 'hoge'
           },
-          userDelete() {
+          deleteUser() {
             this.users.value.pop()
           }
         },

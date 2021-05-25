@@ -6,11 +6,11 @@
 
 <script>
 import { provide } from "@vue/composition-api";
-import userStore from "../stores/users";
+import storeFavorite from "../stores/favorites";
 
 export default {
   setup() {
-    provide("userList", userStore());
+    provide("favoriteList", storeFavorite());
 
     return {};
   },

@@ -29,7 +29,7 @@ export default {
     if (!postList) {
       throw new Error(`postList is not provided`);
     }
-    postList.postGet();
+    postList.getPost();
 
     const currentPost = computed(() => {
       const id = parseInt(window.location.pathname.split("/")[2]);

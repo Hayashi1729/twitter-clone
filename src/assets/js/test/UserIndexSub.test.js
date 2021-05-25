@@ -1,5 +1,5 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
-import UserIndexSub from '../vue/UserIndexSub.vue'
+import UserIndexSub from '../components/UserIndexSub.vue'
 import CompositionApi from "@vue/composition-api";
 const localVue = createLocalVue();
 localVue.use(CompositionApi);
@@ -18,10 +18,10 @@ describe(`UserIndexSub.vue`, () => {
             testUser
           ]
         },
-        userGet() {
+        getUser() {
           return 'hoge'
         },
-        userDelete() {
+        deleteUser() {
           this.users.value.pop()
         }
       },

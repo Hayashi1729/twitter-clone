@@ -1,5 +1,5 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
-import UserNew from '../vue/UserNew.vue'
+import UserNew from '../components/UserNew.vue'
 import CompositionApi from "@vue/composition-api";
 const localVue = createLocalVue();
 localVue.use(CompositionApi);
@@ -9,17 +9,19 @@ jest.mock('axios')
 
 import "regenerator-runtime/runtime";
 
-global.window = Object.create(window);
-const pathname = "/users/new";
-Object.defineProperty(window, 'location', {
-  value: {
-    pathname: pathname
-  },
-})
-
 describe(`UserNew.vue`, () => {
-  const options = { localVue }
-  const wrapper = shallowMount(UserNew, options)
+  let wrapper;
+  beforeAll(() => {
+    const pathname = "/users/new";
+    Object.defineProperty(window, 'location', {
+      value: {
+        pathname: pathname
+      },
+    })
+
+    const options = { localVue }
+    wrapper = shallowMount(UserNew, options)
+  })
 
   it('render UserNew', () => {
     expect(wrapper.html()).toContain('New User')
