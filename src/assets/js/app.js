@@ -28,7 +28,7 @@ import PostIndex from './components/PostIndex.vue'
 import PostNew from './components/PostNew.vue'
 import PostShow from './components/PostShow.vue'
 import PostEdit from './components/PostEdit.vue'
-import SessionNew from './components/SessionNew.vue'
+import SessionForm from './components/SessionForm.vue'
 
 new Vue({
     el: '#app',
@@ -42,6 +42,6 @@ new Vue({
         PostNew,
         PostShow,
         PostEdit,
-        SessionNew
+        SessionForm
     }
 });

@@ -1,5 +1,5 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
-import SessionNew from '../components/SessionNew.vue'
+import SessionForm from '../components/SessionForm.vue'
 import CompositionApi from "@vue/composition-api";
 const localVue = createLocalVue();
 localVue.use(CompositionApi);
@@ -9,7 +9,7 @@ jest.mock('axios')
 
 import "regenerator-runtime/runtime";
 
-describe(`SessionNew.vue`, () => {
+describe(`SessionForm.vue`, () => {
   let wrapper;
 
   beforeAll(() => {
@@ -21,10 +21,10 @@ describe(`SessionNew.vue`, () => {
     })
 
     const options = { localVue }
-    wrapper = shallowMount(SessionNew, options)
+    wrapper = shallowMount(SessionForm, options)
   })
 
-  it('render SessionNew', () => {
+  it('render SessionForm', () => {
     expect(wrapper.html()).toContain('Login')
   })
 
