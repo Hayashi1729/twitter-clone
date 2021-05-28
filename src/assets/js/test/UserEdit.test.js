@@ -1,5 +1,5 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
-import UserEditSub from '../components/UserEditSub.vue'
+import UserEdit from '../components/UserEdit.vue'
 import CompositionApi from "@vue/composition-api";
 const localVue = createLocalVue();
 localVue.use(CompositionApi);
@@ -7,15 +7,12 @@ localVue.use(CompositionApi);
 import axios from 'axios';
 jest.mock('axios');
 
+import { setupUserList } from '../components/userKey'
+jest.mock('../components/userKey')
+
 import "regenerator-runtime/runtime";
 
-const testUser = {
-  id: 1,
-  username: "TestUser_1",
-  password: null
-}
-
-describe(`UserEditSub.vue`, () => {
+describe(`UserEdit.vue`, () => {
   let wrapper;
 
   beforeAll(() => {
@@ -26,27 +23,32 @@ describe(`UserEditSub.vue`, () => {
       },
     });
 
-    wrapper = shallowMount(UserEditSub, {
-      provide: {
-        userList: {
-          users: {
-            value: [
-              testUser
-            ]
-          },
-          getUser() {
-            return 'hoge'
-          },
-          deleteUser() {
-            this.users.value.pop()
-          }
-        },
+    const testUser = {
+      id: 1,
+      username: "TestUser_1",
+      password: null
+    }
+
+    setupUserList.mockReturnValue({
+      users: {
+        value: [
+          testUser
+        ]
       },
+      getUser() {
+        return 'hoge'
+      },
+      deleteUser() {
+        this.users.value.pop()
+      }
+    })
+
+    wrapper = shallowMount(UserEdit, {
       localVue
     })
   })
 
-  it('render UserEditSub', () => {
+  it('render UserEdit', () => {
     expect(wrapper.html()).toContain('Edit User')
   })
 

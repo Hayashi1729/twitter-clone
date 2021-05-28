@@ -1,5 +1,5 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
-import PostEditSub from '../components/PostEditSub.vue'
+import PostEdit from '../components/PostEdit.vue'
 import CompositionApi from "@vue/composition-api";
 const localVue = createLocalVue();
 localVue.use(CompositionApi);
@@ -7,9 +7,12 @@ localVue.use(CompositionApi);
 import axios from 'axios';
 jest.mock('axios');
 
+import { setupPostList } from '../components/postKey'
+jest.mock('../components/postKey')
+
 import "regenerator-runtime/runtime";
 
-describe(`PostEditSub.vue`, () => {
+describe(`PostEdit.vue`, () => {
   let wrapper;
 
   beforeAll(() => {
@@ -20,29 +23,30 @@ describe(`PostEditSub.vue`, () => {
       },
     });
 
-    wrapper = shallowMount(PostEditSub, {
-      provide: {
-        postList: {
-          posts: {
-            value: [{
-              id: 1, tweet: 'testpost', user: { username: 'testuser' }, favorites: [{ user_id: 1, post_id: 1 }]
-            }, {
-              id: 2, tweet: 'test2', user: { username: 'testuser' }, favorites: [{ user_id: 1, post_id: 2 }]
-            }]
-          },
-          getPost() {
-            return 'hoge'
-          },
-          deletePost() {
-            this.posts.value.pop()
-          }
-        }
+    const testPosts = [{
+      id: 1, tweet: 'testpost', user: { username: 'testuser' }, favorites: [{ user_id: 1, post_id: 1 }]
+    }, {
+      id: 2, tweet: 'test2', user: { username: 'testuser' }, favorites: [{ user_id: 1, post_id: 2 }]
+    }]
+
+    setupPostList.mockReturnValue({
+      posts: {
+        value: testPosts
       },
+      getPost() {
+        return 'hoge'
+      },
+      deletePost() {
+        this.posts.value.pop()
+      }
+    })
+
+    wrapper = shallowMount(PostEdit, {
       localVue
     })
   })
 
-  it('render PostEditSub', () => {
+  it('render PostEdit', () => {
     expect(wrapper.html()).toContain('Edit Post')
   })
 

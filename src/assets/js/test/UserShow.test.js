@@ -1,14 +1,13 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
-import UserShowSub from '../components/UserShowSub.vue'
+import UserShow from '../components/UserShow.vue'
 import CompositionApi from "@vue/composition-api";
 const localVue = createLocalVue();
 localVue.use(CompositionApi);
 
-const testUser = {
-  id: 1,
-  username: "TestUser_1",
-}
-describe(`UserShowSub.vue`, () => {
+import { setupUserList } from '../components/userKey'
+jest.mock('../components/userKey')
+
+describe(`UserShow.vue`, () => {
   let wrapper;
 
   beforeAll(() => {
@@ -19,27 +18,32 @@ describe(`UserShowSub.vue`, () => {
       },
     });
 
-    wrapper = shallowMount(UserShowSub, {
-      provide: {
-        userList: {
-          users: {
-            value: [
-              testUser
-            ]
-          },
-          getUser() {
-            return 'hoge'
-          },
-          deleteUser() {
-            this.users.value.pop()
-          }
-        },
+    const testUser = {
+      id: 1,
+      username: "TestUser_1",
+      password: null
+    }
+
+    setupUserList.mockReturnValue({
+      users: {
+        value: [
+          testUser
+        ]
       },
+      getUser() {
+        return 'hoge'
+      },
+      deleteUser() {
+        this.users.value.pop()
+      }
+    })
+
+    wrapper = shallowMount(UserShow, {
       localVue
     })
   })
 
-  it('render UserShowSub', () => {
+  it('render UserShow', () => {
     expect(wrapper.html()).toContain('Show User')
     expect(wrapper.html()).toContain('TestUser_1')
   })
