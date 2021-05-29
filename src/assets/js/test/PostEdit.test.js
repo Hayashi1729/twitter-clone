@@ -7,7 +7,7 @@ localVue.use(CompositionApi);
 import axios from 'axios';
 jest.mock('axios');
 
-import { setupPostList } from '../components/postKey'
+import { usePostListStore } from '../components/postKey'
 jest.mock('../components/postKey')
 
 import "regenerator-runtime/runtime";
@@ -29,7 +29,7 @@ describe(`PostEdit.vue`, () => {
       id: 2, tweet: 'test2', user: { username: 'testuser' }, favorites: [{ user_id: 1, post_id: 2 }]
     }]
 
-    setupPostList.mockReturnValue({
+    usePostListStore.mockReturnValue({
       posts: {
         value: testPosts
       },

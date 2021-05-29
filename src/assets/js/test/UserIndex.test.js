@@ -4,7 +4,7 @@ import CompositionApi from "@vue/composition-api";
 const localVue = createLocalVue();
 localVue.use(CompositionApi);
 
-import { setupUserList } from '../components/userKey'
+import { useUserListStore } from '../components/userKey'
 jest.mock('../components/userKey')
 
 describe(`UserIndex.vue`, () => {
@@ -17,7 +17,7 @@ describe(`UserIndex.vue`, () => {
       password: null
     }
 
-    setupUserList.mockReturnValue({
+    useUserListStore.mockReturnValue({
       users: {
         value: [
           testUser

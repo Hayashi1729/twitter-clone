@@ -16,7 +16,7 @@
 <script>
 import { reactive, toRefs, computed } from "@vue/composition-api";
 import axios from "axios";
-import { setupPostList } from "./postKey";
+import { usePostListStore } from "./postKey";
 
 export default {
   setup() {
@@ -24,7 +24,7 @@ export default {
       errors: {},
     });
 
-    const postList = setupPostList();
+    const postList = usePostListStore();
     postList.getPost();
 
     const postId = parseInt(window.location.pathname.split("/")[2]);

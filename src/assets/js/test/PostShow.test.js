@@ -4,7 +4,7 @@ import CompositionApi from "@vue/composition-api";
 const localVue = createLocalVue();
 localVue.use(CompositionApi);
 
-import { setupPostList } from '../components/postKey'
+import { usePostListStore } from '../components/postKey'
 jest.mock('../components/postKey')
 
 describe(`PostShow.vue`, () => {
@@ -24,7 +24,7 @@ describe(`PostShow.vue`, () => {
       id: 2, tweet: 'test2', user: { username: 'testuser' }, favorites: [{ user_id: 1, post_id: 2 }]
     }]
 
-    setupPostList.mockReturnValue({
+    usePostListStore.mockReturnValue({
       posts: {
         value: testPosts
       },

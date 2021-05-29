@@ -7,7 +7,7 @@ localVue.use(CompositionApi);
 import axios from 'axios';
 jest.mock('axios');
 
-import { setupUserList } from '../components/userKey'
+import { useUserListStore } from '../components/userKey'
 jest.mock('../components/userKey')
 
 import "regenerator-runtime/runtime";
@@ -29,7 +29,7 @@ describe(`UserEdit.vue`, () => {
       password: null
     }
 
-    setupUserList.mockReturnValue({
+    useUserListStore.mockReturnValue({
       users: {
         value: [
           testUser
