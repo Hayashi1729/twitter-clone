@@ -3,7 +3,7 @@ import storeFavorite from "../stores/favorites";
 
 const FavoriteKey = Symbol('Favorite')
 
-function setupFavoriteList() {
+function useFavoriteListStore() {
   provide(FavoriteKey, storeFavorite());
   const favoriteList = inject(FavoriteKey);
   if (!favoriteList) {
@@ -13,4 +13,4 @@ function setupFavoriteList() {
   return favoriteList
 };
 
-export { setupFavoriteList };
+export { useFavoriteListStore };

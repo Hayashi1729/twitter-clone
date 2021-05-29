@@ -23,7 +23,7 @@
 <script>
 import { reactive, toRefs, computed } from "@vue/composition-api";
 import axios from "axios";
-import { setupUserList } from "./userKey";
+import { useUserListStore } from "./userKey";
 
 export default {
   setup() {
@@ -31,7 +31,7 @@ export default {
       errors: {},
     });
 
-    const userList = setupUserList();
+    const userList = useUserListStore();
     userList.getUser();
 
     const userId = parseInt(window.location.pathname.split("/")[2]);

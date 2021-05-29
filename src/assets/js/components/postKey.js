@@ -3,7 +3,7 @@ import storePost from "../stores/posts";
 
 const PostKey = Symbol('Post')
 
-function setupPostList() {
+function usePostListStore() {
   provide(PostKey, storePost());
   const postList = inject(PostKey);
   if (!postList) {
@@ -13,4 +13,4 @@ function setupPostList() {
   return postList
 };
 
-export { setupPostList };
+export { usePostListStore };

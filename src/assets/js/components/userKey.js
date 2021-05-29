@@ -3,7 +3,7 @@ import storeUser from "../stores/users";
 
 const UserKey = Symbol('User')
 
-function setupUserList() {
+function useUserListStore() {
   provide(UserKey, storeUser());
   const userList = inject(UserKey);
   if (!userList) {
@@ -13,5 +13,5 @@ function setupUserList() {
   return userList
 };
 
-export { setupUserList };
+export { useUserListStore };
 

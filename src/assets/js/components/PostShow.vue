@@ -20,11 +20,11 @@
 
 <script>
 import { computed } from "@vue/composition-api";
-import { setupPostList } from "./postKey";
+import { usePostListStore } from "./postKey";
 
 export default {
   setup() {
-    const postList = setupPostList();
+    const postList = usePostListStore();
     postList.getPost();
 
     const currentURL = window.location.href;

@@ -15,11 +15,11 @@
 
 <script>
 import { computed } from "@vue/composition-api";
-import { setupUserList } from "./userKey";
+import { useUserListStore } from "./userKey";
 
 export default {
   setup() {
-    const userList = setupUserList();
+    const userList = useUserListStore();
     userList.getUser();
 
     const currentURL = window.location.href;

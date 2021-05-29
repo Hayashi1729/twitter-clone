@@ -52,18 +52,18 @@
 
 <script>
 import { computed } from "@vue/composition-api";
-import { setupPostList } from "./postKey";
-import { setupFavoriteList } from "./favoriteKey";
+import { usePostListStore } from "./postKey";
+import { useFavoriteListStore } from "./favoriteKey";
 
 export default {
   setup() {
-    const postList = setupPostList();
+    const postList = usePostListStore();
+    postList.getPost();
 
-    const favoriteList = setupFavoriteList();
+    const favoriteList = useFavoriteListStore();
     favoriteList.getFavorite();
 
     const reversePosts = computed(() => {
-      postList.getPost();
       return postList.posts.value.slice().reverse();
     });
 
@@ -71,12 +71,14 @@ export default {
       postList.deletePost(id);
     }
 
-    function createFavorite(post) {
-      favoriteList.createFavorite(post);
+    async function createFavorite(post) {
+      await favoriteList.createFavorite(post);
+      await postList.getPost();
     }
 
-    function deleteFavorite(post) {
-      favoriteList.deleteFavorite(post);
+    async function deleteFavorite(post) {
+      await favoriteList.deleteFavorite(post);
+      await postList.getPost();
     }
 
     function isFavorited(id) {

@@ -29,11 +29,11 @@
 </template>
 
 <script>
-import { setupUserList } from "./userKey";
+import { useUserListStore } from "./userKey";
 
 export default {
   setup() {
-    const userList = setupUserList();
+    const userList = useUserListStore();
     userList.getUser();
 
     function deleteUser(id) {
