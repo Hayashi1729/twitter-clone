@@ -42,7 +42,7 @@ defmodule ProjectWeb.UserApiControllerTest do
       user = json_response(conn, 201)
 
       assert user["username"] == "update name"
-      assert user["password"] == nil
+      assert user["password"] == ""
     end
 
     test "deletes chosen user", %{conn: conn, user: user} do

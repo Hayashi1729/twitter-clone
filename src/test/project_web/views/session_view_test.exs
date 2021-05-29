@@ -11,6 +11,6 @@ defmodule ProjectWeb.SessonViewTest do
         changeset: changeset
       )
 
-    assert String.contains?(content, "session-new")
+    assert String.contains?(content, "session-form")
   end
 end

@@ -3,6 +3,6 @@ defmodule ProjectWeb.SessionControllerTest do
 
   test "login", %{conn: conn} do
     conn = get(conn, Routes.session_path(conn, :new))
-    assert html_response(conn, 200) =~ "session-new"
+    assert html_response(conn, 200) =~ "session-form"
   end
 end

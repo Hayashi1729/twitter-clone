@@ -23,7 +23,6 @@ defmodule ProjectWeb.PostApiControllerTest do
                  "id",
                  "inserted_at",
                  "tweet",
-                 "updated_at",
                  "user",
                  "user_id"
                ]
@@ -47,7 +46,6 @@ defmodule ProjectWeb.PostApiControllerTest do
                "id",
                "inserted_at",
                "tweet",
-               "updated_at",
                "user",
                "user_id"
              ]
@@ -62,7 +60,6 @@ defmodule ProjectWeb.PostApiControllerTest do
                "id",
                "inserted_at",
                "tweet",
-               "updated_at",
                "user",
                "user_id"
              ]
