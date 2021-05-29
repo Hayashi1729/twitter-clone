@@ -43,7 +43,7 @@ defmodule ProjectWeb.Router do
   scope "/", ProjectWeb do
     pipe_through [:browser, :redirect_if_authenticated]
 
-    resources "/sessions", SessionController, only: [:new, :create]
+    resources "/sessions", SessionController, only: [:new]
   end
 
   scope "/", ProjectWeb do
@@ -54,6 +54,12 @@ defmodule ProjectWeb.Router do
       post "/favorite", FavoriteController, :create
       delete "/favorite", FavoriteController, :delete
     end
+  end
+
+  scope "/", ProjectWeb do
+    pipe_through [:api, :redirect_if_authenticated]
+
+    resources "/sessions", SessionController, only: [:create]
   end
 
   scope "/api", ProjectWeb do
