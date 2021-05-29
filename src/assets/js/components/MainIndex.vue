@@ -13,7 +13,7 @@
 import { ref, defineComponent } from "@vue/composition-api";
 
 export default defineComponent({
-  name: "Index",
+  name: "MainIndex",
   setup() {
     const test = "test";
     const message = ref("Twitter");

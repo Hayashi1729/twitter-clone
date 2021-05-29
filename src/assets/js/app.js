@@ -19,7 +19,7 @@ import Vue from 'vue'
 import CompositionAPI from '@vue/composition-api'
 Vue.use(CompositionAPI)
 
-import Index from './components/Index.vue'
+import MainIndex from './components/MainIndex.vue'
 import UserIndex from './components/UserIndex.vue'
 import UserNew from './components/UserNew.vue'
 import UserShow from './components/UserShow.vue'
@@ -33,7 +33,7 @@ import SessionForm from './components/SessionForm.vue'
 new Vue({
     el: '#app',
     components: {
-        Index,
+        MainIndex,
         UserIndex,
         UserNew,
         UserShow,

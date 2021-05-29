@@ -27,12 +27,12 @@
             <button v-on:click="deletePost(post.id)">Delete</button>
           </td>
 
-          <post-index-favorite
+          <favorite-form
             v-bind:post="post"
             v-bind:favorite="favoriteList.favorites.value"
             v-on:create="pushFavorite"
             v-on:delete="filterFavorite"
-          ></post-index-favorite>
+          ></favorite-form>
         </tr>
       </tbody>
     </table>
@@ -45,12 +45,12 @@
 
 <script>
 import { computed } from "@vue/composition-api";
-import PostIndexFavorite from "./PostIndexFavorite.vue";
+import FavoriteForm from "./FavoriteForm.vue";
 import { setupPostList } from "./postKey";
 import { setupFavoriteList } from "./favoriteKey";
 
 export default {
-  components: { PostIndexFavorite },
+  components: { FavoriteForm },
   setup() {
     const postList = setupPostList();
 

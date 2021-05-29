@@ -1,13 +1,13 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Index from '../components/Index.vue'
+import MainIndex from '../components/MainIndex.vue'
 import CompositionApi from "@vue/composition-api";
 const localVue = createLocalVue();
 localVue.use(CompositionApi);
 
-describe(`Index.vue`, () => {
+describe(`ManiIndex.vue`, () => {
   it('render Index', () => {
     const options = { localVue }
-    const wrapper = shallowMount(Index, options)
+    const wrapper = shallowMount(MainIndex, options)
     expect(wrapper.html()).toContain('Welcome to Twitter!')
   })
 })

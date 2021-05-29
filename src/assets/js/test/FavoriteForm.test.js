@@ -1,5 +1,5 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
-import PostIndexFavorite from '../components/PostIndexFavorite.vue'
+import FavoriteForm from '../components/FavoriteForm.vue'
 import CompositionApi from "@vue/composition-api";
 const localVue = createLocalVue();
 localVue.use(CompositionApi);
@@ -9,8 +9,8 @@ jest.mock('axios');
 
 import "regenerator-runtime/runtime";
 
-describe(`PostIndexFavorite.vue`, () => {
-  const wrapper = shallowMount(PostIndexFavorite, {
+describe(`FavoriteForm.vue`, () => {
+  const wrapper = shallowMount(FavoriteForm, {
     propsData: {
       post: { id: 1, tweet: 'test', user: { username: 'testuser' }, favorites: [{ user_id: 1, post_id: 1 }] },
       favorite: [1]
