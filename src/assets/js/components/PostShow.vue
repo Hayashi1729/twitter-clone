@@ -25,6 +25,7 @@ import { setupPostList } from "./postKey";
 export default {
   setup() {
     const postList = setupPostList();
+    postList.getPost();
 
     const currentURL = window.location.href;
 

@@ -9,7 +9,6 @@ function setupFavoriteList() {
   if (!favoriteList) {
     throw new Error(`favoriteList is not provided`);
   }
-  favoriteList.getFavorite();
 
   return favoriteList
 };

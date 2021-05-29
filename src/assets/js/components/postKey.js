@@ -9,7 +9,6 @@ function setupPostList() {
   if (!postList) {
     throw new Error(`postList is not provided`);
   }
-  postList.getPost();
 
   return postList
 };

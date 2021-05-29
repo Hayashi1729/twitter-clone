@@ -9,7 +9,6 @@ function setupUserList() {
   if (!userList) {
     throw new Error(`userList is not provided`);
   }
-  userList.getUser();
 
   return userList
 };

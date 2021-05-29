@@ -20,6 +20,7 @@ import { setupUserList } from "./userKey";
 export default {
   setup() {
     const userList = setupUserList();
+    userList.getUser();
 
     const currentURL = window.location.href;
 

@@ -27,12 +27,19 @@
             <button v-on:click="deletePost(post.id)">Delete</button>
           </td>
 
-          <favorite-form
-            v-bind:post="post"
-            v-bind:favorite="favoriteList.favorites.value"
-            v-on:create="pushFavorite"
-            v-on:delete="filterFavorite"
-          ></favorite-form>
+          <td>
+            <div v-if="isFavorited(post.id)">
+              <button v-on:click="deleteFavorite(post)">
+                お気に入り登録を解除する
+              </button>
+            </div>
+            <div v-else>
+              <button v-on:click="createFavorite(post)">
+                お気に入り登録する
+              </button>
+            </div>
+          </td>
+          <td>{{ post.favorites.length }}</td>
         </tr>
       </tbody>
     </table>
@@ -45,18 +52,18 @@
 
 <script>
 import { computed } from "@vue/composition-api";
-import FavoriteForm from "./FavoriteForm.vue";
 import { setupPostList } from "./postKey";
 import { setupFavoriteList } from "./favoriteKey";
 
 export default {
-  components: { FavoriteForm },
   setup() {
     const postList = setupPostList();
 
     const favoriteList = setupFavoriteList();
+    favoriteList.getFavorite();
 
     const reversePosts = computed(() => {
+      postList.getPost();
       return postList.posts.value.slice().reverse();
     });
 
@@ -64,12 +71,16 @@ export default {
       postList.deletePost(id);
     }
 
-    function pushFavorite(post) {
+    function createFavorite(post) {
       favoriteList.createFavorite(post);
     }
 
-    function filterFavorite(post) {
+    function deleteFavorite(post) {
       favoriteList.deleteFavorite(post);
+    }
+
+    function isFavorited(id) {
+      return favoriteList.favorites.value.includes(id);
     }
 
     return {
@@ -77,8 +88,9 @@ export default {
       favoriteList,
       reversePosts,
       deletePost,
-      pushFavorite,
-      filterFavorite,
+      createFavorite,
+      deleteFavorite,
+      isFavorited,
     };
   },
 };

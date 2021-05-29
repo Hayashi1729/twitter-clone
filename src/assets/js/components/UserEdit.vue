@@ -32,6 +32,7 @@ export default {
     });
 
     const userList = setupUserList();
+    userList.getUser();
 
     const userId = parseInt(window.location.pathname.split("/")[2]);
 

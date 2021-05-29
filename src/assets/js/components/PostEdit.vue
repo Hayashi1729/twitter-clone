@@ -25,6 +25,7 @@ export default {
     });
 
     const postList = setupPostList();
+    postList.getPost();
 
     const postId = parseInt(window.location.pathname.split("/")[2]);
 
