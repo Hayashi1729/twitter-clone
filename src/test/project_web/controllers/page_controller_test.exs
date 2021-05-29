@@ -3,6 +3,6 @@ defmodule ProjectWeb.PageControllerTest do
 
   test "GET /", %{conn: conn} do
     conn = get(conn, "/")
-    assert html_response(conn, 200) =~ "Welcome to Twitter!"
+    assert html_response(conn, 200) =~ "<main-index></main-index>"
   end
 end

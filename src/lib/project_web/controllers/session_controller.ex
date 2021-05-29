@@ -1,6 +1,9 @@
 defmodule ProjectWeb.SessionController do
   use ProjectWeb, :controller
 
+  alias Project.Accounts
+  alias Project.Accounts.User
+
   @doc """
   ログイン画面表示
   """
@@ -14,20 +17,19 @@ defmodule ProjectWeb.SessionController do
   """
   @spec create(Plug.Conn.t(), map) :: Plug.Conn.t()
   def create(
-    conn,
-    %{"session" => %{"username" => username, "password" => pass}}
-  ) do
-    case Project.Accounts.authenticate_by_username_and_pass(username, pass) do
-      {:ok, user} ->
+        conn,
+        %{"session" => %{"username" => username, "password" => pass}}
+      ) do
+    case Accounts.authenticate_by_username_and_pass(username, pass) do
+      {:ok, %User{} = user} ->
         conn
         |> ProjectWeb.AuthorizationPlug.login(user)
-        |> put_flash(:info, "Welcome back!")
-        |> redirect(to: Routes.page_path(conn, :index))
+        |> send_resp(200, "ok")
 
-      {:error, _reason} ->
+      {:error, status} ->
         conn
-        |> put_flash(:error, "Invalid username/password combination")
-        |> render("new.html")
+        |> put_status(:unprocessable_entity)
+        |> render(ProjectWeb.ErrorView, "error.json", status: status)
     end
   end
 

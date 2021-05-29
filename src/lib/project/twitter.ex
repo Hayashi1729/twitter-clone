@@ -41,7 +41,7 @@ defmodule Project.Twitter do
   @spec get_post!(integer) :: Post.t()
   def get_post!(id) do
     Post
-    |> preload(:user)
+    |> preload([:user, :favorites])
     |> Repo.get!(id)
   end
 
@@ -100,6 +100,14 @@ defmodule Project.Twitter do
     Repo.delete(post)
   end
 
+  @doc """
+  Returns the list of favorites.
+  """
+  @spec list_favorites :: list(Favorite.t())
+  def list_favorites do
+    Repo.all(Favorite)
+  end
+
   @spec list_posts_with_favorite(integer) :: list(integer)
   @doc """
   あるユーザーにお気に入り登録されたツイートIDのリストを返す。
@@ -129,6 +137,24 @@ defmodule Project.Twitter do
     Favorite
     |> where([f], f.post_id == ^post_id)
     |> Repo.all()
+  end
+
+  @doc """
+  Gets a single favorite.
+  """
+  @spec get_favorite!(integer()) :: Favorite.t()
+  def get_favorite!(id) do
+    Repo.get!(Favorite, id)
+  end
+
+  @doc """
+  お気に入りを返す。
+  """
+  @spec get_current_favorite(integer(), integer()) :: Favorite.t() | nil
+  def get_current_favorite(post_id, user_id) do
+    Favorite
+    |> where([f], f.post_id == ^post_id and f.user_id == ^user_id)
+    |> Repo.one()
   end
 
   @doc """

@@ -12,6 +12,9 @@ defmodule ProjectWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug :fetch_session
+    plug :fetch_flash
+    plug ProjectWeb.AuthorizationPlug
   end
 
   pipeline :auth do
@@ -32,10 +35,7 @@ defmodule ProjectWeb.Router do
   scope "/", ProjectWeb do
     pipe_through [:browser, :auth]
 
-    resources "/posts", PostController do
-      post   "/favorite", FavoriteController, :create
-      delete "/favorite", FavoriteController, :delete
-    end
+    resources "/posts", PostController
     resources "/users", UserController, except: [:new, :create]
     resources "/sessions", SessionController, only: [:delete]
   end
@@ -43,7 +43,36 @@ defmodule ProjectWeb.Router do
   scope "/", ProjectWeb do
     pipe_through [:browser, :redirect_if_authenticated]
 
-    resources "/sessions", SessionController, only: [:new, :create]
+    resources "/sessions", SessionController, only: [:new]
+  end
+
+  scope "/", ProjectWeb do
+    pipe_through [:api, :auth]
+
+    resources "/posts", PostController,
+      except: [:index, :edit, :new, :show, :create, :update, :delete] do
+      post "/favorite", FavoriteController, :create
+      delete "/favorite", FavoriteController, :delete
+    end
+  end
+
+  scope "/", ProjectWeb do
+    pipe_through [:api, :redirect_if_authenticated]
+
+    resources "/sessions", SessionController, only: [:create]
+  end
+
+  scope "/api", ProjectWeb do
+    pipe_through :api
+    post "/users", UserApiController, :create
+  end
+
+  scope "/api", ProjectWeb do
+    pipe_through [:api, :auth]
+    resources "/users", UserApiController, except: [:new, :create]
+    resources "/posts", PostApiController
+    get "/favorited_post", PostApiController, :favorited_post
+    get "/favorites", FavoriteApiController, :index
   end
 
   # Other scopes may use custom stacks.

@@ -1,22 +1,12 @@
 defmodule ProjectWeb.PostController do
   use ProjectWeb, :controller
 
-  alias Project.Twitter
-  alias Project.Twitter.Post
-
   @doc """
   ツイートの一覧を取得して表示。
   """
   @spec index(Plug.Conn.t(), any) :: Plug.Conn.t()
   def index(conn, _params) do
-    current_user = conn.assigns.current_user
-    posts = Twitter.list_posts()
-    posts_favorited_by_current_user = Twitter.list_posts_with_favorite(current_user.id)
-
-    render(conn, "index.html",
-      posts: posts,
-      posts_favorited_by_current_user: posts_favorited_by_current_user
-    )
+    render(conn, "index.html")
   end
 
   @doc """
@@ -24,76 +14,22 @@ defmodule ProjectWeb.PostController do
   """
   @spec new(Plug.Conn.t(), any) :: Plug.Conn.t()
   def new(conn, _params) do
-    changeset = Post.changeset(%Post{})
-    render(conn, "new.html", changeset: changeset)
-  end
-
-  @doc """
-  ツイート作成処理を行う。
-  """
-  @spec create(Plug.Conn.t(), map) :: Plug.Conn.t()
-  def create(conn, %{"post" => post_params}) do
-    current_user = conn.assigns.current_user
-    changeset = Ecto.build_assoc(current_user, :posts, post_params)
-
-    case Twitter.create_post(changeset, post_params) do
-      {:ok, _} ->
-        conn
-        |> put_flash(:info, "Post created successfully.")
-        |> redirect(to: Routes.post_path(conn, :index))
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
-    end
+    render(conn, "new.html")
   end
 
   @doc """
   ツイート詳細表示画面を表示。
   """
   @spec show(Plug.Conn.t(), map) :: Plug.Conn.t()
-  def show(conn, %{"id" => id}) do
-    post = Twitter.get_post!(id)
-    render(conn, "show.html", post: post)
+  def show(conn, _params) do
+    render(conn, "show.html")
   end
 
   @doc """
   ツイート編集画面表示。
   """
   @spec edit(Plug.Conn.t(), map) :: Plug.Conn.t()
-  def edit(conn, %{"id" => id}) do
-    post = Twitter.get_post!(id)
-    changeset = Post.changeset(post)
-    render(conn, "edit.html", post: post, changeset: changeset)
-  end
-
-  @doc """
-  ツイートの更新処理を行う。
-  """
-  @spec update(Plug.Conn.t(), map) :: Plug.Conn.t()
-  def update(conn, %{"id" => id, "post" => post_params}) do
-    post = Twitter.get_post!(id)
-
-    case Twitter.update_post(post, post_params) do
-      {:ok, post} ->
-        conn
-        |> put_flash(:info, "Post updated successfully.")
-        |> redirect(to: Routes.post_path(conn, :show, post))
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", post: post, changeset: changeset)
-    end
-  end
-
-  @doc """
-  ツイート削除処理を行う。
-  """
-  @spec delete(Plug.Conn.t(), map) :: Plug.Conn.t()
-  def delete(conn, %{"id" => id}) do
-    post = Twitter.get_post!(id)
-    {:ok, _post} = Twitter.delete_post(post)
-
-    conn
-    |> put_flash(:info, "Post deleted successfully.")
-    |> redirect(to: Routes.post_path(conn, :index))
+  def edit(conn, _params) do
+    render(conn, "edit.html")
   end
 end

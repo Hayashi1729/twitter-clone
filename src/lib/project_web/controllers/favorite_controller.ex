@@ -5,7 +5,6 @@ defmodule ProjectWeb.FavoriteController do
 
   alias Project.Twitter
   alias Project.Twitter.Favorite
-  alias Project.Repo
 
   @doc """
   お気に入り登録処理を行う。
@@ -16,15 +15,17 @@ defmodule ProjectWeb.FavoriteController do
     post = Twitter.get_post!(post_id)
 
     case Twitter.create_favorite(post.id, current_user.id) do
-      {:ok, _} ->
-        conn
-        |> put_flash(:info, "お気に入り登録しました。")
-        |> redirect(to: Routes.post_path(conn, :index))
+      {:ok, %Favorite{} = favorite} ->
+        fav = Twitter.get_favorite!(favorite.id)
 
-      {:error, _} ->
         conn
-        |> put_flash(:error, "お気に入り登録できませんでした。")
-        |> redirect(to: Routes.post_path(conn, :index))
+        |> put_status(:created)
+        |> render("favorite_show.json", favorite_id: fav)
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render(ProjectWeb.ErrorView, "error.json", changeset: changeset)
     end
   end
 
@@ -34,13 +35,26 @@ defmodule ProjectWeb.FavoriteController do
   @spec delete(Plug.Conn.t(), map) :: Plug.Conn.t()
   def delete(conn, %{"post_id" => post_id}) do
     current_user = conn.assigns.current_user
-    Favorite
-    |> where([f], f.post_id == ^post_id and f.user_id == ^current_user.id)
-    |> Repo.one()
-    |> Twitter.delete_favorite()
+    favorite = Twitter.get_current_favorite(post_id, current_user.id)
 
-    conn
-    |> put_flash(:info, "お気に入り登録を解除しました。")
-    |> redirect(to: Routes.post_path(conn, :index))
+    case is_map(favorite) do
+      true ->
+        case Twitter.delete_favorite(favorite) do
+          {:ok, %Favorite{}} ->
+            send_resp(conn, :no_content, "")
+
+          {:error, %Ecto.Changeset{} = changeset} ->
+            conn
+            |> put_status(:unprocessable_entity)
+            |> render(ProjectWeb.ErrorView, "error.json", changeset: changeset)
+        end
+
+      false ->
+        status = :favorite_not_found
+
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render(ProjectWeb.ErrorView, "error.json", status: status)
+    end
   end
 end

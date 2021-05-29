@@ -6,15 +6,15 @@ defmodule Project.Twitter.Post do
   A post
   """
   @type t :: %__MODULE__{
-    id: integer,
-    tweet: String.t(),
-
-    user_id: integer,
-    user: User.t(),
-
-    inserted_at: NaiveDateTime.t(),
-    updated_at: NaiveDateTime.t()
-  }
+          id: integer,
+          tweet: String.t(),
+          user_id: integer,
+          user: User.t(),
+          inserted_at: NaiveDateTime.t(),
+          updated_at: NaiveDateTime.t()
+        }
+  @derive {Jason.Encoder,
+           only: [:id, :tweet, :user_id, :user, :inserted_at, :updated_at, :favorites]}
   schema "posts" do
     field :tweet, :string
 
