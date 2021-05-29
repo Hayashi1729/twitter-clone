@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { reactive, toRefs, computed } from "@vue/composition-api";
+import { reactive, toRefs, computed, onMounted } from "@vue/composition-api";
 import axios from "axios";
 import { usePostListStore } from "./postKey";
 
@@ -25,7 +25,9 @@ export default {
     });
 
     const postList = usePostListStore();
-    postList.getPost();
+    onMounted(() => {
+      postList.getPost();
+    });
 
     const postId = parseInt(window.location.pathname.split("/")[2]);
 

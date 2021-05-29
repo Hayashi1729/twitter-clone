@@ -19,13 +19,15 @@
 </template>
 
 <script>
-import { computed } from "@vue/composition-api";
+import { computed, onMounted } from "@vue/composition-api";
 import { usePostListStore } from "./postKey";
 
 export default {
   setup() {
     const postList = usePostListStore();
-    postList.getPost();
+    onMounted(() => {
+      postList.getPost();
+    });
 
     const currentURL = window.location.href;
 

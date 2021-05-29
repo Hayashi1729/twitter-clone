@@ -29,12 +29,15 @@
 </template>
 
 <script>
+import { onMounted } from "@vue/composition-api";
 import { useUserListStore } from "./userKey";
 
 export default {
   setup() {
     const userList = useUserListStore();
-    userList.getUser();
+    onMounted(() => {
+      userList.getUser();
+    });
 
     function deleteUser(id) {
       userList.deleteUser(id);

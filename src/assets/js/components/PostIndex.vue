@@ -51,17 +51,19 @@
 </template>
 
 <script>
-import { computed } from "@vue/composition-api";
+import { computed, onMounted } from "@vue/composition-api";
 import { usePostListStore } from "./postKey";
 import { useFavoriteListStore } from "./favoriteKey";
 
 export default {
   setup() {
     const postList = usePostListStore();
-    postList.getPost();
-
     const favoriteList = useFavoriteListStore();
-    favoriteList.getFavorite();
+
+    onMounted(() => {
+      postList.getPost();
+      favoriteList.getFavorite();
+    });
 
     const reversePosts = computed(() => {
       return postList.posts.value.slice().reverse();
